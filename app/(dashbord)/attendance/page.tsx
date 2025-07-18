@@ -1,0 +1,428 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Calendar, X, CheckCircle, XCircle, User, Clock } from 'lucide-react';
+import { getAttendance, getTimeTable } from '@/action/profile.action';
+import { useQuery } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { createAttendanceRecords } from '@/action/profile.action';
+
+interface SubjectAttendance {
+  [subjectName: string]: 'present' | 'absent' | null;
+}
+
+interface AttendanceData {
+  [key: string]: {
+    [day: number]: SubjectAttendance;
+  };
+}
+
+const Attendance: React.FC = () => {
+  const [selectedMonth, setSelectedMonth] = useState<number>(new Date().getMonth());
+  const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear());
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [attendanceData, setAttendanceData] = useState<AttendanceData>({});
+  const [selectedDate, setSelectedDate] = useState<number | null>(null);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['timetable'],
+    queryFn: (async () => await getTimeTable()),
+  });
+
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  const years = [2025, 2026, 2027];
+
+  // Get days in selected month
+  const getDaysInMonth = (month: number, year: number): number => {
+    return new Date(year, month + 1, 0).getDate();
+  };
+
+  // Get attendance key for current selection
+  const getAttendanceKey = (): string => {
+    return `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`;
+  };
+
+  // Get attendance for a specific date
+  const getAttendanceForDate = (date: number): 'present' | 'absent' | null => {
+    const key = getAttendanceKey();
+    const subjectAttendance = attendanceData[key]?.[date];
+    if (!subjectAttendance) return null;
+
+    const statuses = Object.values(subjectAttendance);
+    if (statuses.every((s) => s === 'present')) return 'present';
+    if (statuses.every((s) => s === 'absent')) return 'absent';
+
+    return null;
+  };
+
+  const getStatistics = () => {
+    const key = getAttendanceKey();
+    const monthData = attendanceData[key] || {};
+    const daysInMonth = getDaysInMonth(selectedMonth, selectedYear);
+
+    let present = 0;
+    let absent = 0;
+    let unmarked = 0;
+
+    for (let i = 1; i <= daysInMonth; i++) {
+      const subjects = monthData[i] || {};
+      for (const status of Object.values(subjects)) {
+        if (status === 'present') present++;
+        else if (status === 'absent') absent++;
+        else unmarked++;
+      }
+    }
+
+    return { present, absent, unmarked, total: daysInMonth };
+  };
+  const stats = getStatistics();
+  const openModal = (date: number) => {
+    setSelectedDate(date);
+    setIsModalOpen(true);
+  };
+
+
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedDate(null);
+  };
+
+  const updateAttendance = (date:number, subjectName:string, status:'present' | 'absent' |null) => {
+    const key = getAttendanceKey(); // e.g. "2025-07"
+    setAttendanceData(prev => ({
+      ...prev,
+      [key]: {
+        ...prev[key],
+        [date]: {
+          ...(prev[key]?.[date] || {}),
+          [subjectName]: status,
+        },
+      },
+    }));
+  };
+
+  const handleFinalSubmit = async (e:React.FormEvent) => {
+    e.preventDefault()
+    const key = getAttendanceKey();
+
+    const dateKey = Number(selectedDate); // ensure it's a number
+
+    if (!dateKey || isNaN(dateKey)) {
+      return toast.error('Invalid or no date selected.');
+    }
+
+    const dailyAttendance = attendanceData[key]?.[dateKey];
+
+    if (!dailyAttendance || Object.keys(dailyAttendance).length === 0) {
+      return toast.error('No attendance marked for this date.');
+    }
+
+    const records = Object.entries(dailyAttendance)
+      .map(([subjectName, status]) => {
+        const timetableEntry = data?.data?.find((item: any) => item.subjectName === subjectName);
+        return timetableEntry && {
+          timeTableId: timetableEntry.id,
+          present: status === 'present',
+          remarks: null
+        };
+      })
+      .filter((record): record is { timeTableId: string; present: boolean; remarks: null } => record !== null);
+ 
+      //  const records = Object.entries(dailyAttendance)
+      // .map(([subjectName, status]) => {
+      //   const timetableEntry = data?.data?.find((item: any) => item.subjectName === subjectName);
+      //   return timetableEntry
+      //     ? {
+      //       timeTableId: timetableEntry.id,
+      //       present: status === 'present',
+      //     }
+      //     : null;
+      // })
+      // .filter(Boolean);
+
+
+    if (records.length === 0) {
+      return toast.error('No valid subjects marked.');
+    }
+
+    const payload = {
+      date: new Date(selectedYear, selectedMonth, dateKey),
+      records,
+    };
+
+    const res = await createAttendanceRecords(payload);
+
+    if (res.status === 200) {
+      toast.success(res.message);
+    } else {
+      toast.error(res.message);
+    }
+  };
+
+
+  const { data: data2 } = useQuery({
+    queryKey: ['attendance'],
+    queryFn: (async () => await getAttendance()),
+  });
+
+  useEffect(() => {
+    if (!data?.data || !data2?.data) return;
+
+    const timetableMap = data.data.reduce((acc, curr) => {
+      acc[curr.id] = curr.subjectName;
+      return acc;
+    }, {} as Record<string, string>);
+
+    const transformedData: AttendanceData = {};
+
+    for (const record of data2.data) {
+      const date = new Date(record.date);
+      const monthKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+      const day = date.getDate();
+      const subjectName = timetableMap[record.timeTableId];
+
+      if (!subjectName) continue;
+
+      if (!transformedData[monthKey]) {
+        transformedData[monthKey] = {};
+      }
+
+      if (!transformedData[monthKey][day]) {
+        transformedData[monthKey][day] = {};
+      }
+
+      transformedData[monthKey][day][subjectName] = record.present ? 'present' : 'absent';
+    }
+
+    setAttendanceData(transformedData);
+  }, [data, data2]);
+
+  const today = new Date();
+  const isToday = selectedDate === today.getDate() && selectedMonth === today.getMonth() && selectedYear === today.getFullYear();
+
+  return (
+    <div className="min-h-screen text-white p-6">
+      <div className="max-w-6xl mx-auto">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
+            <Calendar className="w-8 h-8 text-blue-400" />
+            Attendance Management
+          </h1>
+          <p className="text-gray-400">Track daily attendance records</p>
+        </div>
+
+        {/* Controls */}
+        <div className="card rounded-lg p-6 mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Month</label>
+                <select
+                  value={selectedMonth}
+                  onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                  className=" bg-[black]  rounded-lg px-3 py-2 focus:outline-none "
+                >
+                  {months.map((month, index) => (
+                    <option key={index} value={index}>{month}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Year</label>
+                <select
+                  value={selectedYear}
+                  onChange={(e) => setSelectedYear(Number(e.target.value))}
+                  className="  bg-[black]  rounded-lg px-3 py-2 focus:outline-none  "
+                >
+                  {years.map((year) => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Statistics */}
+            <div className="text-right">
+              <h3 className="text-lg font-semibold mb-2">Statistics</h3>
+              <div className="flex gap-4 text-sm">
+                <div className="text-green-400">
+                  <CheckCircle className="w-4 h-4 inline mr-1" />
+                  Present: {stats.present}
+                </div>
+                <div className="text-red-400">
+                  <XCircle className="w-4 h-4 inline mr-1" />
+                  Absent: {stats.absent}
+                </div>
+                <div className="text-gray-400">
+                  <Clock className="w-4 h-4 inline mr-1" />
+                  Unmarked: {stats.unmarked}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Calendar Grid */}
+        <div className="card rounded-lg p-6">
+          <h2 className="text-xl font-semibold mb-4">
+            {months[selectedMonth]} {selectedYear}
+          </h2>
+
+          <div className="grid grid-cols-7 gap-3">
+            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+              <div key={day} className="text-center font-semibold text-gray-400 p-2">
+                {day}
+              </div>
+            ))}
+
+            {/* Empty cells for days before month starts */}
+            {Array.from({ length: new Date(selectedYear, selectedMonth, 1).getDay() }).map((_, index) => (
+              <div key={`empty-${index}`} className="p-2"></div>
+            ))}
+
+            {/* Date cells */}
+            {Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }).map((_, index) => {
+              const date = index + 1;
+              const attendance = getAttendanceForDate(date);
+              const isToday = new Date().getDate() === date &&
+                new Date().getMonth() === selectedMonth &&
+                new Date().getFullYear() === selectedYear;
+              return (
+                <div
+                  key={date}
+                  onClick={() => {
+                    openModal(date);
+                  }}
+                  className={`
+                    relative p-4 rounded-lg cursor-pointer transition-all duration-200 hover:scale-105 border
+                    ${isToday ? 'border-[#ffffff74] buttonbg !rounded-lg ' : 'border-[#ffffff17]'}
+                    ${attendance === 'present' ? 'bg-green-900 border-green-500' :
+                      attendance === 'absent' ? 'bg-red-900 border-red-500' :
+                        'bg-[#2d2b55] hover:bg-[#1a1a2e]'}
+                  `}
+                >
+                  <div className="text-center">
+                    <div className="text-lg font-semibold mb-2">{date}</div>
+                    <div className="space-y-1">
+                      {attendance === 'present' && (
+                        <div className="flex items-center justify-center text-green-400 text-sm">
+                          <CheckCircle className="w-4 h-4 mr-1" />
+                          Present
+                        </div>
+                      )}
+                      {attendance === 'absent' && (
+                        <div className="flex items-center justify-center text-red-400 text-sm">
+                          <XCircle className="w-4 h-4 mr-1" />
+                          Absent
+                        </div>
+                      )}
+                      {attendance === null && (
+                        <div className="text-gray-400 text-sm">
+                          <Clock className="w-4 h-4 mx-auto" />
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {isModalOpen && selectedDate && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-50 p-4">
+            <div className="card z-10 rounded-lg p-6 w-[80%] max-md:w-[90%]">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-semibold flex items-center gap-2">
+                  <User className="w-5 h-5" />
+                  Attendance for {months[selectedMonth]} {selectedDate}, {selectedYear}
+                </h3>
+                <button
+                  onClick={closeModal}
+                  className="text-gray-400 hover:text-white transition-colors">
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className='  flex flex-warp gap-3' >
+                { data && data?.data && data?.data.map((item: any, index: number) => {
+                  const subjectName = item.subjectName;
+                  const status =
+                    attendanceData[getAttendanceKey()]?.[selectedDate]?.[subjectName] ?? null;
+
+                  const handleClick = (status: 'present' | 'absent') => {
+                    updateAttendance(selectedDate, subjectName, status);
+                  };
+
+                  const handleClear = () => {
+                    updateAttendance(selectedDate, subjectName, null);
+                  };
+
+                  return (
+                    <div key={index} className="flex flex-col w-[40%] gap-2 card p-4 mb-2 border border-amber-300 rounded-lg">
+                      <div>
+                        <h2 className="text-lg font-semibold">{subjectName}</h2>
+                        <p>Start Time: {item.startTime}</p>
+                        <p>End Time: {item.endTime}</p>
+                      </div>
+
+                      {status ? (
+                        <div className="flex justify-between items-center gap-4">
+                          <p className={`font-semibold ${status === 'present' ? 'text-green-600' : 'text-red-600'}`}>
+                            ✅ Marked as {status.charAt(0).toUpperCase() + status.slice(1)}
+                          </p>
+                          <button
+                            onClick={handleClear}
+                            className="text-sm px-3 py-1 border border-gray-400 rounded-md hover:bg-gray-100"
+                          >
+                            Clear
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="space-y-2">
+                          <button
+                            onClick={() => handleClick('present')}
+                            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg"
+                          >
+                            <CheckCircle className="w-5 h-5" />
+                            Mark as Present
+                          </button>
+
+                          <button
+                            onClick={() => handleClick('absent')}
+                            className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg"
+                          >
+                            <XCircle className="w-5 h-5" />
+                            Mark as Absent
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                  );
+                })}
+                <button
+                  onClick={(e) => {
+                    handleFinalSubmit(e);
+                  }}
+                  // disabled={!isToday}
+                  className={` disabled:opacity-50 mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md `}
+                >
+                  Final Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Attendance;

@@ -1,0 +1,44 @@
+{
+  "name": "attendance-track",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "prisma generate",
+    "prisma:migrate": "prisma migrate deploy",
+    "studio": "prisma studio",
+    "prisma:docker": "npm run prisma:migrate && npm run studio",
+    "dev:docker": "npm run prisma:docker & next dev"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.1.1",
+    "@next-auth/prisma-adapter": "^1.0.7",
+    "@prisma/client": "^6.11.1",
+    "@tanstack/react-query": "^5.82.0",
+    "lucide-react": "^0.525.0",
+    "next": "15.4.1",
+    "next-auth": "^4.24.11",
+    "next-themes": "^0.4.6",
+    "prisma": "^6.11.1",
+    "react": "19.1.0",
+    "react-datepicker": "^8.4.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.5.2",
+    "recharts": "^3.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "tailwindcss": "^4",
+    "ts-node": "^10.9.2",
+    "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  }
+}
