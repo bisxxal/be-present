@@ -13,76 +13,30 @@ type RecordInput = {
 };
 
  
-export async function createAttendanceRecords(input: {
-  date: Date;
-  records: { timeTableId: string; present: boolean; remarks?: string | null }[];
-}) {
-    const {  date, records } = input;
-    if(records?.length === 0) {
-        return { status: 400, message: "No records to create." };
-    }
-
+export async function addTimeTable(subjects: { subjectName: string; startTime: string; endTime: string }[]) {
     const session = await getServerSession(authOptions);
     if (!session) {
         return { status: 401, message: "Unauthorized" };
     }
 
+    try {
+        const timeTableEntries = subjects.map(subject => ({
+            userId: session.user.id,
+            subjectName: subject.subjectName,
+            startTime: subject.startTime,
+            endTime: subject.endTime,
+        }));
 
-  const normalizedDate = new Date(date);
-  normalizedDate.setUTCHours(0, 0, 0, 0); // 🔥 KEY FIX
+        const createdEntries = await prisma.timeTable.createMany({
+            data: timeTableEntries,
+        });
 
-
-  const dayStart = new Date(date);
-  dayStart.setHours(0, 0, 0, 0);
-
-  const dayEnd = new Date(date);
-  dayEnd.setHours(23, 59, 59, 999);
-
-  try {
-    const results = await Promise.all(
-      records.map((record) =>
-        prisma.attendance.upsert({
-          where: {
-            userId_timeTableId_date: {
-              userId:session.user.id,
-              timeTableId: record.timeTableId,
-              date: dayStart,
-            },
-          },
-          update: {
-            present: record.present,
-            remarks: record.remarks ?? null,
-            markedAt: new Date(),
-          },
-          create: {
-            userId:session.user.id,
-            timeTableId: record.timeTableId,
-            present: record.present,
-            remarks: record.remarks ?? null,
-            date: dayStart,
-            markedAt: new Date(),
-          },
-        })
-      )
-    );
-    if (results.length === 0) {
-      return { status: 400, message: "No records to update or create." };
+        return { status: 200, message: "Timetable created successfully", data: createdEntries };
+    } catch (error) {
+        console.error("Error creating timetable:", error);
+        return { status: 500, message: "Internal server error" };
     }
-    return {
-      status: 200,
-      message: 'Attendance saved successfully.',
-    //   data: results,
-    };
-  } catch (err) {
-    console.error('createAttendanceRecords Error', err);
-    return {
-      status: 500,
-      message: 'Attendance creation failed.',
-    };
-  }
 }
-
-
 
 
 

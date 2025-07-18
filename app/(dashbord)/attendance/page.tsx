@@ -5,7 +5,7 @@ import { Calendar, X, CheckCircle, XCircle, User, Clock } from 'lucide-react';
 import { getAttendance, getTimeTable } from '@/action/profile.action';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { createAttendanceRecords } from '@/action/profile.action';
+import { createAttendanceRecords } from '@/action/attendance.action';
 
 interface SubjectAttendance {
   [subjectName: string]: 'present' | 'absent' | null;

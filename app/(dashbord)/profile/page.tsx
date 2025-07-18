@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'react-hot-toast';
 import { format } from 'date-fns';
-import { addTimeTable, getTimeTable } from '@/action/profile.action';
+import {   addTimeTable, getTimeTable } from '@/action/profile.action';
 
 type SubjectEntry = {
   subjectName: string;
@@ -175,7 +175,7 @@ const TimeTable = () =>{
 
       <div>
         {
-          data && data?.data.map((item: any, index: number) => (
+          data && data?.data && data?.data.map((item: any, index: number) => (
             <div key={index} className="  card p-4 mb-2 rounded-lg ">
               <h2 className="text-lg font-semibold">{item.subjectName}</h2>
               <p>Start Time: {item.startTime}</p>
