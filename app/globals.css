@@ -61,18 +61,18 @@ input , select, textarea {
   transition: all 0.3s ease-in-out;
 }
 .appear {
-  animation: appear 0.5s ease-in-out forwards;
+  animation: appear 0.4s ease-in-out forwards;
 }
 @keyframes appear {
   0% {
-    transform: translateX(50px);
-  }
-  50% {
-      transform: translateX(-20px);
-    }
+    transform: translateX(150px);
+    scale: 0;
+  } 
   100% {
-    transform: translateX(0);
-  }
+    scale: 1;
+    transform: translateX(-120px) translateY(100px);
+
+  } 
 }
 
 button:hover , a:hover{
@@ -111,41 +111,32 @@ button:hover , a:hover{
     scale: 1;
   }
 }
-
-
-
-
+ 
 .customclass {
   background-color: #0000000a !important;
   backdrop-filter: blur(50px) !important;
   border-color: #4e56f3a8 !important;
   border-radius: 20px !important;
   overflow: hidden !important ;
-  /* box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) !important ; */
 }
- 
-.react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range{
-  background-color: #ffffff00 !important;
-  color: #ffffff !important;
-}
-.react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover{
-  background-color: #6a71f3 !important;
-  color: #ffffff !important;
-}
-
 .react-datepicker__header {
-  background-color: #ffffff6f !important;
+  background-color: #ffffff2c !important;
   backdrop-filter: blur(20px) !important;
-  color: #4e56f3 !important;
+  color: #ffffff !important;
   border-color: #6a71f3 !important;
-  box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) !important ;
+}
+.react-datepicker__day {
+  color: #967b7b !important;
 }
 .react-datepicker__current-month{ 
   color: #6a71f3 !important;
 }
-
+.react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range{
+  background-color: #6573ef !important;
+  color: #ffffff !important;
+}
 .react-datepicker__day-name{
-  color: #6a71f3 !important;
+  color: #ffffff !important;
 } 
 
  @keyframes expand {

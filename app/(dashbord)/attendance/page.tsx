@@ -1,11 +1,10 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { Calendar, X, CheckCircle, XCircle, User, Clock } from 'lucide-react';
-import { getAttendance, getTimeTable } from '@/action/profile.action';
+import { getTimeTable } from '@/action/profile.action';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { createAttendanceRecords } from '@/action/attendance.action';
+import { createAttendanceRecords, getAttendance } from '@/action/attendance.action';
 
 interface SubjectAttendance {
   [subjectName: string]: 'present' | 'absent' | null;
@@ -28,6 +27,7 @@ const Attendance: React.FC = () => {
     queryKey: ['timetable'],
     queryFn: (async () => await getTimeTable()),
   });
+
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -92,7 +92,7 @@ const Attendance: React.FC = () => {
     setSelectedDate(null);
   };
 
-  const updateAttendance = (date:number, subjectName:string, status:'present' | 'absent' |null) => {
+  const updateAttendance = (date: number, subjectName: string, status: 'present' | 'absent' | null) => {
     const key = getAttendanceKey(); // e.g. "2025-07"
     setAttendanceData(prev => ({
       ...prev,
@@ -106,7 +106,7 @@ const Attendance: React.FC = () => {
     }));
   };
 
-  const handleFinalSubmit = async (e:React.FormEvent) => {
+  const handleFinalSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const key = getAttendanceKey();
 
@@ -128,23 +128,9 @@ const Attendance: React.FC = () => {
         return timetableEntry && {
           timeTableId: timetableEntry.id,
           present: status === 'present',
-          remarks: null
         };
       })
-      .filter((record): record is { timeTableId: string; present: boolean; remarks: null } => record !== null);
- 
-      //  const records = Object.entries(dailyAttendance)
-      // .map(([subjectName, status]) => {
-      //   const timetableEntry = data?.data?.find((item: any) => item.subjectName === subjectName);
-      //   return timetableEntry
-      //     ? {
-      //       timeTableId: timetableEntry.id,
-      //       present: status === 'present',
-      //     }
-      //     : null;
-      // })
-      // .filter(Boolean);
-
+      .filter((record): record is { timeTableId: string; present: boolean } => record !== null);
 
     if (records.length === 0) {
       return toast.error('No valid subjects marked.');
@@ -159,20 +145,22 @@ const Attendance: React.FC = () => {
 
     if (res.status === 200) {
       toast.success(res.message);
+      setIsModalOpen(false);
     } else {
       toast.error(res.message);
     }
   };
 
+  const startDate = new Date(selectedYear, selectedMonth, 1);
+  const endDate = new Date(selectedYear, selectedMonth + 1, 0);
 
   const { data: data2 } = useQuery({
-    queryKey: ['attendance'],
-    queryFn: (async () => await getAttendance()),
+    queryKey: ['attendance', startDate, endDate],
+    queryFn: (async () => await getAttendance(startDate, endDate)),
   });
 
   useEffect(() => {
     if (!data?.data || !data2?.data) return;
-
     const timetableMap = data.data.reduce((acc, curr) => {
       acc[curr.id] = curr.subjectName;
       return acc;
@@ -202,19 +190,12 @@ const Attendance: React.FC = () => {
     setAttendanceData(transformedData);
   }, [data, data2]);
 
-  const today = new Date();
-  const isToday = selectedDate === today.getDate() && selectedMonth === today.getMonth() && selectedYear === today.getFullYear();
-
   return (
     <div className="min-h-screen text-white p-6">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
+
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2">
-            <Calendar className="w-8 h-8 text-blue-400" />
-            Attendance Management
-          </h1>
-          <p className="text-gray-400">Track daily attendance records</p>
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2"><Calendar className="w-8 h-8 text-blue-400" />Attendance Management</h1>
         </div>
 
         {/* Controls */}
@@ -259,10 +240,7 @@ const Attendance: React.FC = () => {
                   <XCircle className="w-4 h-4 inline mr-1" />
                   Absent: {stats.absent}
                 </div>
-                <div className="text-gray-400">
-                  <Clock className="w-4 h-4 inline mr-1" />
-                  Unmarked: {stats.unmarked}
-                </div>
+
               </div>
             </div>
           </div>
@@ -308,7 +286,7 @@ const Attendance: React.FC = () => {
                   `}
                 >
                   <div className="text-center">
-                    <div className="text-lg font-semibold mb-2">{date}</div>
+                    <div className="text-lg font-semibold mb-2">{date} { }</div>
                     <div className="space-y-1">
                       {attendance === 'present' && (
                         <div className="flex items-center justify-center text-green-400 text-sm">
@@ -336,8 +314,8 @@ const Attendance: React.FC = () => {
         </div>
 
         {isModalOpen && selectedDate && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center z-50 p-4">
-            <div className="card z-10 rounded-lg p-6 w-[80%] max-md:w-[90%]">
+          <div className="fixed inset-0 bg-[#ffffff11] backdrop-blur-[40px] flex flex-col items-center justify-center z-50 p-4">
+            <div className="card z-10  overflow-scroll min-h-full rounded-3xl p-6 w-[93%] max-md:w-[90%]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-semibold flex items-center gap-2">
                   <User className="w-5 h-5" />
@@ -350,76 +328,85 @@ const Attendance: React.FC = () => {
                 </button>
               </div>
 
-              <div className='  flex flex-warp gap-3' >
-                { data && data?.data && data?.data.map((item: any, index: number) => {
-                  const subjectName = item.subjectName;
-                  const status =
-                    attendanceData[getAttendanceKey()]?.[selectedDate]?.[subjectName] ?? null;
-
-                  const handleClick = (status: 'present' | 'absent') => {
-                    updateAttendance(selectedDate, subjectName, status);
-                  };
-
-                  const handleClear = () => {
-                    updateAttendance(selectedDate, subjectName, null);
-                  };
-
-                  return (
-                    <div key={index} className="flex flex-col w-[40%] gap-2 card p-4 mb-2 border border-amber-300 rounded-lg">
-                      <div>
-                        <h2 className="text-lg font-semibold">{subjectName}</h2>
-                        <p>Start Time: {item.startTime}</p>
-                        <p>End Time: {item.endTime}</p>
-                      </div>
-
-                      {status ? (
-                        <div className="flex justify-between items-center gap-4">
-                          <p className={`font-semibold ${status === 'present' ? 'text-green-600' : 'text-red-600'}`}>
-                            ✅ Marked as {status.charAt(0).toUpperCase() + status.slice(1)}
-                          </p>
-                          <button
-                            onClick={handleClear}
-                            className="text-sm px-3 py-1 border border-gray-400 rounded-md hover:bg-gray-100"
-                          >
-                            Clear
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="space-y-2">
-                          <button
-                            onClick={() => handleClick('present')}
-                            className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg"
-                          >
-                            <CheckCircle className="w-5 h-5" />
-                            Mark as Present
-                          </button>
-
-                          <button
-                            onClick={() => handleClick('absent')}
-                            className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg"
-                          >
-                            <XCircle className="w-5 h-5" />
-                            Mark as Absent
-                          </button>
-                        </div>
-                      )}
-                    </div>
-
+              <div className=" justify-evenly  w-full  flex flex-wrap gap-1">
+                {(() => {
+                  const dayOfWeek = new Date(selectedYear, selectedMonth, selectedDate).getDay();
+                  const filteredSubjects = data?.data?.filter((item: any) =>
+                    item.dayOfWeek === dayOfWeek || item.dayOfWeek === null
                   );
-                })}
-                <button
-                  onClick={(e) => {
-                    handleFinalSubmit(e);
-                  }}
-                  // disabled={!isToday}
-                  className={` disabled:opacity-50 mt-6 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md `}
-                >
-                  Final Submit
-                </button>
+                  if (!filteredSubjects || filteredSubjects.length === 0) {
+                    return (
+                      <div className="text-center w-full text-gray-600 p-6">
+                        No subjects scheduled for this day.
+                      </div>
+                    );
+                  }
+                  return filteredSubjects.map((item: any, index: number) => {
+                    const subjectName = item.subjectName;
+                    const status = attendanceData[getAttendanceKey()]?.[selectedDate]?.[subjectName] ?? null;
+                    const handleClick = (status: 'present' | 'absent') => {
+                      updateAttendance(selectedDate, subjectName, status);
+                    };
+                    const handleClear = () => {
+                      updateAttendance(selectedDate, subjectName, null);
+                    };
+
+                    return (
+                      <div
+                        key={index}
+                        className="flex flex-col w-[230px] gap-2 card p-4 mb-2 border-2 border-[#ffffff1e] rounded-3xl"
+                      >
+                        <div>
+                          <h2 className="text-xl capitalize text-center font-semibold">{subjectName}</h2>
+                          <p>Start Time: {item.startTime}</p>
+                          <p>End Time: {item.endTime}</p>
+                        </div>
+
+                        {status ? (
+                          <div className="flex justify-between items-center gap-4">
+                            <p className={`font-semibold ${status === 'present' ? 'text-green-600' : 'text-red-600'}`}>
+                              ✅ Marked as {status.charAt(0).toUpperCase() + status.slice(1)}
+                            </p>
+                            <button
+                              onClick={handleClear}
+                              className="text-sm px-3 py-1 border border-gray-400 rounded-md hover:bg-gray-100"
+                            >
+                              Clear
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="space-y-2">
+                            <button
+                              onClick={() => handleClick('present')}
+                              className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg"
+                            >
+                              <CheckCircle className="w-5 h-5" />
+                              Mark as Present
+                            </button>
+                            <button
+                              onClick={() => handleClick('absent')}
+                              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg"
+                            >
+                              <XCircle className="w-5 h-5" />
+                              Mark as Absent
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  });
+                })()}
               </div>
+              <button
+                onClick={(e) => handleFinalSubmit(e)}
+                className={`disabled:opacity-50 w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
+              >
+                Final Submit
+              </button>
             </div>
           </div>
         )}
+
       </div>
     </div>
   );

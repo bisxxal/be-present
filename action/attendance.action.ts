@@ -3,21 +3,10 @@
 import { authOptions } from "@/lib/auth";
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth";
-
-  
-type AttendanceInput = {
-  userId: string;
-  date: Date | string;
-  records: {
-    timeTableId: string;
-    present: boolean;
-    remarks?: string;
-  }[];
-};
  
 export async function createAttendanceRecords(input: {
   date: Date;
-  records: { timeTableId: string; present: boolean; remarks?: string | null }[];
+  records: { timeTableId: string; present: boolean; }[];
 }) {
     const {  date, records } = input;
     if(records?.length === 0) {
@@ -28,17 +17,9 @@ export async function createAttendanceRecords(input: {
     if (!session) {
         return { status: 401, message: "Unauthorized" };
     }
-
-
-  const normalizedDate = new Date(date);
-  normalizedDate.setUTCHours(0, 0, 0, 0); // 🔥 KEY FIX
-
-
+    
   const dayStart = new Date(date);
   dayStart.setHours(0, 0, 0, 0);
-
-  const dayEnd = new Date(date);
-  dayEnd.setHours(23, 59, 59, 999);
 
   try {
     const results = await Promise.all(
@@ -53,16 +34,12 @@ export async function createAttendanceRecords(input: {
           },
           update: {
             present: record.present,
-            remarks: record.remarks ?? null,
-            markedAt: new Date(),
           },
           create: {
             userId:session.user.id,
             timeTableId: record.timeTableId,
             present: record.present,
-            remarks: record.remarks ?? null,
             date: dayStart,
-            markedAt: new Date(),
           },
         })
       )
@@ -73,14 +50,45 @@ export async function createAttendanceRecords(input: {
     return {
       status: 200,
       message: 'Attendance saved successfully.',
-    //   data: results,
     };
   } catch (err) {
-    console.error('createAttendanceRecords Error', err);
     return {
       status: 500,
       message: 'Attendance creation failed.',
     };
   }
 }
+  
+export const getAttendance = async (startDate: Date, endDate: Date) => {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return { status: 401, message: "Unauthorized" };
+        }
 
+        const attendance = await prisma.attendance.findMany({
+            where: {
+                userId: session.user.id,
+                date: {
+                    gte: new Date(startDate),
+                    lte: new Date(endDate),
+                },
+            },
+            include: {
+                timeTable: {
+                    select: {
+                        subjectName: true,
+                    },
+                },
+            },
+            orderBy: {
+                date: 'asc',
+            },
+        });
+
+        return { status: 200, data: attendance };
+    } catch (error) {
+
+        return { status: 500, message: "Internal server error" };
+    }
+};

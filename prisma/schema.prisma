@@ -25,8 +25,9 @@ model User {
 model TimeTable {
   id          String   @id @default(cuid())
   subjectName String
-  startTime   String // Consider storing as full DateTime if dates matter, else separate time fields
+  startTime   String // e.g., "08:00"
   endTime     String
+  dayOfWeek   Int? // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -49,12 +50,8 @@ model Attendance {
   timeTableId String
   timeTable   TimeTable @relation(fields: [timeTableId], references: [id], onDelete: Cascade)
 
-  markedAt DateTime? // When attendance was marked
-  remarks  String?
-
   @@index([userId, date])
   @@index([timeTableId, date])
-  // @@unique([userId, timeTableId, date])  // your new composite unique constraint
   @@unique([userId, timeTableId, date], name: "userId_timeTableId_date")
 
 }
