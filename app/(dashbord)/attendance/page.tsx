@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Calendar, X, CheckCircle, XCircle, User, Clock } from 'lucide-react';
 import { getTimeTable } from '@/action/profile.action';
 import { useQuery } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
 import { createAttendanceRecords, getAttendance } from '@/action/attendance.action';
+import { toastError, toastSuccess } from '@/lib/toast';
 
 interface SubjectAttendance {
   [subjectName: string]: 'present' | 'absent' | null;
@@ -113,13 +113,13 @@ const Attendance: React.FC = () => {
     const dateKey = Number(selectedDate); // ensure it's a number
 
     if (!dateKey || isNaN(dateKey)) {
-      return toast.error('Invalid or no date selected.');
+      return toastError('Invalid or no date selected.');
     }
 
     const dailyAttendance = attendanceData[key]?.[dateKey];
 
     if (!dailyAttendance || Object.keys(dailyAttendance).length === 0) {
-      return toast.error('No attendance marked for this date.');
+      return toastError('No attendance marked for this date.');
     }
 
     const records = Object.entries(dailyAttendance)
@@ -133,7 +133,7 @@ const Attendance: React.FC = () => {
       .filter((record): record is { timeTableId: string; present: boolean } => record !== null);
 
     if (records.length === 0) {
-      return toast.error('No valid subjects marked.');
+      return toastError('No valid subjects marked.');
     }
 
     const payload = {
@@ -144,10 +144,10 @@ const Attendance: React.FC = () => {
     const res = await createAttendanceRecords(payload);
 
     if (res.status === 200) {
-      toast.success(res.message);
+      toastSuccess(data?.message?  data?.message :'Attendance marked successfully.');
       setIsModalOpen(false);
     } else {
-      toast.error(res.message);
+      toastError(res.message);
     }
   };
 
@@ -191,15 +191,15 @@ const Attendance: React.FC = () => {
   }, [data, data2]);
 
   return (
-    <div className="min-h-screen text-white p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen   w-full text-white p-6 max-md:p-1">
+      <div className=" w-[80%] max-md:w-full mx-auto">
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2"><Calendar className="w-8 h-8 text-blue-400" />Attendance Management</h1>
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2"><Calendar className="w-8 h-8 text-blue-400" />Attendance</h1>
         </div>
 
         {/* Controls */}
-        <div className="card rounded-lg p-6 mb-6">
+        <div className="card rounded-lg   p-6 mb-6">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-4">
               <div>
@@ -247,12 +247,12 @@ const Attendance: React.FC = () => {
         </div>
 
         {/* Calendar Grid */}
-        <div className="card rounded-lg p-6">
+        <div className="card rounded-lg max-md:px-1 p-6">
           <h2 className="text-xl font-semibold mb-4">
             {months[selectedMonth]} {selectedYear}
           </h2>
 
-          <div className="grid grid-cols-7 gap-3">
+          <div className="grid grid-cols-7 gap-3 max-md:gap-1 ">
             {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
               <div key={day} className="text-center font-semibold text-gray-400 p-2">
                 {day}
@@ -278,7 +278,7 @@ const Attendance: React.FC = () => {
                     openModal(date);
                   }}
                   className={`
-                    relative p-4 rounded-lg cursor-pointer transition-all duration-200 hover:scale-105 border
+                    relative p-4 rounded-lg max-md:rounded cursor-pointer transition-all duration-200 hover:scale-105 border
                     ${isToday ? 'border-[#ffffff74] buttonbg !rounded-lg ' : 'border-[#ffffff17]'}
                     ${attendance === 'present' ? 'bg-green-900 border-green-500' :
                       attendance === 'absent' ? 'bg-red-900 border-red-500' :
@@ -291,13 +291,13 @@ const Attendance: React.FC = () => {
                       {attendance === 'present' && (
                         <div className="flex items-center justify-center text-green-400 text-sm">
                           <CheckCircle className="w-4 h-4 mr-1" />
-                          Present
+                        <span className=' max-md:hidden'>Present</span>
                         </div>
                       )}
                       {attendance === 'absent' && (
                         <div className="flex items-center justify-center text-red-400 text-sm">
                           <XCircle className="w-4 h-4 mr-1" />
-                          Absent
+                           <span className=' max-md:hidden'>Absent</span>
                         </div>
                       )}
                       {attendance === null && (
@@ -315,9 +315,9 @@ const Attendance: React.FC = () => {
 
         {isModalOpen && selectedDate && (
           <div className="fixed inset-0 bg-[#ffffff11] backdrop-blur-[40px] flex flex-col items-center justify-center z-50 p-4">
-            <div className="card z-10  overflow-scroll min-h-full rounded-3xl p-6 w-[93%] max-md:w-[90%]">
+            <div className="card z-10  overflow-scroll min-h-full rounded-3xl p-6 w-[93%] max-md:w-[96%]">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold flex items-center gap-2">
+                <h3 className="text-xl max-md:text-lg font-semibold flex items-center gap-2">
                   <User className="w-5 h-5" />
                   Attendance for {months[selectedMonth]} {selectedDate}, {selectedYear}
                 </h3>
@@ -328,7 +328,7 @@ const Attendance: React.FC = () => {
                 </button>
               </div>
 
-              <div className=" justify-evenly  w-full  flex flex-wrap gap-1">
+              <div className=" justify-evenly w-full flex flex-wrap gap-1">
                 {(() => {
                   const dayOfWeek = new Date(selectedYear, selectedMonth, selectedDate).getDay();
                   const filteredSubjects = data?.data?.filter((item: any) =>
@@ -354,17 +354,17 @@ const Attendance: React.FC = () => {
                     return (
                       <div
                         key={index}
-                        className="flex flex-col w-[230px] gap-2 card p-4 mb-2 border-2 border-[#ffffff1e] rounded-3xl"
+                        className="flex flex-col w-[230px] max-md:w-[160px] gap-2 p-4 max-md:p-2 mb-2 border-2 border-[#ffffff1e] rounded-3xl"
                       >
                         <div>
-                          <h2 className="text-xl capitalize text-center font-semibold">{subjectName}</h2>
-                          <p>Start Time: {item.startTime}</p>
-                          <p>End Time: {item.endTime}</p>
+                          <h2 className="text-xl capitalize text-center max-md:text-lg font-semibold">{subjectName}</h2>
+                          <p className=' max-md:text-xs max-md:text-center'>Start Time: {item.startTime}</p>
+                          <p className=' max-md:text-xs max-md:text-center'>End Time: {item.endTime}</p>
                         </div>
 
                         {status ? (
-                          <div className="flex justify-between items-center gap-4">
-                            <p className={`font-semibold ${status === 'present' ? 'text-green-600' : 'text-red-600'}`}>
+                          <div className="flex justify-between max-md:flex-col items-center gap-4 max-md:gap-1">
+                            <p className={`font-semibold max-md:text-xs ${status === 'present' ? 'text-green-600' : 'text-red-600'}`}>
                               ✅ Marked as {status.charAt(0).toUpperCase() + status.slice(1)}
                             </p>
                             <button
@@ -378,17 +378,17 @@ const Attendance: React.FC = () => {
                           <div className="space-y-2">
                             <button
                               onClick={() => handleClick('present')}
-                              className="w-full flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg"
+                              className="w-full flex items-center justify-center gap-2  buttongreen text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
                               <CheckCircle className="w-5 h-5" />
-                              Mark as Present
+                                Present
                             </button>
                             <button
                               onClick={() => handleClick('absent')}
-                              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg"
+                              className="w-full flex items-center justify-center gap-2 buttonred  text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
                               <XCircle className="w-5 h-5" />
-                              Mark as Absent
+                               Absent
                             </button>
                           </div>
                         )}

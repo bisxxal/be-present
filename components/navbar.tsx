@@ -11,9 +11,8 @@ const Navbar = () => {
             {<Link href={`${data?.user ? "/dashbord" : '/'}`} className='text-2xl center gap-2 max-md:text-lg whitespace-nowrap textbase font-bold'>Be Present</Link>}
             {
                 status !== 'loading' && data ? <div className='center gap-2 max-md:gap-1'>
-                    <div className='max-md:w-[80px] max-md:h-full text-base max-md:text-[10px]'>Welcome , 👋🏻 {data.user.name}</div>
                     <img loading='lazy' src={data.user.image!} alt="User Avatar" width={40} height={40} className=' max-md:w-8  rounded-full' />
-                    {<button onClick={() => signOut()} className=" bg-gradient-to-br from-red-400/90 to-red-500/80  rounded-full  px-5 py-2 max-md:px-3 max-md:text-sm max-md:py-1.5">Logout</button>}
+            {/* {<button onClick={() => signOut()} className=" bg-gradient-to-br from-rose-400  to-pink-700 rounded-full  px-5 py-2 max-md:px-3 max-md:text-sm max-md:py-1.5">Logout</button>} */}
                     {<div className='relative group '>
                         <label className=' cursor-pointer' htmlFor='is'>
                             <AlignRight className='' size={22} />

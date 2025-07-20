@@ -14,27 +14,27 @@ const DashBoardMainaPage = () => {
   const [presentData, setPresentData] = useState<{ type: string; value: number }[]>([])
   const [totalPersentages, setTotalPercentages] = useState<{ type: string; percentage: string }[]>([])
 
-     const today = new Date();
-    const defaultStart = startOfMonth(today);
-    const defaultEnd = endOfMonth(today);
-      
-      const { data } = useQuery({
-        queryKey: ['attendance' , defaultStart, defaultEnd],
-        queryFn: (async () => await getAttendance(defaultStart, defaultEnd)),
-      });
-    
+  const today = new Date();
+  const defaultStart = startOfMonth(today);
+  const defaultEnd = endOfMonth(today);
+
+  const { data } = useQuery({
+    queryKey: ['attendance', defaultStart, defaultEnd],
+    queryFn: (async () => await getAttendance(defaultStart, defaultEnd)),
+  });
+
   useEffect(() => {
     if (!data?.data) return;
     const attendanceList: AttendanceDataProps[] = data.data;
     const presentCount = { present: 0, absent: 0 };
     attendanceList.forEach(entry => {
-      if (entry.present) { 
+      if (entry.present) {
         presentCount.present += 1;
-      } else { 
+      } else {
         presentCount.absent += 1;
-      } 
+      }
     });
- 
+
     const total = presentCount.present + presentCount.absent;
     const percentages = [
       { type: 'present', percentage: ((presentCount.present / total) * 100).toFixed(2) + '%', },
@@ -49,8 +49,10 @@ const DashBoardMainaPage = () => {
 
   return (
     <div className=' w-full p-20 max-md:p-2'>
-      <h1 className='text-3xl text-center mb-6 font-bold'>Welcome  {session?.user?.name}</h1>
-      <TimeTable />
+      <div className='text-3xl text-center mb-6 font-bold'>Welcome , <span className=' bg-clip-text text-transparent bg-gradient-to-br from-pink-400 to-rose-500'>👋🏻 {session?.user?.name} !!</span> 
+        <p className=' bg-clip-text  text-transparent bg-gradient-to-br from-indigo-500 to-pink-500'>{new Date().getDay() === 0 ? 'Happy sunday 🎉' :''}</p>
+      </div>
+      <TimeTable type='view' />
 
       <div className=' w-full mt-10 max-md:flex-col flex justify-evenly px-10 max-md:px-2 h-[400px] border-2 border-[#ffffff21] rounded-3xl items-center'>
         <div className=' w-[50px] max-md:w-full'>

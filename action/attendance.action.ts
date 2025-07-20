@@ -92,3 +92,25 @@ export const getAttendance = async (startDate: Date, endDate: Date) => {
         return { status: 500, message: "Internal server error" };
     }
 };
+
+export const deleteAttendance = async (id: string) => {
+    try {
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return { status: 401, message: "Unauthorized" };
+        }
+
+        const attendance = await prisma.timeTable.delete({
+            where: {
+                id,
+                userId: session.user.id,
+            },
+        });
+        if (!attendance) {
+            return { status: 404, message: "Attendance not found" };
+        }
+        return { status: 200, message: "Attendance deleted successfully", data: attendance };
+    } catch (error) {
+        return { status: 500, message: "Internal server error" };
+    }
+}

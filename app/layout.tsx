@@ -22,7 +22,8 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}   >
         <QuaryClient >
-          <Toaster />
+          <Toaster position="top-right"
+  reverseOrder={false}/>
           <div className=" relative w-full min-h-screen ">
             <Navbar />
             {children}

@@ -3,11 +3,12 @@ import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'react-hot-toast';
 import { format } from 'date-fns';
 import { addTimeTable } from '@/action/profile.action';
 import { convertTo24Hour } from '@/lib/util';
 import TimeTable from '@/components/timeTable';
+import { Loader } from 'lucide-react';
+import { toastError, toastSuccess } from '@/lib/toast';
 
 type SubjectEntry = {
   subjectName: string;
@@ -59,10 +60,11 @@ const TimeTablePage = () => {
     },
     onSuccess: (data) => {
       if (data.status === 200) {
-        toast.success(data.message);
+         toastSuccess(data.message);
+        // setSubjects([{ subjectName: '', startTime: '', endTime: '', day: '' }]); // Reset form
         client.invalidateQueries({ queryKey: ['timetable'] });
       } else {
-        toast.error(data.message);
+        toastError(data.message);
       }
     },
   });
@@ -72,7 +74,7 @@ const TimeTablePage = () => {
 
     for (const subject of subjects) {
       if (!subject.subjectName || !subject.startTime || !subject.endTime) {
-        toast.error('All fields are required in each row.');
+        toastError('All fields are required in each row.');
         return;
       }
     }
@@ -81,23 +83,23 @@ const TimeTablePage = () => {
   };
 
   return (
-    <div className="w-full mx-auto">
+    <div className="w-full pb-10 mx-auto overflow-hidden">
       <h1 className="text-2xl text-center my-4 font-bold">Add Weekly Timetable</h1>
 
-      <form onSubmit={handleSubmit} className=" max-md:w-[90%] w-[70%] mx-auto space-y-4">
+      <form onSubmit={handleSubmit} className=" max-md:w-[98%] w-[70%] mx-auto space-y-4">
         {subjects.map((entry, index) => (
           <div
             key={index}
-            className="flex flex-col md:flex-row gap-4 items-center border border-gray-300/30 p-4 rounded-lg"
+            className="flex lg:w-fit mx-auto max-md:flex-col max-md:gap-1 max-md:px-2 gap-4 items-center border border-gray-300/30 p-4 rounded-lg"
           >
             <input
               type="text"
               placeholder="Subject Name"
               value={entry.subjectName}
               onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
-              className="flex-1 px-3 py-2 border rounded-lg"
+              className=" px-3 py-2 border max-md:w-full w-[400px] rounded-lg"
             />
-            <select onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+            <select className=' max-md:w-full' onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
               <option value="">Select Day</option>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
@@ -115,7 +117,7 @@ const TimeTablePage = () => {
               timeIntervals={15}
               dateFormat="h:mm aa"
               placeholderText="Start Time"
-              className="px-3 py-2 border rounded-lg"
+              className="px-3 py-2 border max-md:w-full rounded-lg"
             />
 
             <DatePicker
@@ -126,7 +128,7 @@ const TimeTablePage = () => {
               timeIntervals={15}
               dateFormat="h:mm aa"
               placeholderText="End Time"
-              className="px-3 py-2 border rounded-lg"
+              className="px-3 py-2 border max-md:w-full rounded-lg"
             />
 
             {subjects.length > 1 && (
@@ -144,20 +146,20 @@ const TimeTablePage = () => {
         <button
           type="button"
           onClick={handleAddRow}
-          className="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-md"
+          className="bg-gradient-to-br from-indigo-500  to-blue-500 text-white px-4 py-2 rounded-lg"
         >
           ➕ Add Subject
         </button>
 
         <button
           type="submit"
-          className="block w-full mt-4  buttonbg text-white px-4 py-2 rounded-md  "
+          className="block w-full mt-4 center  buttonbg text-white px-4 py-2 rounded-md  "
         >
-          {createTimeTableMutation.isPending ? 'Submitting...' : 'Submit Timetable'}
+          {createTimeTableMutation.isPending ? <Loader className=' animate-spin' /> : 'Submit Timetable'}
         </button>
       </form>
 
-      <TimeTable />
+      <TimeTable type="edit" />
     </div>
   );
 };

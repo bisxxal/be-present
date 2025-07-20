@@ -25,9 +25,7 @@ body {
 .accent{
   background-color:#89dceb;
 }
-.card{
-  /* @apply  bg-gradient-to-tl  from-[#B8B2E1] font-medium to-[#e4dfff];
-  box-shadow: inset -1px -1px 17px 0px #7676761c, 0 8px 10px -6px rgb(0 0 0 / 0.1) ; */
+.card{ 
   background-color: #1A1A2E;
 }
 @keyframes pulseShimmer {
@@ -42,17 +40,24 @@ body {
 .buttonbg{
   @apply text-white px-4 py-2 transition-all duration-500 rounded-full bg-gradient-to-br  from-[#9f5df0] font-medium to-[#6E56CF];
   box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
-  /* transition: all 1s ease-in-out; */
+}
+.buttongreen{
+  @apply text-white px-4 py-2 transition-all duration-500 rounded-full bg-gradient-to-br  from-[#07f733] font-medium to-[#02970e];
+  box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
+}
+.buttonred{
+  @apply text-white px-4 py-2 transition-all duration-500 rounded-full font-medium bg-gradient-to-br  from-pink-600  to-red-500;
+  box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
 }
 .buttonbg:hover{
   @apply   text-white px-4 py-2 rounded-full bg-gradient-to-br  from-[#6E56CF] font-medium to-[#9f5df0];
   box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
 }
 
-.buttonred{
+/* .buttonred{
   @apply bg-gradient-to-br from-[#ea747e] font-medium to-[#ff0000];
   box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
-}
+} */
 .bordercolor{
   @apply border border-[#b5b5c2];
 }
@@ -151,3 +156,14 @@ button:hover , a:hover{
   .animate-expand {
     animation: expand 0.8s ease-out forwards;
   }
+
+/* .react-datepicker__time-list-item,.react-datepicker__time-list,.react-datepicker__time-box,.react-datepicker__time {  
+  background-color: #ffffff1c !important;
+  backdrop-filter: blur(20px) !important;
+  border-color: #6a71f3 !important;
+} */
+.react-datepicker__header, .react-datepicker__header--time ,.react-datepicker__header--time--only ,.react-datepicker__time-list-item  {  
+ background-color: #0000000a !important;
+  backdrop-filter: blur(50px) !important;
+  border-color: #4e56f3a8 !important;
+}
