@@ -26,7 +26,8 @@ body {
   background-color:#89dceb;
 }
 .card{ 
-  background-color: #1A1A2E;
+  /* background-color: #17172a; */
+ @apply border border-[#392D4E] bg-[#180D26];
 }
 @keyframes pulseShimmer {
   from {
@@ -53,11 +54,7 @@ body {
   @apply   text-white px-4 py-2 rounded-full bg-gradient-to-br  from-[#6E56CF] font-medium to-[#9f5df0];
   box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
 }
-
-/* .buttonred{
-  @apply bg-gradient-to-br from-[#ea747e] font-medium to-[#ff0000];
-  box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
-} */
+ 
 .bordercolor{
   @apply border border-[#b5b5c2];
 }
@@ -157,13 +154,14 @@ button:hover , a:hover{
     animation: expand 0.8s ease-out forwards;
   }
 
-/* .react-datepicker__time-list-item,.react-datepicker__time-list,.react-datepicker__time-box,.react-datepicker__time {  
-  background-color: #ffffff1c !important;
-  backdrop-filter: blur(20px) !important;
-  border-color: #6a71f3 !important;
-} */
+ 
 .react-datepicker__header, .react-datepicker__header--time ,.react-datepicker__header--time--only ,.react-datepicker__time-list-item  {  
  background-color: #0000000a !important;
   backdrop-filter: blur(50px) !important;
   border-color: #4e56f3a8 !important;
 }
+
+.recharts-wrapper:focus-visible{
+  outline: none !important;
+}
+ 

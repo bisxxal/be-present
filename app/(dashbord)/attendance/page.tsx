@@ -1,15 +1,14 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Calendar, X, CheckCircle, XCircle, User, Clock } from 'lucide-react';
-import { getTimeTable } from '@/action/profile.action';
-import { useQuery } from '@tanstack/react-query';
-import { createAttendanceRecords, getAttendance } from '@/action/attendance.action';
+import { createAttendanceRecords } from '@/action/attendance.action';
 import { toastError, toastSuccess } from '@/lib/toast';
+import { useGetAttendance, useGetTimeTable } from '@/hooks/useGetAttendance';
+import { months, years } from '@/lib/util';
 
 interface SubjectAttendance {
   [subjectName: string]: 'present' | 'absent' | null;
 }
-
 interface AttendanceData {
   [key: string]: {
     [day: number]: SubjectAttendance;
@@ -22,19 +21,12 @@ const Attendance: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [attendanceData, setAttendanceData] = useState<AttendanceData>({});
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
+  const startDate = new Date(selectedYear, selectedMonth, 1);
+  const endDate = new Date(selectedYear, selectedMonth + 1, 0);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['timetable'],
-    queryFn: (async () => await getTimeTable()),
-  });
-
-
-  const months = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
-
-  const years = [2025, 2026, 2027];
+  const { data, isLoading } =  useGetTimeTable() 
+  const {data: data2 } =  useGetAttendance( startDate, endDate);
+   
 
   // Get days in selected month
   const getDaysInMonth = (month: number, year: number): number => {
@@ -83,10 +75,7 @@ const Attendance: React.FC = () => {
   const openModal = (date: number) => {
     setSelectedDate(date);
     setIsModalOpen(true);
-  };
-
-
-
+  }; 
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedDate(null);
@@ -106,8 +95,7 @@ const Attendance: React.FC = () => {
     }));
   };
 
-  const handleFinalSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleFinalSubmit = async () => {
     const key = getAttendanceKey();
 
     const dateKey = Number(selectedDate); // ensure it's a number
@@ -151,14 +139,6 @@ const Attendance: React.FC = () => {
     }
   };
 
-  const startDate = new Date(selectedYear, selectedMonth, 1);
-  const endDate = new Date(selectedYear, selectedMonth + 1, 0);
-
-  const { data: data2 } = useQuery({
-    queryKey: ['attendance', startDate, endDate],
-    queryFn: (async () => await getAttendance(startDate, endDate)),
-  });
-
   useEffect(() => {
     if (!data?.data || !data2?.data) return;
     const timetableMap = data.data.reduce((acc, curr) => {
@@ -190,6 +170,11 @@ const Attendance: React.FC = () => {
     setAttendanceData(transformedData);
   }, [data, data2]);
 
+  const today = useMemo(() => new Date(), []);
+  const isToday =
+    selectedDate === today.getDate() &&
+    selectedMonth === today.getMonth() &&
+    selectedYear === today.getFullYear();
   return (
     <div className="min-h-screen   w-full text-white p-6 max-md:p-1">
       <div className=" w-[80%] max-md:w-full mx-auto">
@@ -199,7 +184,7 @@ const Attendance: React.FC = () => {
         </div>
 
         {/* Controls */}
-        <div className="card rounded-lg   p-6 mb-6">
+        <div className="card  rounded-lg p-6 mb-6">
           <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
             <div className="flex flex-col sm:flex-row gap-4">
               <div>
@@ -253,7 +238,7 @@ const Attendance: React.FC = () => {
           </h2>
 
           <div className="grid grid-cols-7 gap-3 max-md:gap-1 ">
-            {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+            { [ 'Sun' ,'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ].map((day) => (
               <div key={day} className="text-center font-semibold text-gray-400 p-2">
                 {day}
               </div>
@@ -268,9 +253,9 @@ const Attendance: React.FC = () => {
             {Array.from({ length: getDaysInMonth(selectedMonth, selectedYear) }).map((_, index) => {
               const date = index + 1;
               const attendance = getAttendanceForDate(date);
-              const isToday = new Date().getDate() === date &&
-                new Date().getMonth() === selectedMonth &&
-                new Date().getFullYear() === selectedYear;
+              const isToday = today.getDate() === date &&
+                today.getMonth() === selectedMonth &&
+                today.getFullYear() === selectedYear;
               return (
                 <div
                   key={date}
@@ -315,7 +300,7 @@ const Attendance: React.FC = () => {
 
         {isModalOpen && selectedDate && (
           <div className="fixed inset-0 bg-[#ffffff11] backdrop-blur-[40px] flex flex-col items-center justify-center z-50 p-4">
-            <div className="card z-10  overflow-scroll min-h-full rounded-3xl p-6 w-[93%] max-md:w-[96%]">
+            <div className="bg-[#0f0f1a83] z-10  overflow-scroll min-h-full rounded-3xl p-6 w-[93%] max-md:w-[96%]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl max-md:text-lg font-semibold flex items-center gap-2">
                   <User className="w-5 h-5" />
@@ -336,9 +321,7 @@ const Attendance: React.FC = () => {
                   );
                   if (!filteredSubjects || filteredSubjects.length === 0) {
                     return (
-                      <div className="text-center w-full text-gray-600 p-6">
-                        No subjects scheduled for this day.
-                      </div>
+                      <div className="text-center w-full text-gray-600 p-6">No subjects scheduled for this day.</div>
                     );
                   }
                   return filteredSubjects.map((item: any, index: number) => {
@@ -350,42 +333,39 @@ const Attendance: React.FC = () => {
                     const handleClear = () => {
                       updateAttendance(selectedDate, subjectName, null);
                     };
-
+                    const bgToClass =status === 'present'? 'to-[#00800044]': status === 'absent'? 'to-[#ff000051]': 'to-[#ffffff1f]';
                     return (
                       <div
                         key={index}
-                        className="flex flex-col w-[230px] max-md:w-[160px] gap-2 p-4 max-md:p-2 mb-2 border-2 border-[#ffffff1e] rounded-3xl"
+                        className={` flex bg-gradient-to-tl ${bgToClass} from-[#ffffff00] flex-col w-[230px] max-md:w-[160px] gap-2 p-4 max-md:p-2 mb-2 border-2 border-[#ffffff1e] rounded-3xl `}
                       >
                         <div>
-                          <h2 className="text-xl capitalize text-center max-md:text-lg font-semibold">{subjectName}</h2>
+                          <h2 className="text-xl capitalize text-center max-md:text-lg my-1 font-semibold">{subjectName}</h2>
                           <p className=' max-md:text-xs max-md:text-center'>Start Time: {item.startTime}</p>
                           <p className=' max-md:text-xs max-md:text-center'>End Time: {item.endTime}</p>
                         </div>
 
                         {status ? (
-                          <div className="flex justify-between max-md:flex-col items-center gap-4 max-md:gap-1">
-                            <p className={`font-semibold max-md:text-xs ${status === 'present' ? 'text-green-600' : 'text-red-600'}`}>
-                              ✅ Marked as {status.charAt(0).toUpperCase() + status.slice(1)}
+                          <div className="flex justify-between flex-col items-center gap-4 max-md:gap-1">
+                            <p className={`font-semibold disabled:opacity-50 p-2 w-full center rounded-xl border max-md:text-xs ${status === 'present' ? 'bg-[#00800044] border-green-500   text-green-600' : ' bg-[#ff000051] border-[red] text-red-600'}`}>
+                              ✅ {status.charAt(0).toUpperCase() + status.slice(1)}
                             </p>
-                            <button
-                              onClick={handleClear}
-                              className="text-sm px-3 py-1 border border-gray-400 rounded-md hover:bg-gray-100"
-                            >
-                              Clear
-                            </button>
+                            <button onClick={handleClear}  disabled={!isToday} className="text-sm px-3 py-2  border border-gray-400 w-full rounded-md ">Clear</button>
                           </div>
                         ) : (
                           <div className="space-y-2">
                             <button
+                             disabled={!isToday}
                               onClick={() => handleClick('present')}
-                              className="w-full flex items-center justify-center gap-2  buttongreen text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
+                              className="w-full flex disabled:opacity-50 items-center justify-center gap-2  buttongreen text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
                               <CheckCircle className="w-5 h-5" />
                                 Present
                             </button>
                             <button
+                             disabled={!isToday}
                               onClick={() => handleClick('absent')}
-                              className="w-full flex items-center justify-center gap-2 buttonred  text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
+                              className="w-full  disabled:opacity-50 flex items-center justify-center gap-2 buttonred  text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
                               <XCircle className="w-5 h-5" />
                                Absent
@@ -398,7 +378,9 @@ const Attendance: React.FC = () => {
                 })()}
               </div>
               <button
-                onClick={(e) => handleFinalSubmit(e)}
+              disabled={Object.keys(attendanceData[getAttendanceKey()]?.[selectedDate] || {}).length === 0 ||  !isToday  }
+              hidden={!isToday}
+                onClick={() => handleFinalSubmit()}
                 className={`disabled:opacity-50 w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
               >
                 Final Submit

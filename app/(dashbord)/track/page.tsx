@@ -3,7 +3,7 @@ import React, { Suspense } from 'react'
 
 const TrakPage = () => {
   return (
-   <Suspense fallback={<div>Loading...</div>}>
+   <Suspense fallback={<div> </div>}>
       <TrackComponent />
     </Suspense>
   )

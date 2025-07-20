@@ -4,25 +4,33 @@ import React, { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { GraduationCap, Calendar, Users, Award,Shield,Zap,BarChart3,Eye,LogIn,UserPlus,Menu,X, Smartphone, Clock, TrendingUp} from 'lucide-react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const AttendanceTrackerLanding = () => {
+  const {data ,status} = useSession();
+
+  const router = useRouter()
+  if(data?.user && status === 'authenticated') {
+    router.push('/dashboard');
+  }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [currentDemo, setCurrentDemo] = useState(0);
-  
-  // Demo data for showcasing features
   const demoAttendanceData = [
-    { name: 'Present', value: 89, color: '#06D6A0' },
-    { name: 'Absent', value: 7, color: '#EF4444' },
-    { name: 'Late', value: 4, color: '#FFD60A' }
+    { name: 'Present', value: 89, color: '#a48fff' },
+    { name: 'Absent', value: 30, color: '#EF4444' },
   ];
 
   const demoTrendData = [
-    { month: 'Jan', rate: 85 },
+    { month: 'Jan', rate: 25 },
     { month: 'Feb', rate: 88 },
-    { month: 'Mar', rate: 92 },
-    { month: 'Apr', rate: 89 },
+    { month: 'Mar', rate: 32 },
+    { month: 'Apr', rate: 39 },
     { month: 'May', rate: 94 },
-    { month: 'Jun', rate: 91 }
+    { month: 'Jun', rate: 41 },
+    { month: 'Jul', rate: 51 },
+    { month: 'Aug', rate: 91 },
+    { month: 'Nov', rate: 11 },
+    { month: 'Dec', rate: 61 },
   ];
 
   const demoTimeTable = [
@@ -78,34 +86,10 @@ const AttendanceTrackerLanding = () => {
     { number: '99.9%', label: 'Uptime' },
     { number: '24/7', label: 'Support' }
   ];
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentDemo((prev) => (prev + 1) % 3);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const CustomTooltip = ({ active, payload }) => {
-    if (active && payload && payload.length) {
-      return (
-        <div className="bg-gray-800 border border-gray-600 rounded-lg p-3 shadow-lg">
-          <p className="text-white font-medium">{`${payload[0].payload.name}: ${payload[0].value}%`}</p>
-        </div>
-      );
-    }
-    return null;
-  };
-
+ 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0F0F1A' }}>
-
        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-         {/* Floating Orbs */}
-         {/* <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full blur-3xl animate-pulse"></div>
-         <div className="absolute top-3/4 right-1/4 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-cyan-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
-         <div className="absolute bottom-1/4 left-1/3 w-64 h-64 bg-gradient-to-r from-green-500/20 to-emerald-400/20 rounded-full blur-3xl animate-pulse delay-500"></div>       */}
-         {/* Moving Particles */}
          <div className="absolute inset-0">
            {[...Array(20)].map((_, i) => (
             <div
@@ -157,12 +141,10 @@ const AttendanceTrackerLanding = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <div className="md:hidden rounded-3xl overflow-hidden absolute backdrop-blur-2xl w-1/2 right-0  mt-4 pb-4 border p-2 px-4 border-gray-800 pt-4">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col center space-y-4">
               <a href="#features" className="text-gray-300 hover:text-white">Features</a>
               <a href="#demo" className="text-gray-300 hover:text-white">Demo</a>
-              <div className="flex flex-col space-y-2 pt-4 border-t border-gray-800">
-                <Link href={'/sign-in'} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg">Sign In</Link>
-              </div>
+                <Link href={'/sign-in'} className="px-4 py-2 w-full center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg">Sign In</Link>
             </div>
           </div>
         )}
@@ -227,7 +209,7 @@ const AttendanceTrackerLanding = () => {
                     paddingAngle={5}
                     dataKey="value"
                     animationBegin={0}
-                    animationDuration={2000}
+                    animationDuration={3000}
                   >
                     {demoAttendanceData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -249,11 +231,11 @@ const AttendanceTrackerLanding = () => {
             {/* Attendance Trend Area Chart */}
             <div className=" group bg-gradient-to-br from-slate-800/50 via-blue-900/20 to-cyan-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-blue-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20 relative overflow-hidden">
               <h3 className="text-white font-semibold text-xl mb-6 center text-center  gap-2">Attendance Trends <BarChart3 className="w-5 h-5 mr-2 text-blue-400" /></h3>
-              <ResponsiveContainer width="100%" height={250}>
+              <ResponsiveContainer width="100%" height={350}>
                 <AreaChart data={demoTrendData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <CartesianGrid strokeDasharray="1 1" stroke="#374151" />
                   <XAxis dataKey="month" stroke="#9CA3AF" />
-                  <YAxis stroke="#9CA3AF" />
+                  {/* <YAxis stroke="#9CA3AF" /> */}
                   <Tooltip 
                     contentStyle={{ 
                       backgroundColor: '#1F2937', 
@@ -315,7 +297,7 @@ const AttendanceTrackerLanding = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="group bg-gradient-to-br from-slate-800/50 to-slate-900/50 backdrop-blur-xl p-8 rounded-3xl border border-slate-700/50 hover:border-purple-500/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden">
+              <div key={index} className="group bg-gradient-to-br from-indigo-800/20 to-slate-900/10 backdrop-blur-xl p-8 rounded-3xl border border-slate-700/50 hover:border-purple-500/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden">
                 <div className={`w-16 h-16 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
                   <feature.icon className="w-8 h-8 text-white" />
                 </div>

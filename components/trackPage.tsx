@@ -1,30 +1,29 @@
-//@ts-nocheck
-'use client'
 
-import { getAttendance } from '@/action/attendance.action';
+'use client'
 import DateButton from '@/components/ui/dateButtons';
 import { AttendanceDataProps } from '@/lib/constant';
 import { COLORS, COLORS2 } from '@/lib/util';
-import { useQuery } from '@tanstack/react-query';
-import React, { Suspense, useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { endOfMonth, isValid, parseISO, startOfMonth } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
+import { useGetAttendance } from '@/hooks/useGetAttendance';
 
- 
+// Dummy component to override active shape
+const NoopActiveShape = (props) => {
+  // Just render the same arc as normal slice without any "active" styling
+  return (
+    <path d={props.sectorPath} fill={props.fill} />
+  );
+};
+
 const TrackComponent = () => {
-
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const defaultStart = startOfMonth(today);
   const defaultEnd = endOfMonth(today);
   const searchParams = useSearchParams();
-
-  // let searchParams = new URLSearchParams(document.location.search); 
- 
   const startParam = searchParams.get('startDate');
   const endParam = searchParams.get('endDate');
-
-
   const startDate = startParam && isValid(parseISO(startParam)) ? parseISO(startParam) : defaultStart;
   const endDate = endParam && isValid(parseISO(endParam)) ? parseISO(endParam) : defaultEnd;
 
@@ -33,10 +32,7 @@ const TrackComponent = () => {
   const [subjCount, setSubjCount] = useState<{ name: string; present: number; absent: number }[]>([])
   const [dateData, setDateData] = useState<{ date: string; present: number; absent: number }[]>([]);
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['attendance', startDate, endDate],
-    queryFn: (async () => await getAttendance(startDate, endDate)),
-  });
+  const {data , isLoading} =  useGetAttendance( startDate, endDate);
 
   useEffect(() => {
     if (!data?.data) return;
@@ -98,17 +94,17 @@ const TrackComponent = () => {
 
   return (
     <div className=' w-full min-h-screen '>
-      <Suspense>
         <DateButton startDate={startDate} endDate={endDate} />
-      </Suspense>
-      <div className=' w-[100%] mx-auto my-10 p-5 card  center flex-col gap-4  rounded-lg shadow-lg '>
+      <div className=' w-[100%] mx-auto my-10 p-5   center flex-col gap-4  rounded-lg shadow-lg '>
 
-        <div className=' w-full max-md:flex-col flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
-          <div className=' w-[50px] max-md:w-full'>
-            {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 ? <PieChart width={400} height={400}>
+        <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
+          <div className=' w-[50px]  max-md:w-full '>
+            {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 ?
+             <PieChart className='border-none outline-none' width={400} height={400}>
               <Pie data={presentData} dataKey="value"
                 paddingAngle={3}
                 fill="red"
+                 
                 cx="50%" cy="50%" nameKey='type' innerRadius={80} outerRadius={120}
                 label={(entry) => `${entry.type}`}
               >
@@ -117,6 +113,7 @@ const TrackComponent = () => {
                 ))}
               </Pie>
               <Tooltip
+                cursor={false}
                 contentStyle={{
                   backgroundColor: '#ffffff20',
                   color: 'white',
@@ -128,7 +125,8 @@ const TrackComponent = () => {
                   color: 'white',
                   fontWeight: 'bold',
                 }} />
-            </PieChart> : !isLoading && <p className=' text-gray-500 whitespace-nowrap'>No data Found</p>}
+            </PieChart> 
+            : !isLoading && <p className=' text-gray-500 whitespace-nowrap'>No data Found</p>}
           </div>
           <div className='flex flex-col text-lg font-medium justify-between'>
             {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 && totalPersentages.map((item, index) => (
@@ -146,9 +144,8 @@ const TrackComponent = () => {
               { type: 'Present', value: subject.present },
               { type: 'Absent', value: subject.absent },
             ];
-
             return (
-              <div key={index} className={` ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " " : "bg-gradient-to-br to-rose-500/30  from-rose-600/20 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
+              <div key={index} className={` ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " card " : "bg-gradient-to-br to-rose-500/30  from-rose-600/20 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
                 <h1 className=' absolute left-[43%] top-[43%] text-lg text-center font-medium '>{subject?.name.toUpperCase()}</h1>
                 <PieChart width={300} height={300}>
                   <Pie
@@ -168,6 +165,7 @@ const TrackComponent = () => {
 
                   </Pie>
                   <Tooltip
+                  
                     contentStyle={{
                       backgroundColor: '#ffffff20',
                       color: 'white',
@@ -177,9 +175,8 @@ const TrackComponent = () => {
                     }}
                     itemStyle={{
                       color: 'white',
-                      fontWeight: 'bold',
+                      fontWeight: 'normal',
                     }} />
-                  {/* <Legend /> */}
                 </PieChart>
 
                 <div className=' -mt-10 mb-2  text-white'>
@@ -193,48 +190,50 @@ const TrackComponent = () => {
 
         <div className=' w-full   '>
 
-          {subjCount.length !== 0 && <div className=' w-full h-[400px] border bordercolor rounded-3xl mb-4 card p-2 px-4'>
+          {subjCount.length !== 0 && <div className=' w-full h-[400px] card rounded-3xl mb-4 card p-2 px-4'>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={subjCount}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="0 0" vertical={false} opacity={0.1} />
                 <XAxis dataKey="name" />
-                <YAxis />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#ffffff20',
-                    color: 'white',
+                    color: 'white', 
+                    fontSize: '19px',
                     borderRadius: '5px',
                     backdropFilter: 'blur(10px)',
                     border: '1px solid transparent',
                   }}
-                  itemStyle={{
-                    color: 'white',
+                  itemStyle={{color: 'white',
+                    fontSize: '15px',
                     fontWeight: 'bold',
                   }} />
                 <Legend />
-                <Bar dataKey="present" radius={6} fill="#a48fff" name={'present'} />
+                <Bar  dataKey="present" radius={6} fill="#a48fff" name={'present'} />
                 <Bar dataKey="absent" radius={6} fill="#f75cb4" name={'absent'} />
               </BarChart>
             </ResponsiveContainer >
           </div>}
 
 
-          {dateData.length !== 0 && <div className=' w-full h-[400px] border bordercolor rounded-3xl mb-4 card p-2 px-4'>
+          {dateData.length !== 0 && <div className=' w-full h-[400px] rounded-3xl mb-4 card p-2 px-4'>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={dateData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
+                <CartesianGrid strokeDasharray="0.1 0" vertical={false} opacity={0.1} />
+                <XAxis tickFormatter={(value) => value.slice(0, 5)}  style={{fontSize:'12px'}} dataKey="date" />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#ffffff20',
                     color: 'white',
+                    fontWeight: 'bold',
+                    fontSize: '19px',
                     borderRadius: '10px',
                     backdropFilter: 'blur(10px)',
                     border: '1px solid transparent',
                   }}
                   itemStyle={{
                     color: 'white',
+                     fontSize: '15px',
                     fontWeight: 'bold',
                   }} />
                 <Legend />
@@ -262,10 +261,9 @@ const TrackComponent = () => {
                   <stop offset="95%" stopColor="#8a70fd" stopOpacity={0.3} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="date" stroke="#ffffff28" />
-              <YAxis />
+              <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{fontSize:'12px'}} dataKey="date" stroke="#ffffff28" />
               <Legend align="center" verticalAlign="top" wrapperStyle={{ paddingTop: "20px", paddingBottom: "40px" }} />
-              <CartesianGrid strokeDasharray="1 1" stroke="#ffffff28" />
+                <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#ffffff20',
@@ -286,7 +284,7 @@ const TrackComponent = () => {
                 fillOpacity={0.2}
                 fill="url(#colordebit)"
                 stackId="2"
-                dot={{ fill: '#a48fff', strokeWidth: 1, r: 3 }}
+                // dot={{ fill: '#a48fff', strokeWidth: 1, r: 3 }}
               />
               <Area
                 type="monotone"
@@ -295,7 +293,7 @@ const TrackComponent = () => {
                 fillOpacity={0.5}
                 fill="url(#colorcredit)"
                 stackId="1"
-                dot={{ fill: '#E11D47', strokeWidth: 1, r: 3 }}
+                // dot={{ fill: '#E11D47', strokeWidth: 1, r: 0.1 }}
               />
             </AreaChart>
           </ResponsiveContainer>

@@ -34,11 +34,19 @@ export const COLORS2 = [
     '#5EEAD4', // Minty Cyan
 ];
 
- 
-
-
 export const getDayName = (dayIndex: number | null | undefined): string => {
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   if (dayIndex === null || dayIndex === undefined) return 'Unknown';
   return days[dayIndex];
 };
+
+export const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+
+  export const years = [2025, 2026, 2027];
+
+export const weeks = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+ 

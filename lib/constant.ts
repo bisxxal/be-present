@@ -7,3 +7,12 @@ export interface AttendanceDataProps {
   userId: string;
   timeTableId: string;
 }
+export interface TimeTableProps {
+  dayOfWeek: number | null;  
+  createdAt: Date;
+  endTime: string;
+  id: string;
+  startTime: string;
+  subjectName: string;
+  userId:string
+}

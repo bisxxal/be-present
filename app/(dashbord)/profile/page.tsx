@@ -8,7 +8,7 @@ const ProfilePage = () => {
   return (
     <div className='w-full p-20 max-md:p-2 '>
 
-      <div className=' bg-indigo-500/80 w-[80%] mx-auto p-5 rounded-3xl shadow-lg text-white'>
+      <div className=' bg-indigo-500/10 border-2 border-blue-500 w-[80%] mx-auto p-5 rounded-3xl shadow-lg text-white'>
         <div className='text-3xl text-center mb-6 font-bold'>Profile Information</div>
         {status === 'loading' ? (
           <p></p>

@@ -61,7 +61,7 @@ const TimeTablePage = () => {
     onSuccess: (data) => {
       if (data.status === 200) {
          toastSuccess(data.message);
-        // setSubjects([{ subjectName: '', startTime: '', endTime: '', day: '' }]); // Reset form
+        setSubjects([{ subjectName: '', startTime: '', endTime: '', day: '' }]); // Reset form
         client.invalidateQueries({ queryKey: ['timetable'] });
       } else {
         toastError(data.message);
