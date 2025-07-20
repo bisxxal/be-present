@@ -45,7 +45,6 @@ const TimeTable = ({type}:{type:"view"|"edit"}) => {
                 ))}
             </div>
 
-
             <div className="flex mx-auto">
                 {[1, 2, 3, 4, 5, 6].map((day) => {
                     const subjectsForDay = data?.data?.filter((item: any) => item.dayOfWeek === day) || [];

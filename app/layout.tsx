@@ -4,7 +4,6 @@ import { Toaster } from "react-hot-toast";
 import QuaryClient from "@/provider/QuaryClient";
 import { Poppins } from "next/font/google";
 import "react-datepicker/dist/react-datepicker.css";
-import Navbar from "@/components/navbar";
 import "react-datepicker/dist/react-datepicker.css";
 const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] });
 
@@ -23,9 +22,9 @@ export default function RootLayout({
       <body className={inter.className}   >
         <QuaryClient >
           <Toaster position="top-right"
-  reverseOrder={false}/>
+            reverseOrder={false} />
           <div className=" relative w-full min-h-screen ">
-            <Navbar />
+            {/* <Navbar /> */}
             {children}
           </div>
 

@@ -1,18 +1,22 @@
 'use client'
-import { AlignRight, Scissors } from 'lucide-react'
-import { signOut, useSession } from 'next-auth/react'
+import { AlignRight, GraduationCap } from 'lucide-react'
+import { useSession  } from 'next-auth/react'
 import Link from 'next/link'
 import React from 'react'
 
 const Navbar = () => {
     const { data, status } = useSession();
     return (
-        <div className=' flex justify-between shadow border-b-2  border-[#23233e] h-[60px] items-center p-5 max-md:p-3   '>
-            {<Link href={`${data?.user ? "/dashbord" : '/'}`} className='text-2xl center gap-2 max-md:text-lg whitespace-nowrap textbase font-bold'>Be Present</Link>}
+        <div className='flex  justify-between shadow border-b-2  border-[#23233e] h-[60px] items-center p-5 max-md:p-3   '>
+            {<Link href={`${data?.user ? "/dashbord" : '/'}`} className=' bg-gradient-to-r flex from-purple-400 to-pink-400 bg-clip-text text-transparent text-2xl center gap-2 max-md:text-lg whitespace-nowrap textbase font-bold'>
+             <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
+                <GraduationCap className="w-5 h-5 text-white" />
+              </div>
+                <p className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">  Be Present</p>
+          </Link>}
             {
                 status !== 'loading' && data ? <div className='center gap-2 max-md:gap-1'>
                     <img loading='lazy' src={data.user.image!} alt="User Avatar" width={40} height={40} className=' max-md:w-8  rounded-full' />
-            {/* {<button onClick={() => signOut()} className=" bg-gradient-to-br from-rose-400  to-pink-700 rounded-full  px-5 py-2 max-md:px-3 max-md:text-sm max-md:py-1.5">Logout</button>} */}
                     {<div className='relative group '>
                         <label className=' cursor-pointer' htmlFor='is'>
                             <AlignRight className='' size={22} />
