@@ -28,8 +28,6 @@ export async function addTimeTable(subjects: { subjectName: string; startTime: s
     }
 }
 
-
-
 export const getTimeTable = async () => {
     try {
         const session = await getServerSession(authOptions);

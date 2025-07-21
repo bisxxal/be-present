@@ -185,8 +185,8 @@ const Attendance: React.FC = () => {
 
         {/* Controls */}
         <div className="card  rounded-lg p-6 mb-6">
-          <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-            <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex gap-4 items-start sm:items-center justify-between">
+            <div className="flex  items-center flex-row gap-4">
               <div>
                 <label className="block text-sm font-medium mb-2">Month</label>
                 <select
@@ -215,13 +215,13 @@ const Attendance: React.FC = () => {
 
             {/* Statistics */}
             <div className="text-right">
-              <h3 className="text-lg font-semibold mb-2">Statistics</h3>
+              <h3 className="text-lg font-semibold max-md:text-center mb-2">Statistics</h3>
               <div className="flex gap-4 text-sm">
-                <div className="text-green-400">
+                <div className="text-green-400 max-md:text-center">
                   <CheckCircle className="w-4 h-4 inline mr-1" />
                   Present: {stats.present}
                 </div>
-                <div className="text-red-400">
+                <div className="text-red-400 max-md:text-center">
                   <XCircle className="w-4 h-4 inline mr-1" />
                   Absent: {stats.absent}
                 </div>
@@ -300,7 +300,7 @@ const Attendance: React.FC = () => {
 
         {isModalOpen && selectedDate && (
           <div className="fixed inset-0 bg-[#ffffff11] backdrop-blur-[40px] flex flex-col items-center justify-center z-50 p-4">
-            <div className="bg-[#0f0f1a83] z-10  overflow-scroll min-h-full rounded-3xl p-6 w-[93%] max-md:w-[96%]">
+            <div className="bg-[#0f0f1a83] z-10  overflow-scroll max-md:h-fit h-full rounded-3xl p-6 w-[93%] max-md:w-[96%]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl max-md:text-lg font-semibold flex items-center gap-2">
                   <User className="w-5 h-5" />

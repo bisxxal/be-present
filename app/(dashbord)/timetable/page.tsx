@@ -84,7 +84,7 @@ const TimeTablePage = () => {
 
   return (
     <div className="w-full pb-10 mx-auto overflow-hidden">
-      <h1 className="text-2xl text-center my-4 font-bold">Add Weekly Timetable</h1>
+      <h1 className="text-2xl text-center my-4 font-bold">Add Your Timetable</h1>
 
       <form onSubmit={handleSubmit} className=" max-md:w-[98%] w-[70%] mx-auto space-y-4">
         {subjects.map((entry, index) => (
@@ -159,7 +159,7 @@ const TimeTablePage = () => {
         </button>
       </form>
 
-      <TimeTable type="edit" />
+      <TimeTable  type="edit" />
     </div>
   );
 };

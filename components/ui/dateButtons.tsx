@@ -23,7 +23,7 @@ const DateButton = ({
   };
 
   return (
-    <div className="flex w-full center !z-[2] flex-wrap gap-4 max-md:gap-2 px-4 max-md:px-0 pt-2">
+    <div className="flex w-full center mt-4 !z-[2] flex-wrap gap-4 max-md:gap-2 px-4 max-md:px-0 pt-2">
       <div className="max-md:w-[120px]">
         <label className="text-[#cacaca] text-sm mr-2">Start Date</label>
         <DatePicker

@@ -114,3 +114,4 @@ export const deleteAttendance = async (id: string) => {
         return { status: 500, message: "Internal server error" };
     }
 }
+

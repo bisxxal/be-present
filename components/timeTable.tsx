@@ -9,7 +9,7 @@ import { toastError, toastSuccess } from '@/lib/toast';
 import { TimeTableProps } from '@/lib/constant';
 import { useGetTimeTable } from '@/hooks/useGetAttendance';
 
-const TimeTable = ({ type, setCurrentClass, setRemaining }: { type: "view" | "edit", setCurrentClass?: React.Dispatch<React.SetStateAction<TimeTableProps | undefined>>, setRemaining?: React.Dispatch<React.SetStateAction<number>> }) => {
+const TimeTable = ({ type, setCurrentClass, setRemaining , currentClass }: { currentClass:TimeTableProps | undefined , type: "view" | "edit", setCurrentClass?: React.Dispatch<React.SetStateAction<TimeTableProps | undefined>>, setRemaining?: React.Dispatch<React.SetStateAction<number>> }) => {
     const client = useQueryClient()
     const { data, isLoading } = useGetTimeTable()
 
@@ -68,7 +68,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining }: { type: "view" | "ed
             <div className="flex w-fit ">
                 {weeks.map((day, idx) => (
                     <div key={idx} className={` w-[220px] max-md:w-[150px] text-center border border-[#ffffff30] 
-                ${isToday === idx + 1 ? " bg-gradient-to-r  from-pink-500 to-rose-500 !rounded-none " : "  "} font-semibold text-gray-400 p-2 `}>
+                 font-semibold text-gray-400 p-2 `}>
                         {day}
                     </div>
                 ))}
@@ -81,16 +81,20 @@ const TimeTable = ({ type, setCurrentClass, setRemaining }: { type: "view" | "ed
                 return (
                     <div key={day}>
                         {subjectsForDay.length > 0 && !isLoading ? (
-                            subjectsForDay.map((item: any, idx: number) => (
-                                <div key={idx}
-                                    className={` max-md:w-[150px] w-[220px]  h-[120px] border border-[#ffffff30] ${isToday === item.dayOfWeek ? " bg-gradient-to-r from-pink-500 to-rose-500  !rounded-none " : " bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] "} relative bg-[#ffffff06] p-3 `}>
-                                    {type === 'edit' && <h2 onClick={() => deleteTimeTableMutation.mutate(item.id)} className='absolute right-1 top-1 hover:bg-red-500/20 w-fit rounded-full p-1.5 text-red-500'> <Trash2 size={20} /> </h2>}
+                            subjectsForDay.map((item: any, idx: number) => {
+                                const bgColor = currentClass?.subjectName === item.subjectName ? ' bg-gradient-to-r from-green-600 /20 to-emerald-600 /20 ' :  isToday === item.dayOfWeek ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 !rounded-none " : " bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] "; 
+                                return(
+                                    <div key={idx}
+                                    className={` max-md:w-[150px] w-[220px]  h-[120px] border border-[#ffffff30]  ${bgColor} relative bg-emerald-5 p-3 `}>
+                                    {type === 'edit' && <h2 onClick={() => deleteTimeTableMutation.mutate(item.id)} className='absolute right-1 top-1 hover:bg-red-500/20 w-fit   rounded-full p-1.5 text-red-500'> <Trash2 size={20} /> </h2>}
                                     <h2 className="text-md capitalize font-semibold">{item.subjectName}</h2>
                                     <p className="text-sm">Start: {item.startTime}</p>
                                     <p className="text-sm">End: {item.endTime}</p>
                                     <p className="text-sm">Day: {getDayName(item.dayOfWeek)}</p>
                                 </div>
-                            ))
+                                )
+                            }
+                            )
                         ) : (
                             isLoading ? <Loading boxes={1} child=" max-md:w-[150px] border-x w-[220px]  h-[120px] !rounded-none" parent="w-full " /> :
                                 <div className="max-md:w-[150px] w-[220px] h-[120px] border border-[#ffffff30] bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] flex items-center justify-center text-sm text-gray-400 italic rounded-none">No Class</div>

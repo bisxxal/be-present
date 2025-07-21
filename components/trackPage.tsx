@@ -8,14 +8,7 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieCh
 import { endOfMonth, isValid, parseISO, startOfMonth } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { useGetAttendance } from '@/hooks/useGetAttendance';
-
-// Dummy component to override active shape
-const NoopActiveShape = (props) => {
-  // Just render the same arc as normal slice without any "active" styling
-  return (
-    <path d={props.sectorPath} fill={props.fill} />
-  );
-};
+import Loading from './ui/loading';
 
 const TrackComponent = () => {
   const today = useMemo(() => new Date(), []);
@@ -32,7 +25,7 @@ const TrackComponent = () => {
   const [subjCount, setSubjCount] = useState<{ name: string; present: number; absent: number }[]>([])
   const [dateData, setDateData] = useState<{ date: string; present: number; absent: number }[]>([]);
 
-  const {data , isLoading} =  useGetAttendance( startDate, endDate);
+  const { data, isLoading } = useGetAttendance(startDate, endDate);
 
   useEffect(() => {
     if (!data?.data) return;
@@ -93,40 +86,39 @@ const TrackComponent = () => {
   }, [data]);
 
   return (
-    <div className=' w-full min-h-screen '>
-        <DateButton startDate={startDate} endDate={endDate} />
+    <div className=' w-full min-h-screen overflow-hidden'>
+      <DateButton startDate={startDate} endDate={endDate} />
       <div className=' w-[100%] mx-auto my-10 p-5   center flex-col gap-4  rounded-lg shadow-lg '>
-
-        <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
+       {presentData[0]?.value !== 0 && !isLoading ? <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
           <div className=' w-[50px]  max-md:w-full '>
-            {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 ?
-             <PieChart className='border-none outline-none' width={400} height={400}>
-              <Pie data={presentData} dataKey="value"
-                paddingAngle={3}
-                fill="red"
-                 
-                cx="50%" cy="50%" nameKey='type' innerRadius={80} outerRadius={120}
-                label={(entry) => `${entry.type}`}
-              >
-                {presentData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS2[index % COLORS2.length]} />
-                ))}
-              </Pie>
-              <Tooltip
-                cursor={false}
-                contentStyle={{
-                  backgroundColor: '#ffffff20',
-                  color: 'white',
-                  borderRadius: '10px',
-                  backdropFilter: 'blur(10px)',
-                  border: '1px solid transparent',
-                }}
-                itemStyle={{
-                  color: 'white',
-                  fontWeight: 'bold',
-                }} />
-            </PieChart> 
-            : !isLoading && <p className=' text-gray-500 whitespace-nowrap'>No data Found</p>}
+            
+              <PieChart className='border-none outline-none' width={370} height={400}>
+                <Pie data={presentData} dataKey="value"
+                  paddingAngle={3}
+                  fill="red"
+
+                  cx="50%" cy="50%" nameKey='type' innerRadius={80} outerRadius={120}
+                  label={(entry) => `${entry.type}`}
+                >
+                  {presentData.map((_, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS2[index % COLORS2.length]} />
+                  ))}
+                </Pie>
+                <Tooltip
+                  cursor={false}
+                  contentStyle={{
+                    backgroundColor: '#ffffff20',
+                    color: 'white',
+                    borderRadius: '10px',
+                    backdropFilter: 'blur(10px)',
+                    border: '1px solid transparent',
+                  }}
+                  itemStyle={{
+                    color: 'white',
+                    fontWeight: 'bold',
+                  }} />
+              </PieChart>
+              
           </div>
           <div className='flex flex-col text-lg font-medium justify-between'>
             {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 && totalPersentages.map((item, index) => (
@@ -136,17 +128,20 @@ const TrackComponent = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> : isLoading ? <Loading boxes={1} parent=' h-[500px] ' child='rounded-3xl w-full h-full ' />  
+        : <p className=' text-gray-500 mt-10 whitespace-nowrap'>No data Found</p>}
 
-        <div className=' flex flex-wrap justify-evenly items-center gap-4'>
-          {subjCount.length !== 0 && subjCount.map((subject, index) => {
+        <div className='w-full flex flex-wrap justify-evenly items-center gap-4'>
+          {subjCount.length !== 0  && !isLoading ? subjCount.map((subject, index) => {
             const chartData = [
               { type: 'Present', value: subject.present },
               { type: 'Absent', value: subject.absent },
             ];
             return (
-              <div key={index} className={` ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " card " : "bg-gradient-to-br to-rose-500/30  from-rose-600/20 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
-                <h1 className=' absolute left-[43%] top-[43%] text-lg text-center font-medium '>{subject?.name.toUpperCase()}</h1>
+              <div key={index} 
+              className={` center flex-col max-md:w-full ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " card " : "bg-gradient-to-br to-rose-500/30  from-rose-600/20 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
+
+                <h1 className=' -mb-13 mt-5  text-lg text-center font-medium '>{subject?.name.toUpperCase()}</h1>
                 <PieChart width={300} height={300}>
                   <Pie
                     data={chartData}
@@ -155,7 +150,6 @@ const TrackComponent = () => {
                     cx="50%"
                     cy="50%"
                     outerRadius={90}
-                    innerRadius={60}
                     paddingAngle={2}
                     label={(entry) => `${entry.type}`}
                   >
@@ -165,7 +159,6 @@ const TrackComponent = () => {
 
                   </Pie>
                   <Tooltip
-                  
                     contentStyle={{
                       backgroundColor: '#ffffff20',
                       color: 'white',
@@ -185,10 +178,11 @@ const TrackComponent = () => {
                 </div>
               </div>
             );
-          })}
+          }) : isLoading ? <Loading boxes={5} parent=' h-[305px] w-full !flex-row !flex-wrap' child='rounded-3xl max-md:w-full w-[19.1%] h-full ' />  
+        : <p className=' text-gray-500 mt-10 whitespace-nowrap'>No data Found</p>}
         </div>
 
-        <div className=' w-full   '>
+        <div className=' w-full '>
 
           {subjCount.length !== 0 && <div className=' w-full h-[400px] card rounded-3xl mb-4 card p-2 px-4'>
             <ResponsiveContainer width="100%" height="100%">
@@ -198,18 +192,19 @@ const TrackComponent = () => {
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#ffffff20',
-                    color: 'white', 
+                    color: 'white',
                     fontSize: '19px',
                     borderRadius: '5px',
                     backdropFilter: 'blur(10px)',
                     border: '1px solid transparent',
                   }}
-                  itemStyle={{color: 'white',
+                  itemStyle={{
+                    color: 'white',
                     fontSize: '15px',
                     fontWeight: 'bold',
                   }} />
                 <Legend />
-                <Bar  dataKey="present" radius={6} fill="#a48fff" name={'present'} />
+                <Bar dataKey="present" radius={6} fill="#a48fff" name={'present'} />
                 <Bar dataKey="absent" radius={6} fill="#f75cb4" name={'absent'} />
               </BarChart>
             </ResponsiveContainer >
@@ -220,7 +215,7 @@ const TrackComponent = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={dateData}>
                 <CartesianGrid strokeDasharray="0.1 0" vertical={false} opacity={0.1} />
-                <XAxis tickFormatter={(value) => value.slice(0, 5)}  style={{fontSize:'12px'}} dataKey="date" />
+                <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{ fontSize: '12px' }} dataKey="date" />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#ffffff20',
@@ -233,7 +228,7 @@ const TrackComponent = () => {
                   }}
                   itemStyle={{
                     color: 'white',
-                     fontSize: '15px',
+                    fontSize: '15px',
                     fontWeight: 'bold',
                   }} />
                 <Legend />
@@ -261,9 +256,9 @@ const TrackComponent = () => {
                   <stop offset="95%" stopColor="#8a70fd" stopOpacity={0.3} />
                 </linearGradient>
               </defs>
-              <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{fontSize:'12px'}} dataKey="date" stroke="#ffffff28" />
+              <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{ fontSize: '12px' }} dataKey="date" stroke="#ffffff28" />
               <Legend align="center" verticalAlign="top" wrapperStyle={{ paddingTop: "20px", paddingBottom: "40px" }} />
-                <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} />
+              <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} />
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#ffffff20',
@@ -284,7 +279,7 @@ const TrackComponent = () => {
                 fillOpacity={0.2}
                 fill="url(#colordebit)"
                 stackId="2"
-                // dot={{ fill: '#a48fff', strokeWidth: 1, r: 3 }}
+              // dot={{ fill: '#a48fff', strokeWidth: 1, r: 3 }}
               />
               <Area
                 type="monotone"
@@ -293,7 +288,7 @@ const TrackComponent = () => {
                 fillOpacity={0.5}
                 fill="url(#colorcredit)"
                 stackId="1"
-                // dot={{ fill: '#E11D47', strokeWidth: 1, r: 0.1 }}
+              // dot={{ fill: '#E11D47', strokeWidth: 1, r: 0.1 }}
               />
             </AreaChart>
           </ResponsiveContainer>

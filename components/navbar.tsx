@@ -7,7 +7,7 @@ import React from 'react'
 const Navbar = () => {
     const { data, status } = useSession();
     return (
-        <div className='flex fixed top-0 left-0 w-full backdrop-blur-2xl z-[100] justify-between shadow border-b-2  border-[#23233e] h-[60px] items-center p-5 max-md:p-3   '>
+        <div className='flex fixed top-0 left-0 w-full backdrop-blur-2xl z-[1] justify-between shadow border-b-2  border-[#23233e] h-[60px] items-center p-5 max-md:p-3   '>
             {<Link href={`${data?.user ? "/dashboard" : '/'}`} className=' bg-gradient-to-r flex from-purple-400 to-pink-400 bg-clip-text text-transparent text-2xl center gap-2 max-md:text-lg whitespace-nowrap textbase font-bold'>
                 <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
                     <GraduationCap className="w-5 h-5 text-white" />
