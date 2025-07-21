@@ -1,12 +1,14 @@
 'use client'
+import { calculateStreak } from '@/components/streak';
 import TimeTable from '@/components/timeTable';
 import HeatMapCalender from '@/components/ui/heatMapCalender';
 import { useGetAttendance } from '@/hooks/useGetAttendance';
 import { AttendanceDataProps, TimeTableProps } from '@/lib/constant';
-import { COLORS2 } from '@/lib/util';
+import { badgeImages, COLORS2 } from '@/lib/util';
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { Calendar } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import Image from 'next/image';
 import React, { useEffect, useMemo, useState } from 'react'
 import { Area, AreaChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
@@ -18,7 +20,15 @@ const DashBoardMainaPage = () => {
   const [currentClass, setCurrentClass] = useState<TimeTableProps>();
   const [show, setShow] = useState(false);
   const [dateData, setDateData] = useState<{ date: string; present: number; absent: number }[]>([]);
-
+  
+  const [badge, setBadge] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const val = localStorage.getItem('badge');
+      return val ? val : null;
+    }
+    return null;
+  });
+  
   const today = useMemo(() => new Date(), []);
   const defaultStart = startOfMonth(today);
   const defaultEnd = endOfMonth(today);
@@ -62,13 +72,31 @@ const DashBoardMainaPage = () => {
     ]);
     setTotalPercentages(percentages);
     setDateData(Object.values(dateSummary));
-    console.log(currentClass)
   }, [data]);
 
+  useEffect(()=>{
+    const fetchBadge = ()=>{
+       const res =  calculateStreak(dateData)
+        setBadge(res.toString());
+        localStorage.setItem('badge', res.toString());
+    }
+     if (!badge && dateData.length !== 0) {
+       fetchBadge();
+     }
 
+     console.log(badge)
+  },[dateData, badge])
+ 
   return (
     <div className=' w-full p-20 mb-20 max-md:p-2'>
-      <div className="  max-md:mt-10 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-2xl p-3 px-8 max-md:py-4  border border-purple-500/30 mb-8">
+
+      <div className=" relative max-md:mt-10 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-2xl p-3 px-8 max-md:py-4  border border-purple-500/30 mb-8">
+
+      <div className=' absolute -top-10 -right-10 p-1 bg-purpl e-500/10 backdro p-blur-2xl rounded-full text-white text-xs font-semibold'>
+         {/* <p className=' absolute'> {badge ? `Streak: ${badge} days` : 'No streak yet'}</p> */}
+        { Number(badge) >= 3 && <Image width={100} height={100} src={badgeImages(badge as string)} className=' w-36 h-36  ' alt="" />}
+      </div>
+
         <div className="flex  max-md:gap-5 max-md:flex-col items-center justify-between">
           <div>
             <div className='text-3xl max-md:text-2xl mb-6 max-md:mt-4  font-bold'>Welcome , 👋🏻
@@ -84,6 +112,8 @@ const DashBoardMainaPage = () => {
                 </span>
               </p>
             )}
+
+            <p className=' text-4xl font-semibold'>{badge ? `Streak ${badge} days` : 'No streak yet'}</p>
           </div>
           <PieChart className='[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground' width={400} height={240}>
             <Pie data={presentData} dataKey="value"
@@ -168,7 +198,7 @@ const DashBoardMainaPage = () => {
           </AreaChart>
         </ResponsiveContainer>
       </div>}
-      <HeatMapCalender presentData={dateData}/>
+      <HeatMapCalender />
     </div>
   )
 }

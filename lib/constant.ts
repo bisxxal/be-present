@@ -16,3 +16,8 @@ export interface TimeTableProps {
   subjectName: string;
   userId:string
 }
+
+export interface FilteredDataProps {
+  date: string;
+  count: number;
+}

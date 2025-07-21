@@ -4,12 +4,13 @@ import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { formatDate } from '@/lib/util';
+import { FilteredDataProps } from '@/lib/constant';
 
 const LOCAL_STORAGE_KEY = 'attendanceHeatmapData';
 
+ 
 const HeatMapCalender = () => {
-    const [filteredData, setFilteredData] = useState([]);
-
+    const [filteredData, setFilteredData] = useState<FilteredDataProps[]>([]);
     useEffect(() => {
         const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
 
@@ -18,9 +19,8 @@ const HeatMapCalender = () => {
                 const parsed = JSON.parse(cached);
                 setFilteredData(parsed);
             } catch (error) {
-                console.error('Invalid data in localStorage, clearing...');
                 localStorage.removeItem(LOCAL_STORAGE_KEY);
-                fetchAndCacheData();  
+                fetchAndCacheData();
             }
         } else {
             fetchAndCacheData();
@@ -30,7 +30,10 @@ const HeatMapCalender = () => {
     const fetchAndCacheData = async () => {
         try {
             const response = await getAttendanceForHeatmap();
-            const formatted = response?.data.reduce((acc, curr) => {
+            if (response.status !== 200) {
+                return;
+            }
+            const formatted = response && response.data?.reduce((acc: FilteredDataProps[], curr: { date: Date }) => {
                 const date = new Date(curr.date);
                 const formattedDate = date.toISOString().split('T')[0];
                 const existing = acc.find(item => item.date === formattedDate);
@@ -42,6 +45,9 @@ const HeatMapCalender = () => {
                 return acc;
             }, []);
 
+            if( formatted?.length === 0) {
+                return;
+            }
             setFilteredData(formatted);
             localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formatted));
         } catch (error) {
@@ -50,7 +56,7 @@ const HeatMapCalender = () => {
     };
 
     return (
-        <div className="bg-[#0d1117] mt-20 border  border-[#ffffff26] px-60 max-md:px-5 p-4 rounded-3xl text-white">
+        <div className="bg-[#0d1117] mt-20 border  border-[#ffffff26] px-60 max-md:px-2 lg:32 p-4 rounded-3xl text-white">
             <h2 className="text-xl mb-4">Attendance Heatmap</h2>
             <CalendarHeatmap
                 className="focus:outline-none"
@@ -62,7 +68,7 @@ const HeatMapCalender = () => {
                     const count = Math.min(value.count, 4);
                     return `color-github-dark-${count}`;
                 }}
-                tooltipDataAttrs={(value) => ({
+                tooltipDataAttrs={(value:FilteredDataProps) => ({
                     'data-tooltip-id': 'heatmap-tooltip',
                     'data-tooltip-content': value.date
                         ? `${value.count} present on ${formatDate(value.date)}`

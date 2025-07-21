@@ -20,6 +20,7 @@ const ProfilePage = () => {
             <p className=' mt-5'><strong>Name:</strong> {data?.user?.name}</p>
             <p><strong>Email:</strong> {data?.user?.email}</p>
             {<button onClick={() => signOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
+            {<button  className=" buttonbg rounded-full w-full mt-4 py-2   max-md:py-1.5">Update HeatMap</button>}
           </div>
         )}
       </div>

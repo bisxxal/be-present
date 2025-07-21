@@ -9,7 +9,6 @@ import { endOfMonth, isValid, parseISO, startOfMonth } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { useGetAttendance } from '@/hooks/useGetAttendance';
 import Loading from './ui/loading';
-
 const TrackComponent = () => {
   const today = useMemo(() => new Date(), []);
   const defaultStart = startOfMonth(today);
@@ -84,7 +83,6 @@ const TrackComponent = () => {
     setDateData(Object.values(dateSummary));
     setTotalPercentages(percentages);
   }, [data]);
-
   return (
     <div className=' w-full min-h-screen overflow-hidden'>
       <DateButton startDate={startDate} endDate={endDate} />

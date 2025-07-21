@@ -5,7 +5,7 @@ import QuaryClient from "@/provider/QuaryClient";
 import { Poppins } from "next/font/google";
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-calendar-heatmap/dist/styles.css';
-
+import 'react-tooltip/dist/react-tooltip.css';
 const inter = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700", "800", "900"] });
 
 export const metadata: Metadata = {

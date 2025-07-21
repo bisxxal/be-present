@@ -49,12 +49,12 @@ export const months = [
 
 export const weeks = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
- export const formatDate = (dateStr:Date) => {
+ export const formatDate = (dateStr:Date|string) => {
     const date = new Date(dateStr);
     const day = date.getDate();
     const month = date.toLocaleString('en-US', { month: 'long' });
 
-    const getOrdinal = (n) => {
+    const getOrdinal = (n:any ) => {
         if (n > 3 && n < 21) return 'th'; // 11th, 12th, 13th...
         switch (n % 10) {
             case 1: return 'st';
@@ -65,4 +65,26 @@ export const weeks = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
     };
 
     return `${day}${getOrdinal(day)} ${month}`;
+};
+
+export const badgeImages = (badge: string) => {
+  const badgeNumber = parseInt(badge, 10);
+
+  if (badgeNumber >= 3 && badgeNumber <= 4) {
+    return '/b3.png';
+  }
+  if (badgeNumber > 4 && badgeNumber <= 6) {
+    return '/b5.png';
+  }
+  if (badgeNumber > 6 && badgeNumber <= 13) {
+    return '/bg7.png';
+  }
+  if (badgeNumber >= 14 && badgeNumber <= 29) {
+    return '/b14.png';
+  }
+  if (badgeNumber >= 30) {
+    return '/b30.png';
+  }
+
+  return null; // default case if badge doesn't match any range
 };

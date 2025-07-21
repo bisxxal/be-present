@@ -1,97 +1,31 @@
-'use client'; 
-  
-import React, { useState, useEffect } from 'react';
+'use client';
+
+import React, { useState } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { GraduationCap, Calendar, Users, Award,Shield,Zap,BarChart3,Eye,LogIn,UserPlus,Menu,X, Smartphone, Clock, TrendingUp} from 'lucide-react';
+import { GraduationCap, Calendar, BarChart3, Eye, LogIn, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { formatDate } from '@/lib/util';
+import { FilteredDataProps } from '@/lib/constant';
+import { demoAttendanceData, demoTimeTable, demoTrendData, features, filteredData, stats } from '@/lib/dummy';
 
 const AttendanceTrackerLanding = () => {
-  const {data ,status} = useSession();
+  const { data, status } = useSession();
 
   const router = useRouter()
-  if(data?.user && status === 'authenticated') {
+  if (data?.user && status === 'authenticated') {
     router.push('/dashboard');
   }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const demoAttendanceData = [
-    { name: 'Present', value: 89, color: '#a48fff' },
-    { name: 'Absent', value: 30, color: '#EF4444' },
-  ];
 
-  const demoTrendData = [
-    { month: 'Jan', rate: 25 },
-    { month: 'Feb', rate: 88 },
-    { month: 'Mar', rate: 32 },
-    { month: 'Apr', rate: 39 },
-    { month: 'May', rate: 94 },
-    { month: 'Jun', rate: 41 },
-    { month: 'Jul', rate: 51 },
-    { month: 'Aug', rate: 91 },
-    { month: 'Nov', rate: 11 },
-    { month: 'Dec', rate: 61 },
-  ];
-
-  const demoTimeTable = [
-    { time: '09:00 AM', subject: 'C++', room: 'Room 101', status: 'present' },
-    { time: '10:30 AM', subject: 'Java', room: 'Lab A', status: 'present' },
-    { time: '02:00 PM', subject: 'Python', room: 'Lab B', status: 'late' },
-    { time: '03:30 PM', subject: 'Java script', room: 'Room 205', status: 'upcoming' }
-  ];
-
-
-  const features = [
-    {
-      icon: Clock,
-      title: 'Real-time Tracking',
-      description: 'Monitor attendance instantly with live updates and notifications for immediate insights.',
-      gradient: 'from-blue-500 to-cyan-400'
-    },
-    {
-      icon: BarChart3,
-      title: 'Advanced Analytics',
-      description: 'Comprehensive reports and analytics to identify patterns and improve attendance rates.',
-      gradient: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: Shield,
-      title: 'Secure & Reliable',
-      description: 'Enterprise-grade security with 99.9% uptime guarantee and data encryption.',
-      gradient: 'from-green-500 to-emerald-400'
-    },
-    {
-      icon: Smartphone,
-      title: 'Mobile Friendly',
-      description: 'Access from any device with our responsive design and native mobile apps.',
-      gradient: 'from-orange-500 to-yellow-400'
-    },
-    {
-      icon: Users,
-      title: 'Multi-user Support',
-      description: 'Role-based access control for administrators, teachers, and students.',
-      gradient: 'from-red-500 to-pink-500'
-    },
-    {
-      icon: Calendar,
-      title: 'Smart Scheduling',
-      description: 'Automated timetable integration with intelligent attendance predictions.',
-      gradient: 'from-indigo-500 to-purple-500'
-    }
-  ];
-
-  const stats = [
-    { number: '10K+', label: 'Active Students' },
-    { number: '500+', label: 'Schools & Colleges' },
-    { number: '99.9%', label: 'Uptime' },
-    { number: '24/7', label: 'Support' }
-  ];
- 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0F0F1A' }}>
-       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-         <div className="absolute inset-0">
-           {[...Array(20)].map((_, i) => (
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0">
+          {[...Array(20)].map((_, i) => (
             <div
               key={i}
               className="absolute w-1 h-1 bg-white/20 rounded-full animate-ping"
@@ -115,39 +49,25 @@ const AttendanceTrackerLanding = () => {
             </div>
             <span className="text-2xl font-bold max-md:tex-lg text-white">Be Present</span>
           </div>
-          
+
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-300 hover:text-white transition-colors">Features</a>
-            <a href="#demo" className="text-gray-300 hover:text-white transition-colors">Demo</a>
-            
+          <div className="flex  items-center space-x-8">
+            <a href="#features" className="text-gray-300 hidden md:flex  hover:text-white transition-colors">Features</a>
+            <a href="#demo" className="text-gray-300 hidden md:flex  hover:text-white transition-colors">Demo</a>
+
             <div className="flex items-center space-x-3">
               <Link href={'/sign-in'} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
-                 <LogIn className="w-4 h-4 inline mr-2" />
+                <LogIn className="w-4 h-4 inline mr-2" />
                 Sign In
               </Link>
             </div>
           </div>
 
           {/* Mobile Menu Button */}
-          <button 
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 text-gray-300 hover:text-white"
-          >
-            {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+
         </div>
 
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden rounded-3xl overflow-hidden absolute backdrop-blur-2xl w-1/2 right-0  mt-4 pb-4 border p-2 px-4 border-gray-800 pt-4">
-            <div className="flex flex-col center space-y-4">
-              <a href="#features" className="text-gray-300 hover:text-white">Features</a>
-              <a href="#demo" className="text-gray-300 hover:text-white">Demo</a>
-                <Link href={'/sign-in'} className="px-4 py-2 w-full center bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg">Sign In</Link>
-            </div>
-          </div>
-        )}
+
       </nav>
 
       {/* Hero Section */}
@@ -159,10 +79,10 @@ const AttendanceTrackerLanding = () => {
               <br />Management System
             </h1>
             <p className="text-base text-gray-300 mb-8 max-w-3xl mx-auto">
-              Revolutionize how you track, analyze, and manage attendance with our cutting-edge platform. 
+              Revolutionize how you track, analyze, and manage attendance with our cutting-edge platform.
               Perfect for schools, colleges, and organizations.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
               <Link href={'/sign-in'} className="px-8 py-4 max-md:w-[90%] bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
                 Start Free Trial
@@ -183,6 +103,39 @@ const AttendanceTrackerLanding = () => {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="bg-[#0d1117] mt-3   px-60 max-md:px-2  p-4 rounded-3xl text-white">
+        <h2 className="text-3xl text-center font-semibold mb-4">Maintain Streaks</h2>
+        <CalendarHeatmap
+          className="focus:outline-none"
+          endDate={'2025-12-12'}
+          showWeekdayLabels={false}
+          values={filteredData}
+          classForValue={(value) => {
+            if (!value || value.count === 0) return 'color-empty';
+            const count = Math.min(value.count, 4);
+            return `color-github-dark-${count}`;
+          }}
+          tooltipDataAttrs={(value: FilteredDataProps) => ({
+            'data-tooltip-id': 'heatmap-tooltip',
+            'data-tooltip-content': value.date
+              ? `${value.count} present on ${formatDate(value.date)}`
+              : 'Not present',
+          })}
+          horizontal={true}
+          gutterSize={2}
+        />
+        <ReactTooltip id="heatmap-tooltip" />
+        <div className="flex items-center gap-2 mt-4 text-sm">
+          <span className="text-gray-400">Less</span>
+          <div className="w-4 h-4 bg-[#151B23] border border-gray-600 rounded-sm" />
+          <div className="w-4 h-4 bg-[#0e4429] rounded-sm" />
+          <div className="w-4 h-4 bg-[#006d32] rounded-sm" />
+          <div className="w-4 h-4 bg-[#26a641] rounded-sm" />
+          <div className="w-4 h-4 bg-[#39d353] rounded-sm" />
+          <span className="text-gray-400">More</span>
         </div>
       </section>
 
@@ -236,25 +189,25 @@ const AttendanceTrackerLanding = () => {
                   <CartesianGrid strokeDasharray="1 1" stroke="#374151" />
                   <XAxis dataKey="month" stroke="#9CA3AF" />
                   {/* <YAxis stroke="#9CA3AF" /> */}
-                  <Tooltip 
-                    contentStyle={{ 
-                      backgroundColor: '#1F2937', 
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: '#1F2937',
                       border: '1px solid #374151',
                       borderRadius: '8px',
                       color: '#fff'
-                    }} 
+                    }}
                   />
-                  <Area 
-                    type="monotone" 
-                    dataKey="rate" 
-                    stroke="#8B5CF6" 
-                    fill="url(#colorGradient)" 
+                  <Area
+                    type="monotone"
+                    dataKey="rate"
+                    stroke="#8B5CF6"
+                    fill="url(#colorGradient)"
                     strokeWidth={3}
                   />
                   <defs>
                     <linearGradient id="colorGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.05}/>
+                      <stop offset="5%" stopColor="#8B5CF6" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#8B5CF6" stopOpacity={0.05} />
                     </linearGradient>
                   </defs>
                 </AreaChart>
@@ -271,13 +224,12 @@ const AttendanceTrackerLanding = () => {
                       <div className="text-white font-medium">{item.subject}</div>
                       <div className="text-gray-400 text-sm">{item.time} • {item.room}</div>
                     </div>
-                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      item.status === 'present' ? 'bg-green-500 bg-opacity-20 text-green-200' :
-                      item.status === 'late' ? 'bg-yellow-500 bg-opacity-20 text-yellow-200' :
-                      'bg-blue-500 bg-opacity-20 text-blue-200'
-                    }`}>
-                      {item.status === 'present' ? 'Present' : 
-                       item.status === 'late' ? 'Late' : 'Upcoming'}
+                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'present' ? 'bg-green-500 bg-opacity-20 text-green-200' :
+                        item.status === 'late' ? 'bg-yellow-500 bg-opacity-20 text-yellow-200' :
+                          'bg-blue-500 bg-opacity-20 text-blue-200'
+                      }`}>
+                      {item.status === 'present' ? 'Present' :
+                        item.status === 'late' ? 'Late' : 'Upcoming'}
                     </div>
                   </div>
                 ))}
@@ -296,7 +248,7 @@ const AttendanceTrackerLanding = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
+            {features?.map((feature, index) => (
               <div key={index} className="group bg-gradient-to-br from-indigo-800/20 to-slate-900/10 backdrop-blur-xl p-8 rounded-3xl border border-slate-700/50 hover:border-purple-500/50 transition-all duration-500 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden">
                 <div className={`w-16 h-16 bg-gradient-to-r ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
                   <feature.icon className="w-8 h-8 text-white" />
@@ -325,30 +277,29 @@ const AttendanceTrackerLanding = () => {
             </button>
           </div>
         </div>
- <footer className="px-6 pt-4 border-t border-gray-800">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                <GraduationCap className="w-5 h-5 text-white" />
+        <footer className="px-6 pt-4 border-t border-gray-800">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex flex-col md:flex-row items-center justify-between">
+              <div className="flex items-center space-x-3 mb-4 md:mb-0">
+                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                  <GraduationCap className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-xl font-bold text-white">Be Present</span>
               </div>
-              <span className="text-xl font-bold text-white">Be Present</span>
-            </div>
-            <div className="text-gray-400 text-sm">
-              © 2025 Be Present. All rights reserved.
+              <div className="text-gray-400 text-sm">
+                © 2025 Be Present. All rights reserved.
+              </div>
             </div>
           </div>
-        </div>
-      </footer>
+        </footer>
 
       </section>
 
       {/* Footer */}
-      
+
     </div>
   );
 };
 
 export default AttendanceTrackerLanding;
 
-   
