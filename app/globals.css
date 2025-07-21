@@ -164,4 +164,39 @@ button:hover , a:hover{
 .recharts-wrapper:focus-visible{
   outline: none !important;
 }
+
+ .color-empty {
+    fill: #151B23 !important;
+}
+.color-github-dark-1 {
+    fill: #0e4429;
+}
+.color-github-dark-2 {
+    fill: #006d32;
+}
+.color-github-dark-3 {
+    fill: #26a641;
+}
+.color-github-dark-4 {
+    fill: #39d353;
+}
  
+
+#heatmap-tooltip {
+    background-color: #ffffff35 !important; /* dark gray */
+    color: #fff !important;
+    /* border:1px solid #ffffff1b !important; light gray */
+    border-radius: 8px;
+    font-size: 12px;
+}
+.react-calendar-heatmap rect {
+    outline: none;
+}
+
+.react-calendar-heatmap rect:focus {
+    outline: none;
+}
+
+.react-calendar-heatmap rect:hover {
+    stroke: #ffffff00 !important;
+}

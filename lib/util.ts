@@ -49,4 +49,20 @@ export const months = [
 
 export const weeks = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
- 
+ export const formatDate = (dateStr:Date) => {
+    const date = new Date(dateStr);
+    const day = date.getDate();
+    const month = date.toLocaleString('en-US', { month: 'long' });
+
+    const getOrdinal = (n) => {
+        if (n > 3 && n < 21) return 'th'; // 11th, 12th, 13th...
+        switch (n % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    };
+
+    return `${day}${getOrdinal(day)} ${month}`;
+};

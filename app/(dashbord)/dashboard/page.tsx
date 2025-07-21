@@ -1,5 +1,6 @@
 'use client'
 import TimeTable from '@/components/timeTable';
+import HeatMapCalender from '@/components/ui/heatMapCalender';
 import { useGetAttendance } from '@/hooks/useGetAttendance';
 import { AttendanceDataProps, TimeTableProps } from '@/lib/constant';
 import { COLORS2 } from '@/lib/util';
@@ -167,6 +168,7 @@ const DashBoardMainaPage = () => {
           </AreaChart>
         </ResponsiveContainer>
       </div>}
+      <HeatMapCalender presentData={dateData}/>
     </div>
   )
 }
