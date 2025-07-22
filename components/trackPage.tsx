@@ -1,5 +1,3 @@
-
-
 'use client'
 import DateButton from '@/components/ui/dateButtons';
 import { useFilteredDate } from '@/hooks/useFilteredData';
@@ -26,7 +24,7 @@ const TrackComponent = () => {
       <DateButton startDate={startDate} endDate={endDate} />
       <div className=' w-[100%] mx-auto my-10 p-5   center flex-col gap-4  rounded-lg shadow-lg '>
        {presentData[0]?.value !== 0 && !isLoading ? <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
-          <div className=' w-[50px]  max-md:w-full '>
+          <div className=' w-[50px] max-md:w-full '>
             
               <PieChart className='border-none outline-none' width={370} height={400}>
                 <Pie data={presentData} dataKey="value"
@@ -60,7 +58,7 @@ const TrackComponent = () => {
             {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 && totalPersentages.map((item, index) => (
               <div key={index} className='flex gap-1 justify-between items-center'>
                 <span className='text-white capitalize'>{item.type}</span>:
-                <span className='text-white'>{item.percentage}</span>
+                <span className='text-white'>{item.percentage} %</span>
               </div>
             ))}
           </div>
@@ -75,8 +73,8 @@ const TrackComponent = () => {
             ];
             return (
               <div key={index} 
-              className={` center flex-col max-md:w-full ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " card " : "bg-gradient-to-br to-rose-500/30  from-rose-600/20 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
-
+              className={` center flex-col max-md:w-full 
+              ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " card " : "bg-gradient-to-br to-rose-500/30  from-pink-600/80 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
                 <h1 className=' -mb-13 mt-5  text-lg text-center font-medium '>{subject?.name.toUpperCase()}</h1>
                 <PieChart width={300} height={300}>
                   <Pie
@@ -121,6 +119,7 @@ const TrackComponent = () => {
         <div className=' w-full '>
 
           {subjCount.length !== 0 && <div className=' w-full h-[400px] card rounded-3xl mb-4 card p-2 px-4'>
+            <h1 className=' text-lg text-center font-medium'>Subject vs Attendance</h1>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={subjCount}>
                 <CartesianGrid strokeDasharray="0 0" vertical={false} opacity={0.1} />
@@ -147,7 +146,8 @@ const TrackComponent = () => {
           </div>}
 
 
-          {dateData.length !== 0 && <div className=' w-full h-[400px] rounded-3xl mb-4 card p-2 px-4'>
+          {dateData.length !== 0 && <div className=' w-full h-[420px] rounded-3xl mb-4 card p-2 px-4'>
+            <h1 className=' text-lg text-center font-medium'>Date vs Attendance</h1>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={dateData}>
                 <CartesianGrid strokeDasharray="0.1 0" vertical={false} opacity={0.1} />

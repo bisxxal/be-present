@@ -1,7 +1,7 @@
 'use client'
-import { getDayName, weeks } from '@/lib/util';
+import { countMonthlyClasses, countSundaysInMonth, getDayName, weeks } from '@/lib/util';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loading from './ui/loading';
 import { Trash2 } from 'lucide-react';
 import { deleteAttendance } from '@/action/attendance.action';
@@ -9,12 +9,12 @@ import { toastError, toastSuccess } from '@/lib/toast';
 import { TimeTableProps } from '@/lib/constant';
 import { useGetTimeTable } from '@/hooks/useGetAttendance';
 
-const TimeTable = ({ type, setCurrentClass, setRemaining , currentClass }: { currentClass:TimeTableProps | undefined , type: "view" | "edit", setCurrentClass?: React.Dispatch<React.SetStateAction<TimeTableProps | undefined>>, setRemaining?: React.Dispatch<React.SetStateAction<number>> }) => {
+const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { currentClass: TimeTableProps | undefined, type: "view" | "edit", setCurrentClass?: React.Dispatch<React.SetStateAction<TimeTableProps | undefined>>, setRemaining?: React.Dispatch<React.SetStateAction<number>> }) => {
     const client = useQueryClient()
     const { data, isLoading } = useGetTimeTable()
-
-
+    const [show , setShow] = useState('');
     const isToday = new Date().getDay();
+
 
     const deleteTimeTableMutation = useMutation({
         mutationFn: async (id: string) => {
@@ -24,16 +24,20 @@ const TimeTable = ({ type, setCurrentClass, setRemaining , currentClass }: { cur
         onSuccess: (data) => {
             if (data.status === 200) {
                 toastSuccess(data.message);
+                setShow('');
                 client.invalidateQueries({ queryKey: ['timetable'] });
+                
             } else {
                 toastError(data.message);
             }
         },
     });
+    // const totalClasses = 
 
     useEffect(() => {
         if (!data?.data) return;
         const todaysClasses = data.data.filter((item: any) => item.dayOfWeek === isToday);
+ 
         const parseTimeToDate = (timeStr: string) => {
             const [time, modifier] = timeStr.split(' ');
             let [hours, minutes] = time.split(':').map(Number);
@@ -63,8 +67,39 @@ const TimeTable = ({ type, setCurrentClass, setRemaining , currentClass }: { cur
         }
     }, [data]);
 
+    const [totalClasses, setTotalclass] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const val = localStorage.getItem('classes');
+            return val ? parseFloat(val) : null;
+        }
+        return null;
+    })
+   
+    useEffect(() => {
+        if (data?.data && !totalClasses) {
+            console.log("Data for Total Classes:", data.data);
+            const total = countMonthlyClasses(data?.data?.length);
+            setTotalclass(total);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('classes', total.toString());
+            }
+        }
+    }, [totalClasses,data]);
+
     return (
         <div className="w-fit mt-7 overflow-scroll max-md:w-full max-md:px-2 mx-auto ">
+
+            {show && <div className='center fixed top-0 right-0 p-2 w-full h-full bg-[#0000003f] backdrop-blur-2xl z-[40] '>
+
+                <div className='flex flex-col gap-2 max-md:w-[90%] w-[500px] bg-[#ffffff46] p-4 rounded-xl shadow-lg'>
+                    <p className=' text-center'>Are you sure want to delete Subject ?</p>
+                    <div className=' center gap-3'>
+                    <button onClick={()=>setShow('')} className='!rounded-xl border  center py-3 px-8'>Cancel </button>
+                        <button onClick={()=>deleteTimeTableMutation.mutate(show)} className='!rounded-xl buttonred !py-3 !px-8'>Delete</button>
+                    </div>
+                </div>
+                
+            </div>}
             <div className="flex w-fit ">
                 {weeks.map((day, idx) => (
                     <div key={idx} className={` w-[220px] max-md:w-[150px] text-center border border-[#ffffff30] 
@@ -73,39 +108,38 @@ const TimeTable = ({ type, setCurrentClass, setRemaining , currentClass }: { cur
                     </div>
                 ))}
             </div>
-           
+
 
             <div className="flex mx-auto w-fit border-r border-b border-[#ffffff30]">
-            {[1, 2, 3, 4, 5, 6].map((day) => {
-                const subjectsForDay = data?.data?.filter((item: any) => item.dayOfWeek === day) || [];
-                return (
-                    <div key={day}>
-                        {subjectsForDay.length > 0 && !isLoading ? (
-                            subjectsForDay.map((item: any, idx: number) => {
-                                const bgColor = currentClass?.subjectName === item.subjectName ? ' bg-gradient-to-r from-green-600 /20 to-emerald-600 /20 ' :  isToday === item.dayOfWeek ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 !rounded-none " : " bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] "; 
-                                return(
-                                    <div key={idx}
-                                    className={` max-md:w-[150px] w-[220px]  h-[120px] border border-[#ffffff30]  ${bgColor} relative bg-emerald-5 p-3 `}>
-                                    {type === 'edit' && <h2 onClick={() => deleteTimeTableMutation.mutate(item.id)} className='absolute right-1 top-1 hover:bg-red-500/20 w-fit   rounded-full p-1.5 text-red-500'> <Trash2 size={20} /> </h2>}
-                                    <h2 className="text-md capitalize font-semibold">{item.subjectName}</h2>
-                                    <p className="text-sm">Start: {item.startTime}</p>
-                                    <p className="text-sm">End: {item.endTime}</p>
-                                    <p className="text-sm">Day: {getDayName(item.dayOfWeek)}</p>
-                                </div>
+                {[1, 2, 3, 4, 5, 6].map((day) => {
+                    const subjectsForDay = data?.data?.filter((item: any) => item.dayOfWeek === day) || [];
+                    return (
+                        <div key={day}>
+                            {subjectsForDay.length > 0 && !isLoading ? (
+                                subjectsForDay.map((item: any, idx: number) => {
+                                    const bgColor = currentClass?.subjectName === item.subjectName ? ' bg-gradient-to-r from-green-600 /20 to-emerald-600 /20 ' : isToday === item.dayOfWeek ? "bg-gradient-to-r from-purple-600/20 to-pink-600/20 !rounded-none " : " bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] ";
+                                    return (
+                                        <div key={idx}
+                                            className={` max-md:w-[150px] w-[220px]  h-[120px] border border-[#ffffff30]  ${bgColor} relative bg-emerald-5 p-3 `}>
+                                            {type === 'edit' && <h2 onClick={() => setShow(item.id)} className='absolute right-1 top-1 hover:bg-red-500/20 w-fit   rounded-full p-1.5 text-red-500'> <Trash2 size={20} /> </h2>}
+                                            <h2 className="text-md capitalize font-semibold">{item.subjectName}</h2>
+                                            <p className="text-sm">Start: {item.startTime}</p>
+                                            <p className="text-sm">End: {item.endTime}</p>
+                                            <p className="text-sm">Day: {getDayName(item.dayOfWeek)}</p>
+                                        </div>
+                                    )
+                                }
                                 )
-                            }
-                            )
-                        ) : (
-                            isLoading ? <Loading boxes={1} child=" max-md:w-[150px] border-x w-[220px]  h-[120px] !rounded-none" parent="w-full " /> :
-                                <div className="max-md:w-[150px] w-[220px] h-[120px] border border-[#ffffff30] bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] flex items-center justify-center text-sm text-gray-400 italic rounded-none">No Class</div>
-                        )}
-                    </div>
-                );
-            })}
-        </div>
+                            ) : (
+                                isLoading ? <Loading boxes={1} child=" max-md:w-[150px] border-x w-[220px]  h-[120px] !rounded-none" parent="w-full " /> :
+                                    <div className="max-md:w-[150px] w-[220px] h-[120px] border border-[#ffffff30] bg-gradient-to-br to-[#ffffff13] from-[#ffffff00] flex items-center justify-center text-sm text-gray-400 italic rounded-none">No Class</div>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
         </div>
     );
 }
 
 export default TimeTable
- 

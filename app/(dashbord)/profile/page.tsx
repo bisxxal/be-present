@@ -18,6 +18,7 @@ const ProfilePage = () => {
     localStorage.removeItem(LOCAL_STORAGE_KEY);
     try {
       const response = await getAttendanceForHeatmap();
+      console.log(response)
       if (response.status !== 200) {
         return;
       }
@@ -56,10 +57,10 @@ const ProfilePage = () => {
         ) : (
           <div className='text-lg text-center'>
             <Image src={data?.user?.image!} alt="User Avatar" height={100} width={100} className='rounded-full w-32 h-32 mx-auto' />
-            <p className=' mt-5'><strong>Name:</strong> {data?.user?.name}</p>
-            <p><strong>Email:</strong> {data?.user?.email}</p>
+            <p className='capitalize mt-5'><strong>Hiii , </strong> {data?.user?.name}</p>
+            <p><strong>Signed as :</strong> {data?.user?.email}</p>
             {<button onClick={() => signOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
-            {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{ updated ? <Loader className=' animate-spin ' /> : 'Update HeatMap'}</button>}
+            {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{ updated ? <Loader className=' animate-spin ' /> : 'Update Streak'}</button>}
           </div>
         )}
       </div>

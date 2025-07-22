@@ -1,6 +1,7 @@
 'use client'
 import { AlignRight, GraduationCap } from 'lucide-react'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -17,14 +18,14 @@ const Navbar = () => {
             {
                 status !== 'loading' && data ? <div className='center gap-2 max-md:gap-1'>
                     <Link href={`/profile`}>
-                    <img loading='lazy' src={data.user.image!} alt="User Avatar" width={40} height={40} className=' max-md:w-8  rounded-full' />
+                    <Image loading='lazy' src={data.user.image!} alt="User Avatar" width={40} height={40} className=' max-md:w-8  rounded-full' />
                     </Link>
                     {<div className='relative group '>
                         <label className=' cursor-pointer' htmlFor='is'>
                             <AlignRight className='' size={22} />
                         </label>
                         <input type="checkbox" hidden id="is" />
-                        <div className='group-has-checked:flex hidden appear absolute  py-3.5 w- z-30 flex-col gap-2  text-white p-2  rounded-3xl bg-[#ffffff21] !backdrop-blur-[25px] -left-[40px] -top-[70px] '>
+                        <div className='group-has-checked:flex hidden appear absolute  py-3.5 w- z-30 flex-col gap-2  text-white p-2  rounded-3xl bg-[#18084f87] !backdrop-blur-[25px] -left-[40px] -top-[70px] '>
                             <Link className='text-sm hover:bg-[#5d5fef] bg-[#7a94f4d1] py-2 rounded-xl hover:text-[#e6e2eb] text-[#ffffff] center  ' href={`/dashboard`}> Dashbord </Link>
                             <Link className='text-sm hover:bg-[#5d5fef] bg-[#7a94f4d1] py-2 rounded-xl hover:text-[#e6e2eb] text-[#ffffff] center' href={`/profile`}>Profile</Link>
                             <Link className='text-sm hover:bg-[#5d5fef] bg-[#7a94f4d1] py-2 rounded-xl hover:text-[#e6e2eb] text-[#ffffff] px-[40px] center' href={`/attendance`}> Attendance </Link>

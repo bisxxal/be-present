@@ -13,18 +13,23 @@ export const demoAttendanceData = [
     filteredData.push({ date: date.toISOString().split('T')[0], count: Math.floor(Math.random() * 10) });
   }
 
-  export const demoTrendData = [
-    { month: 'Jan', rate: 25 },
-    { month: 'Feb', rate: 88 },
-    { month: 'Mar', rate: 32 },
-    { month: 'Apr', rate: 39 },
-    { month: 'May', rate: 94 },
-    { month: 'Jun', rate: 41 },
-    { month: 'Jul', rate: 51 },
-    { month: 'Aug', rate: 91 },
-    { month: 'Nov', rate: 11 },
-    { month: 'Dec', rate: 61 },
-  ];
+export const demoTrendData = [
+  { month: 'Jan', present: 40 },
+  { month: 'Feb', present: 46 },
+  { month: 'Mar', present: 53 },
+  { month: 'Apr', present: 59 },
+  { month: 'May', present: 63 },
+  { month: 'Jun', present: 66 },
+  { month: 'Jul', present: 63 },
+  { month: 'Aug', present: 58 },
+  { month: 'Sep', present: 52 },
+  { month: 'Oct', present: 47 },
+  { month: 'Nov', present: 43 },
+  { month: 'Dec', present: 40 },
+];
+
+
+
 
   export const demoTimeTable = [
     { time: '09:00 AM', subject: 'C++', room: 'Room 101', status: 'present' },
@@ -44,7 +49,7 @@ export const demoAttendanceData = [
     {
       icon: BarChart3,
       title: 'Advanced Analytics',
-      description: 'Comprehensive reports and analytics to identify patterns and improve attendance rates.',
+      description: 'Comprehensive reports and analytics to identify patterns and improve attendance presents.',
       gradient: 'from-purple-500 to-pink-500'
     },
     {
@@ -53,24 +58,7 @@ export const demoAttendanceData = [
       description: 'Enterprise-grade security with 99.9% uptime guarantee and data encryption.',
       gradient: 'from-green-500 to-emerald-400'
     },
-    {
-      icon: Smartphone,
-      title: 'Mobile Friendly',
-      description: 'Access from any device with our responsive design and native mobile apps.',
-      gradient: 'from-orange-500 to-yellow-400'
-    },
-    {
-      icon: Users,
-      title: 'Multi-user Support',
-      description: 'Role-based access control for administrators, teachers, and students.',
-      gradient: 'from-red-500 to-pink-500'
-    },
-    {
-      icon: Calendar,
-      title: 'Smart Scheduling',
-      description: 'Automated timetable integration with intelligent attendance predictions.',
-      gradient: 'from-indigo-500 to-purple-500'
-    }
+     
   ];
 
   export const stats = [

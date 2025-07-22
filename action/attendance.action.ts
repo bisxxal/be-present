@@ -18,8 +18,8 @@ export async function createAttendanceRecords(input: {
     return { status: 401, message: "Unauthorized" };
   }
 
-  const dayStart = new Date(date);
-  dayStart.setHours(0, 0, 0, 0);
+  // const dayStart = new Date(date);
+  // dayStart.setHours(0, 0, 0, 0);
 
   try {
     const results = await Promise.all(
@@ -29,7 +29,7 @@ export async function createAttendanceRecords(input: {
             userId_timeTableId_date: {
               userId: session.user.id,
               timeTableId: record.timeTableId,
-              date: dayStart,
+              date: new Date(date),
             },
           },
           update: {
@@ -39,7 +39,7 @@ export async function createAttendanceRecords(input: {
             userId: session.user.id,
             timeTableId: record.timeTableId,
             present: record.present,
-            date: dayStart,
+           date: new Date(date),
           },
         })
       )

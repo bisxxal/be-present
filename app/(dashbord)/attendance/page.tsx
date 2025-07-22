@@ -132,7 +132,7 @@ const Attendance: React.FC = () => {
     const res = await createAttendanceRecords(payload);
 
     if (res.status === 200) {
-      toastSuccess(data?.message?  data?.message :'Attendance marked successfully.');
+      toastSuccess(data?.message ?  data?.message :'Attendance marked successfully.');
       setIsModalOpen(false);
     } else {
       toastError(res.message);

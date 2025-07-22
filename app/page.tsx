@@ -10,7 +10,8 @@ import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { formatDate } from '@/lib/util';
 import { FilteredDataProps } from '@/lib/constant';
-import { demoAttendanceData, demoTimeTable, demoTrendData, features, filteredData, stats } from '@/lib/dummy';
+import { demoAttendanceData, demoTimeTable, demoTrendData, features, filteredData, stats, streakData } from '@/lib/dummy';
+import Image from 'next/image';
 
 const AttendanceTrackerLanding = () => {
   const { data, status } = useSession();
@@ -19,7 +20,6 @@ const AttendanceTrackerLanding = () => {
   if (data?.user && status === 'authenticated') {
     router.push('/dashboard');
   }
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#0F0F1A' }}>
@@ -87,26 +87,26 @@ const AttendanceTrackerLanding = () => {
               <Link href={'/sign-in'} className="px-8 py-4 max-md:w-[90%] bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
                 Start Free Trial
               </Link>
-              <button className="px-8 py-4 max-md:w-[90%] center border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300 flex items-center">
+              <Link href={`/streakdemo`} className="px-8 py-4 max-md:w-[90%] center border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300 flex items-center">
                 <Eye className="w-5 h-5 mr-2" />
-                View Demo
-              </button>
+                  View Streak
+              </Link>
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="text-3xl md:text-4xl font-bold text-white mb-2">{stat.number}</div>
                   <div className="text-gray-400">{stat.label}</div>
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
 
-      <section className="bg-[#0d1117] mt-3   px-60 max-md:px-2  p-4 rounded-3xl text-white">
+      <section className="bg-[#0d1117] -mt-[100px]   px-60 max-md:px-2  p-4 rounded-3xl text-white">
         <h2 className="text-3xl text-center font-semibold mb-4">Maintain Streaks</h2>
         <CalendarHeatmap
           className="focus:outline-none"
@@ -199,7 +199,7 @@ const AttendanceTrackerLanding = () => {
                   />
                   <Area
                     type="monotone"
-                    dataKey="rate"
+                    dataKey="present"
                     stroke="#8B5CF6"
                     fill="url(#colorGradient)"
                     strokeWidth={3}
@@ -239,6 +239,45 @@ const AttendanceTrackerLanding = () => {
         </div>
       </section>
 
+
+        <div className="mb-20 center flex-col gap-3 max-md:px-6">
+                  <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent animate-fade-in">
+                    Unlock Amazing Badges
+                  </h2>
+                  <div className=" flex flex-wrap justify-center gap-5 ">
+                    {streakData.map((streak, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={` max-md:w-full bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-2xl p-6 max-md:p-0 border border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer animate-slide-up group`}
+                          style={{ animationDelay: `${index * 0.1}s` }}
+                        >
+                          <div className="flex items-center justify-between max-md:pr-3 gap-6 max-md:gap-1">
+                            <div className={`p-4 max-md:p-2 bg-gr adient-to-r ${streak.color} rounded-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                              <Image loading='lazy' width={150} height={150} src={streak.icon} className=' w-36 h-36  ' alt="" />
+                            </div>
+                            <div className=" max-md:flex-col">
+                              <div className="flex max-md:flex-col items-center gap-4 mb-2">
+                                <span className="text-2xl font-bold text-white">{streak.length}</span>
+                                <span className={`px-3 py-1 bg-gradient-to-r ${streak.color} text-white text-sm font-semibold rounded-full`}>
+                                  {streak.badge}
+                                </span>
+                              </div>
+                              <p className="text-gray-300 max-md:text-sm  text-lg">{streak.message}</p>
+                            </div>
+      
+                           
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                 <Link href={`/streakdemo`} className="text-white mt-10 bg-orange-500 px-8 py-4 rounded-2xl font-bold max-md:text-base text-lg hover:bg-gray-100 hover:text-orange-500 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                Begin Your Streak Journey
+              </Link>
+                </div>
+
       {/* Features Section */}
       <section id="features" className="px-6 py-16">
         <div className="max-w-7xl mx-auto">
@@ -272,12 +311,12 @@ const AttendanceTrackerLanding = () => {
             <Link href={'/sign-in'} className="px-8 py-4  max-md:w-[90%]  bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
               Start Your Free Trial
             </Link>
-            <button className="px-8 py-4  max-md:w-[90%]  border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300">
-              Schedule a Demo
-            </button>
+            <Link href={`/streakdemo`} className="px-8 py-4  max-md:w-[90%]  border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300">
+             View Streak
+            </Link>
           </div>
         </div>
-        <footer className="px-6 pt-4 border-t border-gray-800">
+        <footer className="px-6 pt-4  ">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center space-x-3 mb-4 md:mb-0">

@@ -1,26 +1,25 @@
 'use client'
-import React, { useState, useEffect, useMemo } from 'react';
-import { Calendar, Target, Flame, CheckCircle2, XCircle, Award, BarChart3, Activity, Clock } from 'lucide-react';
-import { endOfMonth, startOfMonth } from 'date-fns';
-import { badgeImages, countHowManyDays, getUnlockedAchievements, weeklyDataFormatedata } from '@/lib/util';
-import Image from 'next/image';
 import { useFilteredDate } from '@/hooks/useFilteredData';
 import { calculateStreak } from '@/lib/streak';
+import { badgeImages, countHowManyDays, getUnlockedAchievements, weeklyDataFormatedata } from '@/lib/util';
+import { endOfMonth, startOfMonth } from 'date-fns';
+import { Activity, Award, BarChart3, Calendar, CheckCircle2, Clock, Flame, Target, XCircle } from 'lucide-react';
+import Image from 'next/image';
+import { useEffect, useMemo, useState } from 'react';
 
 const ProgressTracker = () => {
   const [selectedPeriod, setSelectedPeriod] = useState('week');
-  const [animateProgress, setAnimateProgress] = useState(false);
   const today = useMemo(() => new Date(), []);
   const defaultStart = startOfMonth(today);
   const defaultEnd = endOfMonth(today);
 
-const [badge, setBadge] = useState<number>();
+  const [badge, setBadge] = useState<number>();
 
- const { presentData,totalPersentages,dateData,} = useFilteredDate(defaultStart, defaultEnd)
+  const { presentData, totalPersentages, dateData, } = useFilteredDate(defaultStart, defaultEnd)
 
   useEffect(() => {
-      const res = calculateStreak(dateData)
-      setBadge(res);
+    const res = calculateStreak(dateData)
+    setBadge(res);
   }, [dateData, badge])
 
   const weeklyData = weeklyDataFormatedata(dateData);
@@ -28,60 +27,64 @@ const [badge, setBadge] = useState<number>();
     attendedDays: presentData.find(item => item.type === 'present')?.value || 0,
     missedDays: presentData.find(item => item.type === 'absent')?.value || 0,
     currentStreak: badge || 0,
+    totalClasses: typeof window !== 'undefined' && localStorage.getItem('classes') ? Number(localStorage.getItem('classes')) : 0,
   };
 
- const CircularProgress = ({percentage,size = 120,strokeWidth = 8} ) => {
-  const radius = (size - strokeWidth) / 2;
-  const circumference = 2 * Math.PI * radius;
-  percentage = parseFloat(percentage);
-  const strokeDashoffset = circumference * (1 - percentage / 100);
+  const attendedPercent = monthlyStats.totalClasses ? (monthlyStats.attendedDays / monthlyStats.totalClasses) * 100 : 0;
+  const missedPercent = monthlyStats.totalClasses ? (monthlyStats.missedDays / monthlyStats.totalClasses) * 100 : 0;
 
-  return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg
-        className="transform -rotate-90"
-        width={size}
-        height={size}
-      >
-        <defs>
-          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#3b82f6" /> {/* blue-500 */}
-            <stop offset="100%" stopColor="#8b5cf6" /> {/* purple-500 */}
-          </linearGradient>
-        </defs>
+  const CircularProgress = ({ percentage, size = 120, strokeWidth = 8 }) => {
+    const radius = (size - strokeWidth) / 2;
+    const circumference = 2 * Math.PI * radius;
+    percentage = parseFloat(percentage);
+    const strokeDashoffset = circumference * (1 - percentage / 100);
 
-        {/* Background Circle */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="transparent"
-          stroke="#374151" // gray-700
-          strokeWidth={strokeWidth}
-        />
+    return (
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg
+          className="transform -rotate-90"
+          width={size}
+          height={size}
+        >
+          <defs>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#3b82f6" /> {/* blue-500 */}
+              <stop offset="100%" stopColor="#8b5cf6" /> {/* purple-500 */}
+            </linearGradient>
+          </defs>
 
-        {/* Progress Circle */}
-        <circle
-          cx={size / 2}
-          cy={size / 2}
-          r={radius}
-          fill="transparent"
-          stroke="url(#gradient)"
-          strokeWidth={strokeWidth}
-          strokeDasharray={circumference}
-          strokeDashoffset={strokeDashoffset}
-          className="transition-all duration-1000 ease-out"
-          strokeLinecap="butt" 
-        />
-      </svg>
+          {/* Background Circle */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="transparent"
+            stroke="#374151" // gray-700
+            strokeWidth={strokeWidth}
+          />
 
-      {/* Center Text */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <span className="text-2xl font-bold text-white">{(percentage )}%</span>
+          {/* Progress Circle */}
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="transparent"
+            stroke="url(#gradient)"
+            strokeWidth={strokeWidth}
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            className="transition-all duration-1000 ease-out"
+            strokeLinecap="butt"
+          />
+        </svg>
+
+        {/* Center Text */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-2xl font-bold text-white">{(percentage)}%</span>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  };
 
   const StreakCounter = ({ streak, label }) => (
     <div className="bg-gradient-to-br from-orange-500/20 to-red-500/20 border border-orange-500/30 rounded-2xl p-6 text-center">
@@ -92,7 +95,7 @@ const [badge, setBadge] = useState<number>();
       </div>
 
       <p className="text-orange-200 font-medium">{label}</p>
-        <p className="text-orange-200 mt-3 font-medium">You have Got {badgeImages(badge)?.name}  </p>
+     {badgeImages(badge)?.name && <p className="text-orange-200 mt-3 font-medium">You have Got {badgeImages(badge)?.name}  </p>}
       <p className="text-orange-200 mt-3 font-medium"> {countHowManyDays(badge)?.count} more to day to get {countHowManyDays(badge)?.badgeName}</p>
     </div>
   );
@@ -115,10 +118,10 @@ const [badge, setBadge] = useState<number>();
               <Activity className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-              Progress Tracker
+              Streak Tracker
             </h1>
 
-           { badge ? badgeImages(badge).img && <Image loading='lazy' width={200} height={200} src={badgeImages(badge as string).img} className=' border-none outline-none w-36 h-36 max-md:w-52 max-md:h-52  ' alt="" />:''} 
+            {badge ? badgeImages(badge)?.img && <Image loading='lazy' width={200} height={200} src={badgeImages(badge as string)?.img} className=' border-none outline-none w-36 h-36 max-md:w-52 max-md:h-52  ' alt="" /> : ''}
           </div>
           <p className="text-gray-300  max-w-2xl mx-auto">
             Monitor your attendance journey with detailed insights and visual progress tracking
@@ -148,7 +151,8 @@ const [badge, setBadge] = useState<number>();
               <CheckCircle2 className="w-5 h-5 text-green-400" />
             </div>
             <div className="text-center">
-              <div className="text-4xl mt-5 font-bold text-white mb-2">{monthlyStats.attendedDays}</div>
+              <div className="text-4xl mt-1 font-bold text-white mb-2">{monthlyStats.attendedDays}</div>
+              <div className="text-sm mt-5 font-medium text-green-200 mb-2">out of {monthlyStats.totalClasses} classes</div>
             </div>
           </div>
 
@@ -162,8 +166,8 @@ const [badge, setBadge] = useState<number>();
                 key={period}
                 onClick={() => setSelectedPeriod(period)}
                 className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 capitalize ${selectedPeriod === period
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
-                    : 'text-gray-400 hover:text-white'
+                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                  : 'text-gray-400 hover:text-white'
                   }`}
               >
                 {period}
@@ -183,22 +187,22 @@ const [badge, setBadge] = useState<number>();
               {weeklyData.map((day, index) => (
                 <div
                   key={index}
-                  className={`w-[150px] border rounded-2xl p-4 text-center transition-all duration-300 hover:scale-105 ${day.attended === true 
-                      ? 'bg-gradient-to-br from-green-500/30 to-emerald-500/30  border-green-500/50' 
-                      : day.attended === 'pending'  ?  " bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/50 ":'bg-gradient-to-br from-red-500/30 to-pink-500/30 border border-red-500/50'
+                  className={`w-[150px] border rounded-2xl p-4 text-center transition-all duration-300 hover:scale-105 ${day.attended === true
+                    ? 'bg-gradient-to-br from-green-500/30 to-emerald-500/30  border-green-500/50'
+                    : day.attended === 'pending' ? " bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/50 " : 'bg-gradient-to-br from-red-500/30 to-pink-500/30 border border-red-500/50'
                     }`}
                   style={{ animationDelay: `${index * 0.1}s` }}
                 >
                   <div className="text-lg font-bold text-white mb-1">{day.date}</div>
                   <div className="text-sm text-gray-300 mb-2">{day.day}</div>
                   {day.attended === true ? (
-                    <CheckCircle2 className="w-6 h-6 text-green-400 mx-auto" /> 
+                    <CheckCircle2 className="w-6 h-6 text-green-400 mx-auto" />
                   ) : (
                     day.attended === 'pending' ? (
                       <Clock className="w-6 h-6 text-yellow-400 mx-auto" />
                     ) : (
-                    <XCircle className="w-6 h-6 text-red-400 mx-auto" />
-                  ))}
+                      <XCircle className="w-6 h-6 text-red-400 mx-auto" />
+                    ))}
                 </div>
               ))}
             </div>
@@ -220,24 +224,24 @@ const [badge, setBadge] = useState<number>();
                   <div>
                     <div className="flex justify-between mb-2">
                       <span className="text-green-400">Present Days</span>
-                      <span className="text-white">{monthlyStats.attendedDays} </span>
+                      <span className="text-white">{monthlyStats.attendedDays} /  {Number(monthlyStats.totalClasses)}</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-3">
                       <div
                         className="bg-gradient-to-r from-green-500 to-emerald-500 h-3 rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: animateProgress ? `${(monthlyStats.attendedDays / monthlyStats.totalDays) * 100}%` : '0%' }}
+                        style={{ width: attendedPercent ? `${attendedPercent}%` : '0%' }}
                       ></div>
                     </div>
                   </div>
                   <div>
                     <div className="flex justify-between mb-2">
                       <span className="text-red-400">Missed Days</span>
-                      <span className="text-white">{monthlyStats.missedDays} </span>
+                      <span className="text-white">{monthlyStats.missedDays} / {Number(monthlyStats.totalClasses)}</span>
                     </div>
                     <div className="w-full bg-gray-700 rounded-full h-3">
                       <div
                         className="bg-gradient-to-r from-red-500 to-pink-500 h-3 rounded-full transition-all duration-1000 ease-out"
-                        style={{ width: animateProgress ? `${(monthlyStats.missedDays / monthlyStats.totalDays) * 100}%` : '0%' }}
+                        style={{ width: missedPercent ? `${missedPercent}%` : '0%' }}
                       ></div>
                     </div>
                   </div>
@@ -252,7 +256,7 @@ const [badge, setBadge] = useState<number>();
           </div>
         )}
 
-        <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-2xl p-8 border border-gray-700/50 shadow-xl">
+        <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-2xl p-8 max-md:px-6 border border-gray-700/50 shadow-xl">
           <div className="flex items-center gap-3 mb-8">
             <Award className="w-6 h-6 text-yellow-400" />
             <h2 className="text-2xl font-bold text-white">Achievement Progress</h2>
@@ -262,15 +266,15 @@ const [badge, setBadge] = useState<number>();
               <div
                 key={index}
                 className={`p-4 rounded-2xl border text-center transition-all duration-300 hover:scale-105 ${achievement.unlocked
-                    ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/50'
-                    : 'bg-gray-800/50 border-gray-600/50'
+                  ? 'bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border-yellow-500/50'
+                  : 'bg-gray-800/50 border-gray-600/50'
                   }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className={`w-24 h-24  rounded-full center mx-auto mb-3 flex items-center justify-center ${achievement.unlocked ? 'bg-yellow-500/80' : 'bg-gray-600'
                   }`}>
                   {/* <Award className="w-6 h-6 text-white" /> */}
-                  <Image loading='lazy' width={100} height={100} src={achievement.img} className=' drop-shadow-md drop-shadow-[#00000080] border-none outline-none w-full h-full ' alt="" />
+                  <Image loading='lazy' width={150} height={150} src={achievement.img} className=' drop-shadow-md drop-shadow-[#00000080] border-none outline-none w-full h-full ' alt="" />
                 </div>
                 <h3 className={`font-semibold mb-2 text-sm ${achievement.unlocked ? 'text-yellow-200' : 'text-gray-400'
                   }`}>

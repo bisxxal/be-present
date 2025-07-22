@@ -85,6 +85,11 @@ export const countHowManyDays = (badgeNumber:number) => {
 
   let count = 0;
   let badgename = '';
+
+  if (badgeNumber < 3) {
+    count = 3;
+    badgename = 'Your First badge';
+  }
   if (badgeNumber >= 3) {
     count = 5;
     badgename = 'Consistent Champ';
@@ -140,4 +145,26 @@ export const weeklyDataFormatedata = (dateData) => {
   }
   return weeklyData;
 
+}
+ 
+export function countMonthlyClasses(  classesPerWeek: number ): number {
+  const year =  new Date().getFullYear();
+  const  month = new Date().getMonth();  
+  let classDays = 0;
+    const date = new Date(year, month, 1); // month is 0-indexed
+
+    while (date.getMonth() === month) {
+        const day = date.getDay();
+        // Skip Sundays (0 = Sunday)
+        if (day !== 0) {
+            classDays++;
+        }
+        date.setDate(date.getDate() + 1);
+    }
+
+    // Each week has 6 class days; so 15 classes per 6 days => 2.5 classes per day
+    const classesPerDay = classesPerWeek / 6;
+
+    const totalClasses = Math.floor(classDays * classesPerDay);
+    return totalClasses;
 }

@@ -24,5 +24,6 @@ export const config = {
     "/profile/:path*",
     "/timetable/:path*",
     "/track/:path*",
+    "/streak/:path*",
   ],
 }

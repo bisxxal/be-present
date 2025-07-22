@@ -53,8 +53,8 @@ export const useFilteredDate = ( startDate: Date, endDate: Date) => {
   // Calculate percentages
     const total = presentCount.present + presentCount.absent;
     const percentages = [
-      { type: 'present', percentage: ((presentCount.present / total) * 100).toFixed(2) + '%', },
-      { type: 'absent', percentage: ((presentCount.absent / total) * 100).toFixed(2) + '%', },
+      { type: 'present', percentage: ((presentCount.present / total) * 100).toFixed(2) , },
+      { type: 'absent', percentage: ((presentCount.absent / total) * 100).toFixed(2) , },
     ];
 
     // Set state
