@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const { data, status } = useSession();
   const fetchAndCacheData = async () => {
     setUpdated(true);
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    // localStorage.removeItem(LOCAL_STORAGE_KEY);
     try {
       const response = await getAttendanceForHeatmap();
       console.log(response)
@@ -24,7 +24,7 @@ const ProfilePage = () => {
       }
       const formatted = response && response.data?.reduce((acc: FilteredDataProps[], curr: { date: Date }) => {
         const date = new Date(curr.date);
-        const formattedDate = date.toISOString().split('T')[0];
+const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
         const existing = acc.find(item => item.date === formattedDate);
         if (existing) {
           existing.count += 1;

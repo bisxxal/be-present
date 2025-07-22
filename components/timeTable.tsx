@@ -1,5 +1,5 @@
 'use client'
-import { countMonthlyClasses, countSundaysInMonth, getDayName, weeks } from '@/lib/util';
+import { countMonthlyClasses, getDayName, weeks } from '@/lib/util';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 import Loading from './ui/loading';
@@ -8,6 +8,7 @@ import { deleteAttendance } from '@/action/attendance.action';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { TimeTableProps } from '@/lib/constant';
 import { useGetTimeTable } from '@/hooks/useGetAttendance';
+import Link from 'next/link';
 
 const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { currentClass: TimeTableProps | undefined, type: "view" | "edit", setCurrentClass?: React.Dispatch<React.SetStateAction<TimeTableProps | undefined>>, setRemaining?: React.Dispatch<React.SetStateAction<number>> }) => {
     const client = useQueryClient()
@@ -32,8 +33,6 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { curr
             }
         },
     });
-    // const totalClasses = 
-
     useEffect(() => {
         if (!data?.data) return;
         const todaysClasses = data.data.filter((item: any) => item.dayOfWeek === isToday);
@@ -138,6 +137,8 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { curr
                     );
                 })}
             </div>
+
+            { data?.data?.length === 0 && type ==='view'&&<Link href={`/timetable`} className='mt-10 buttonbg w-fit center mx-auto'>Add your Timetable</Link>}
         </div>
     );
 }

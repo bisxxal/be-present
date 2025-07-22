@@ -100,7 +100,6 @@ const TimeTablePage = () => {
               className=" px-3 py-2 border max-md:w-full w-[400px] rounded-lg"
             />
             <select className=' max-md:w-full' onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
-              <option value="">Select Day</option>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
               <option value="3">WednesDay</option>

@@ -5,6 +5,7 @@ import { badgeImages, countHowManyDays, getUnlockedAchievements, weeklyDataForma
 import { endOfMonth, startOfMonth } from 'date-fns';
 import { Activity, Award, BarChart3, Calendar, CheckCircle2, Clock, Flame, Target, XCircle } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 const ProgressTracker = () => {
@@ -294,7 +295,12 @@ const ProgressTracker = () => {
           </div>
         </div>
 
+      {/* <Link href={`/streakdemo`} className=' my-10   center hover:underline text-center'>What is Streak ?</Link> */}
+      <Link href={`/streakdemo`} className="text-white mt-10 center w-fit mx-auto bg-orange-500/90 px-8 py-2 rounded-2xl font-bold max-md:text-base text-lg hover:bg-gray-100 hover:text-orange-500 transform hover:scale-105 transition-all duration-300 shadow-lg">
+                More about Streak ?
+              </Link>
       </div>
+
     </div>
   );
 };
