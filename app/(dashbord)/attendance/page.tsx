@@ -24,7 +24,7 @@ const Attendance: React.FC = () => {
   const startDate = new Date(selectedYear, selectedMonth, 1);
   const endDate = new Date(selectedYear, selectedMonth + 1, 0);
 
-  const { data, isLoading } =  useGetTimeTable() 
+  const { data } =  useGetTimeTable() 
   const {data: data2 } =  useGetAttendance( startDate, endDate);
    
 
@@ -348,13 +348,13 @@ const Attendance: React.FC = () => {
                               ✅ {status.charAt(0).toUpperCase() + status.slice(1)}
                             </p>
                             <button onClick={handleClear}  
-                            // disabled={!isToday}
+                            disabled={!isToday} hidden={!isToday}
                              className="text-sm px-3 py-2  border border-gray-400 w-full rounded-md ">Clear</button>
                           </div>
                         ) : (
                           <div className="space-y-2">
                             <button
-                            //  disabled={!isToday}
+                             disabled={!isToday}
                               onClick={() => handleClick('present')}
                               className="w-full flex disabled:opacity-50 items-center justify-center gap-2  buttongreen text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
@@ -362,7 +362,7 @@ const Attendance: React.FC = () => {
                                 Present
                             </button>
                             <button
-                            //  disabled={!isToday}
+                             disabled={!isToday}
                               onClick={() => handleClick('absent')}
                               className="w-full  disabled:opacity-50 flex items-center justify-center gap-2 buttonred  text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
@@ -378,9 +378,9 @@ const Attendance: React.FC = () => {
               </div>
               <button
               disabled={Object.keys(attendanceData[getAttendanceKey()]?.[selectedDate] || {}).length === 0 
-              // ||  !isToday
+              ||  !isToday
               }
-              // hidden={!isToday}
+              hidden={!isToday}
                 onClick={() => handleFinalSubmit()}
                 className={`disabled:opacity-50 w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
               >

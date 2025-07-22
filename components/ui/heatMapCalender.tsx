@@ -5,10 +5,8 @@ import 'react-tooltip/dist/react-tooltip.css';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { formatDate } from '@/lib/util';
 import { FilteredDataProps } from '@/lib/constant';
+ const LOCAL_STORAGE_KEY = 'attendanceHeatmapData';
 
-const LOCAL_STORAGE_KEY = 'attendanceHeatmapData';
-
- 
 const HeatMapCalender = () => {
     const [filteredData, setFilteredData] = useState<FilteredDataProps[]>([]);
     useEffect(() => {
@@ -57,7 +55,7 @@ const HeatMapCalender = () => {
 
     return (
         <div className="bg-[#0d1117] mt-20 border  border-[#ffffff26] px-60 max-md:px-2 lg:32 p-4 rounded-3xl text-white">
-            <h2 className="text-xl mb-4">Attendance Heatmap</h2>
+            {/* <h2 className="text-xl mb-4">Attendance Heatmap</h2> */}
             <CalendarHeatmap
                 className="focus:outline-none"
                 endDate={new Date()}

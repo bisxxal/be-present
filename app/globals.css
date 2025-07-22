@@ -39,8 +39,9 @@ body {
 }
 
 .buttonbg{
-  @apply text-white px-4 py-2 transition-all duration-500 rounded-full bg-gradient-to-br  from-[#9f5df0] font-medium to-[#6E56CF];
   box-shadow: inset -12px -3px 20px 2px #00000021, 0 8px 10px -6px rgb(0 0 0 / 0.1) ;
+  /* @apply text-white px-4 py-2 transition-all  duration-500 rounded-full bg-gradient-to-br  from-[#9f5df0] font-medium to-[#6E56CF]; */
+  @apply text-white px-4 py-2 transition-all  duration-500 rounded-full bg-gradient-to-r  from-purple-500 to-pink-500 ;
 }
 .buttongreen{
   @apply text-white px-4 py-2 transition-all duration-500 rounded-full bg-gradient-to-br  from-[#07f733] font-medium to-[#02970e];

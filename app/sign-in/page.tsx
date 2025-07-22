@@ -13,24 +13,7 @@ const SignInPage = () => {
     if(data?.user && status === 'authenticated') {
       router.push('/dashboard');
     }
-  const features = [
-    {
-      icon: Shield,
-      title: 'Secure Authentication',
-      description: 'Enterprise-grade security with Google OAuth 2.0'
-    },
-    {
-      icon: Users,
-      title: 'Role-based Access',
-      description: 'Different dashboards for students, teachers, and admins'
-    },
-    {
-      icon: Zap,
-      title: 'Instant Setup',
-      description: 'Get started immediately with your Google account'
-    }
-  ];
-
+ 
   const [currentStat, setCurrentStat] = useState(0);
   const stats = ['10K+ Students', '500+ Schools', '99.9% Uptime', '24/7 Support'];
 
