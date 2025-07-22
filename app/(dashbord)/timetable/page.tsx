@@ -19,9 +19,7 @@ type SubjectEntry = {
 
 const TimeTablePage = () => {
   const client = useQueryClient()
-  const [subjects, setSubjects] = useState<SubjectEntry[]>([
-    { subjectName: '', startTime: '', endTime: '', day: '' } // Default to Sunday,
-  ]);
+  const [subjects, setSubjects] = useState<SubjectEntry[]>([{ subjectName: '', startTime: '', endTime: '', day: '1' } ]);
 
   const handleInputChange = (
     index: number,
@@ -99,11 +97,11 @@ const TimeTablePage = () => {
               onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
               className=" px-3 py-2 border max-md:w-full w-[400px] rounded-lg"
             />
-            <select className=' max-md:w-full' onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+            <select className=' max-md:w-full'   value={entry.day}   onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
-              <option value="3">WednesDay</option>
-              <option value="4">Thusday</option>
+              <option value="3">Wednesday</option>
+<option value="4">Thursday</option>
               <option value="5">Friday</option>
               <option value="6">Saturday</option>
             </select>

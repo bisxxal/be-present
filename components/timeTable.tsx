@@ -109,7 +109,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { curr
             </div>
 
 
-            <div className="flex mx-auto w-fit border-r border-b border-[#ffffff30]">
+            <div className="flex mx-auto w-fit border-x border-b border-[#ffffff30]">
                 {[1, 2, 3, 4, 5, 6].map((day) => {
                     const subjectsForDay = data?.data?.filter((item: any) => item.dayOfWeek === day) || [];
                     return (

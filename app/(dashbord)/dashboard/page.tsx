@@ -46,7 +46,7 @@ const DashBoardMainaPage = () => {
               {new Date().getDay() === 0 && <p className=' bg-clip-text  text-transparent bg-gradient-to-br from-indigo-500 to-pink-500'>{new Date().getDay() === 0 ? 'Happy sunday 🎉' : ''}</p>}
             </div>
             <p className="text-gray-300 text-lg">You have <span className="text-purple-400 font-semibold"><span className=' text-xl'>{remainingday}</span> remaining classes</span> today.</p>
-           { totalPersentages[0]?.percentage && <p>Your current attendance rate is <span className={`text-xl font-medium  ${Number(totalPersentages[0]?.percentage) > 75? ' text-green-400  ' : ' text-red-400  '} font-semibold `}>{ `${totalPersentages[0]?.percentage} %` || '0%'}</span></p>}
+           { totalPersentages[0]?.percentage && <p>Your current attendance rate is <span className={`text-xl font-medium  ${Number(totalPersentages[0]?.percentage) >= 75? ' text-green-400  ' : ' text-red-400  '} font-semibold `}>{ Number(totalPersentages[0]?.percentage) ? `${totalPersentages[0]?.percentage} %`: '0%'}</span></p>}
             {currentClass?.subjectName && (
               <p>Current Class :
                 <span className='text-green-400 text-xl font-medium capitalize'>
