@@ -1,5 +1,7 @@
 # 📚 Be Present
 
+<img width="1456" height="917" alt="Screenshot 2025-07-22 at 21 47 52" src="https://github.com/user-attachments/assets/4bd24864-c11d-4954-8893-5ac4ba068a71" />
+
 A comprehensive attendance tracking application built with Next.js that helps students monitor their class attendance, maintain streaks, and visualize their academic progress through interactive charts and analytics.
 
 ## ✨ Features
@@ -113,8 +115,14 @@ Make sure you have the following installed:
 
  
 ## 🎨 Screenshots
+<img width="1469" height="930" alt="Screenshot 2025-07-22 at 21 48 02" src="https://github.com/user-attachments/assets/cdbf080f-a9a2-47ab-beac-73af0a075aaf" />
+<img width="1470" height="952" alt="Screenshot 2025-07-22 at 21 46 08" src="https://github.com/user-attachments/assets/6dcad6d0-db51-4085-ad81-1dd5d9849b17" />
+<img width="1469" height="898" alt="Screenshot 2025-07-22 at 21 46 31" src="https://github.com/user-attachments/assets/b78321f2-6d73-4262-8019-da5944943bb6" />
+<img width="1470" height="933" alt="Screenshot 2025-07-22 at 21 46 41" src="https://github.com/user-attachments/assets/d904c716-fd2b-4569-a151-6ebb15e3ad4f" />
+<img width="1466" height="917" alt="Screenshot 2025-07-22 at 21 46 53" src="https://github.com/user-attachments/assets/adfbfd1a-8266-44fe-8f67-4bc1495a02c8" />
 
-[Add screenshots of your app here]
+<img width="1470" height="917" alt="Screenshot 2025-07-22 at 21 47 14" src="https://github.com/user-attachments/assets/b434697c-9323-4817-aa99-9c8d75a98075" />
+<img width="1470" height="911" alt="Screenshot 2025-07-22 at 21 47 28" src="https://github.com/user-attachments/assets/56f5e697-cd6c-44ab-b576-48d55d0e0b09" />
 
  
 ## 📝 License
