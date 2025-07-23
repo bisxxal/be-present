@@ -24,7 +24,7 @@ const ProfilePage = () => {
       }
       const formatted = response && response.data?.reduce((acc: FilteredDataProps[], curr: { date: Date }) => {
         const date = new Date(curr.date);
-const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+        const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
         const existing = acc.find(item => item.date === formattedDate);
         if (existing) {
           existing.count += 1;
@@ -41,10 +41,19 @@ const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata
     } catch (error) {
       console.error('Failed to fetch attendance data:', error);
     }
-    finally{
+    finally {
       toastSuccess('Data updated successfully!');
       setUpdated(false);
     }
+  };
+
+  const handelLogOut = () => {
+    
+    localStorage.removeItem('attendanceHeatmapData');
+    localStorage.removeItem('classes')
+    localStorage.removeItem('nextauth.message');
+    toastSuccess('Logged out successfully!');
+    signOut();
   };
 
   return (
@@ -59,8 +68,8 @@ const formattedDate = date.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata
             <Image src={data?.user?.image!} alt="User Avatar" height={100} width={100} className='rounded-full w-32 h-32 mx-auto' />
             <p className='capitalize mt-5'><strong>Hiii , </strong> {data?.user?.name}</p>
             <p><strong>Signed as :</strong> {data?.user?.email}</p>
-            {<button onClick={() => signOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
-            {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{ updated ? <Loader className=' animate-spin ' /> : 'Update Streak'}</button>}
+            {<button onClick={() => handelLogOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
+            {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{updated ? <Loader className=' animate-spin ' /> : 'Update Streak'}</button>}
           </div>
         )}
       </div>

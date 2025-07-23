@@ -111,8 +111,6 @@ Make sure you have the following installed:
 - View your badge collection in the profile section
 - Share your achievements to stay motivated
 
-## 📊 Database Schema
-
  
 ## 🎨 Screenshots
 <img width="1469" height="930" alt="Screenshot 2025-07-22 at 21 48 02" src="https://github.com/user-attachments/assets/cdbf080f-a9a2-47ab-beac-73af0a075aaf" />
