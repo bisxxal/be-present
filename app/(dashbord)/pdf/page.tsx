@@ -51,9 +51,11 @@ const PdfPage = () => {
     }, [data2]);
 
     const getAttendanceStatus = (dateObj: Date, subject: string) => {
+           
         const date = dateObj.toDateString();
-
-        if (dateObj > today) return <span>🕓</span>;
+        const isSunday = dateObj.getDay() === 0;
+        if (isSunday) return ;
+        if (dateObj > today) return  ;
 
         const record = presentData.find(
             (entry) => entry.date === date && entry.subject === subject
@@ -61,28 +63,25 @@ const PdfPage = () => {
 
         if (!record) return <span className=' text-xs'>NM</span>;
         return record.present ? <span>✅</span> : <span>❌</span>;
-    };
-
-
+    }; 
     return (
         <div className='p-4'>
-            <Dowload text={`be-present_From_${startDate.toDateString()}_To_${endDate.toDateString()}`} />
-            <div id='receipt' className=' bg-[#0F0F1A] py-10 '>
-                <h1 className='text-center text-2xl font-semibold'>Month Overview</h1>
+            <Dowload  text={`be-present_From_${startDate.toDateString()}_To_${endDate.toDateString()}`} />
+            <div id='receipt' className=' py-10 '>
+                <h1   className='text-center text-2xl font-semibold'>Month Overview</h1>
                 <p className='text-center max-md:text-base max-md:mb-4 text-xl font-medium'>
                     From {startDate.toDateString()} To {endDate.toDateString()}
                 </p>
 
-                <div className='center  gap-2 w-fit  text-sm '>
-                    <div className='card px-3 py-1 rounded-2xl whitespace-nowrap w-fit center gap-2'>Present ✅ </div>
-                    <div className='card px-3 py-1 rounded-2xl whitespace-nowrap w-fit center gap-2'>Absent ❌</div>
-                    <div className='card px-3 py-1 rounded-2xl whitespace-nowrap w-fit center gap-2'>Future 🕓</div>
-                    <div className='card px-3 py-1 rounded-2xl whitespace-nowrap w-fit center gap-2'>NM: Not marked</div>
-                    <div className='card px-3 py-1 rounded-2xl w-fit center gap-2'><span className=' w-7 rounded-2xl h-4 bg-[#3400826a] '></span>Holiday</div>
+                <div className='center mt-4 gap-2 w-fit  text-sm '>
+                    <div className=' bordercolor px-3 py-1 rounded-2xl whitespace-nowrap w-fit flex items-center justify-center gap-2'>Present ✅ </div>
+                    <div className=' bordercolor px-3 py-1 rounded-2xl whitespace-nowrap w-fit flex items-center justify-center gap-2'>Absent ❌</div>
+                    <div className=' bordercolor px-3 py-1 rounded-2xl whitespace-nowrap w-fit flex items-center justify-center gap-2'>NM: Not marked</div>
+                    <div className=' bordercolor px-3 py-1 rounded-2xl w-fit flex items-center justify-center gap-2'><span className=' w-7 rounded-2xl h-4 bg-[#3400826a] '></span>Holiday</div>
                 </div>
 
-              { !isLoading ? <div  className='pr-3 overflow-visible mt-6'>
-                    <table className=' border border-[#cecece] w-full'>
+              { !isLoading ? <div  className='pr-3 overflow-visible visible mt-6'>
+                    <table className=' border border-[#cecece] min-w-full'>
                         <thead  className='  border border-[#cf3232]'>
                             <tr>
                                 <th className='border border-[#cecece] px-2 py-2'>Date</th>
@@ -133,6 +132,10 @@ const PdfPage = () => {
                                     </td>
                                 );
                             })}
+                        </tr>
+                        <tr className=" hidden max-md:table-row font-semibold   text-white">
+                            <td className=' text-center'> Happy Day</td>
+                            
                         </tr>
                     </table>
                 </div>:

@@ -25,5 +25,6 @@ export const config = {
     "/timetable/:path*",
     "/track/:path*",
     "/streak/:path*",
+    "/pdf/:path*",
   ],
 }
