@@ -113,21 +113,32 @@ Make sure you have the following installed:
 
  
 ## 🎨 Screenshots
+## unlock amazing badges and track your attendance with stunning visuals!
 <img width="1469" height="930" alt="Screenshot 2025-07-22 at 21 48 02" src="https://github.com/user-attachments/assets/cdbf080f-a9a2-47ab-beac-73af0a075aaf" />
+
+## Dashboard
+
 <img width="1470" height="952" alt="Screenshot 2025-07-22 at 21 46 08" src="https://github.com/user-attachments/assets/6dcad6d0-db51-4085-ad81-1dd5d9849b17" />
+
+## Add TimeTable
+
 <img width="1469" height="898" alt="Screenshot 2025-07-22 at 21 46 31" src="https://github.com/user-attachments/assets/b78321f2-6d73-4262-8019-da5944943bb6" />
+
+## Streak tracker
+
 <img width="1470" height="933" alt="Screenshot 2025-07-22 at 21 46 41" src="https://github.com/user-attachments/assets/d904c716-fd2b-4569-a151-6ebb15e3ad4f" />
+
+## Attendance Page
+
 <img width="1466" height="917" alt="Screenshot 2025-07-22 at 21 46 53" src="https://github.com/user-attachments/assets/adfbfd1a-8266-44fe-8f67-4bc1495a02c8" />
+
+ 
+## Track attendance by subjects
 
 <img width="1470" height="917" alt="Screenshot 2025-07-22 at 21 47 14" src="https://github.com/user-attachments/assets/b434697c-9323-4817-aa99-9c8d75a98075" />
 <img width="1470" height="911" alt="Screenshot 2025-07-22 at 21 47 28" src="https://github.com/user-attachments/assets/56f5e697-cd6c-44ab-b576-48d55d0e0b09" />
 
  
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
- 
-
 ⭐ **Star this repository if you find it helpful!**
 
 Made with ❤️ by Bishal

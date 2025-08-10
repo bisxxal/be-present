@@ -1,9 +1,7 @@
 import { AttendanceDataProps } from "@/lib/constant";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetAttendance } from "./useGetAttendance";
-
  
-
 export const useFilteredDate = (startDate: Date, endDate: Date) => {
   const [presentData, setPresentData] = useState<{ type: string; value: number }[]>([]);
   const [totalPersentages, setTotalPercentages] = useState<{ type: string; percentage: string }[]>([]);

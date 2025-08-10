@@ -33,7 +33,7 @@ export const getTimeTable = async () => {
         const session = await getServerSession(authOptions);
         if (!session) {
             return { status: 401, message: "Unauthorized" };
-        }
+        } 
         const timeTable = await prisma.timeTable.findMany({
             where: {
                 userId: session.user.id,
@@ -45,6 +45,7 @@ export const getTimeTable = async () => {
 
         return { status: 200, data: timeTable };
     } catch (error) {
+        console.log("Error fetching timetable:", error);
         return { status: 500, message: "Internal server error" };
     }
 }
