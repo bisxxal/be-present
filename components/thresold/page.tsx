@@ -14,8 +14,6 @@ const AttendanceThresholdTracker = ({ startDate, endDate }) => {
   const defaultEnd = endOfMonth(today);
   const {  data ,  } = useFilteredDate(defaultStart, defaultEnd)
 
-  
-  console.log(data)
   useEffect(() => {
 
     if(!data || data.length === 0) {

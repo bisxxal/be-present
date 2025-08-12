@@ -45,7 +45,6 @@ export const getTimeTable = async () => {
 
         return { status: 200, data: timeTable };
     } catch (error) {
-        console.log("Error fetching timetable:", error);
         return { status: 500, message: "Internal server error" };
     }
 }

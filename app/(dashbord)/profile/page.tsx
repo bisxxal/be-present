@@ -18,7 +18,6 @@ const ProfilePage = () => {
     // localStorage.removeItem(LOCAL_STORAGE_KEY);
     try {
       const response = await getAttendanceForHeatmap();
-      console.log(response)
       if (response.status !== 200) {
         return;
       }

@@ -117,7 +117,6 @@ export const deleteAttendance = async (id: string) => {
 
 export const getAttendanceForHeatmap = async () => {
   try {
-    console.log("Fetching attendance for heatmap");
     const session = await getServerSession(authOptions);
     if (!session) {
       return { status: 401, message: "Unauthorized" };

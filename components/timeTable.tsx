@@ -76,7 +76,6 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { curr
    
     useEffect(() => {
         if (data?.data && !totalClasses) {
-            console.log("Data for Total Classes:", data.data);
             const total = countMonthlyClasses(data?.data?.length);
             setTotalclass(total);
             if (typeof window !== 'undefined') {
