@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { GraduationCap, ArrowLeft, Shield, Users, Zap, Eye, EyeOff } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
+import Link from 'next/link';
 
 const SignInPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -61,9 +62,9 @@ const SignInPage = () => {
           {/* Logo and Title */}
           <div className="text-center mb-8">
             <div className="flex items-center justify-center mb-6">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
+              <Link href={'/'} className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
                 <GraduationCap className="w-8 h-8 text-white" />
-              </div>
+              </Link>
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Welcome Back!</h1>
             <p className="text-gray-400">Sign in to your Be Present account</p>

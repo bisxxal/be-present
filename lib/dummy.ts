@@ -14,18 +14,18 @@ export const demoAttendanceData = [
   }
 
 export const demoTrendData = [
-  { month: 'Jan', present: 40 },
-  { month: 'Feb', present: 46 },
-  { month: 'Mar', present: 53 },
-  { month: 'Apr', present: 59 },
-  { month: 'May', present: 63 },
-  { month: 'Jun', present: 66 },
-  { month: 'Jul', present: 63 },
-  { month: 'Aug', present: 58 },
-  { month: 'Sep', present: 52 },
-  { month: 'Oct', present: 47 },
-  { month: 'Nov', present: 43 },
-  { month: 'Dec', present: 40 },
+  { month: 'Jan', present: 10 },
+  { month: 'Feb', present: 70 },
+  { month: 'Mar', present: 50 },
+  { month: 'Apr', present: 20 },
+  { month: 'May', present: 10 },
+  { month: 'Jun', present: 25 },
+  { month: 'Jul', present: 70 },
+  { month: 'Aug', present: 50 },
+  { month: 'Sep', present: 30 },
+  { month: 'Oct', present: 10 },
+  { month: 'Nov', present: 70 },
+  { month: 'Dec', present: 30 },
 ];
 
 
@@ -58,6 +58,12 @@ export const demoTrendData = [
       description: 'Enterprise-grade security with 99.9% uptime guarantee and data encryption.',
       gradient: 'from-green-500 to-emerald-400'
     },
+    // {
+    //   icon: Shield,
+    //   title: 'Pdf Support',
+    //   description: 'Enterprise-grade security with 99.9% uptime guarantee and data encryption.',
+    //   gradient: 'from-green-500 to-emerald-400'
+    // },
      
   ];
 

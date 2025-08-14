@@ -38,7 +38,6 @@ const ProfilePage = () => {
       }
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(formatted));
     } catch (error) {
-      console.error('Failed to fetch attendance data:', error);
     }
     finally {
       toastSuccess('Data updated successfully!');
