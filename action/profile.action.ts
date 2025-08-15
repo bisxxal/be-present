@@ -12,7 +12,7 @@ export async function addTimeTable(subjects: { subjectName: string; startTime: s
     try {
         const timeTableEntries = subjects.map(subject => ({
             userId: session.user.id,
-            subjectName: subject.subjectName,
+            subjectName: subject.subjectName.toLowerCase(),
             startTime: subject.startTime,
             endTime: subject.endTime,
             dayOfWeek: Number(subject.day)  ,  

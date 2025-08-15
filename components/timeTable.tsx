@@ -16,7 +16,6 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: { curr
     const [show , setShow] = useState('');
     const isToday = new Date().getDay();
 
-
     const deleteTimeTableMutation = useMutation({
         mutationFn: async (id: string) => {
             const res = await deleteAttendance(id);

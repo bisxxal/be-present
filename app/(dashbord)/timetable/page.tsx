@@ -9,6 +9,7 @@ import { convertTo24Hour } from '@/lib/util';
 import TimeTable from '@/components/timeTable';
 import { Loader } from 'lucide-react';
 import { toastError, toastSuccess } from '@/lib/toast';
+import { useGetTimeTable } from '@/hooks/useGetAttendance';
 
 type SubjectEntry = {
   subjectName: string;
@@ -19,7 +20,8 @@ type SubjectEntry = {
 
 const TimeTablePage = () => {
   const client = useQueryClient()
-  const [subjects, setSubjects] = useState<SubjectEntry[]>([{ subjectName: '', startTime: '', endTime: '', day: '1' } ]);
+  const [subjects, setSubjects] = useState<SubjectEntry[]>([{ subjectName: '', startTime: '', endTime: '', day: '1' }]);
+  const { data, isLoading } = useGetTimeTable()
 
   const handleInputChange = (
     index: number,
@@ -35,7 +37,7 @@ const TimeTablePage = () => {
     index: number,
     field: 'startTime' | 'endTime',
     date: Date | null,
-    day: string = '', 
+    day: string = '',
   ) => {
     if (!date) return;
 
@@ -58,7 +60,7 @@ const TimeTablePage = () => {
     },
     onSuccess: (data) => {
       if (data.status === 200) {
-         toastSuccess(data.message);
+        toastSuccess(data.message);
         setSubjects([{ subjectName: '', startTime: '', endTime: '', day: '' }]); // Reset form
         client.invalidateQueries({ queryKey: ['timetable'] });
       } else {
@@ -76,9 +78,10 @@ const TimeTablePage = () => {
         return;
       }
     }
-
     createTimeTableMutation.mutate(subjects);
   };
+
+  // const [customInputIndices, setCustomInputIndices] = useState<number[]>([]);
 
   return (
     <div className="w-full pb-10 mx-auto overflow-hidden">
@@ -90,43 +93,104 @@ const TimeTablePage = () => {
             key={index}
             className="flex lg:w-fit mx-auto max-md:flex-col max-md:gap-1 max-md:px-2 gap-4 items-center border border-gray-300/30 p-4 rounded-lg"
           >
-            <input
-              type="text"
-              placeholder="Subject Name"
-              value={entry.subjectName}
-              onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
-              className=" px-3 py-2 border max-md:w-full w-[400px] rounded-lg"
-            />
-            <select className=' max-md:w-full'   value={entry.day}   onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+            <div className='w-full center gap-2'>
+              <input
+                type="text"
+                placeholder="Enter new subject"
+                value={entry.subjectName}
+                onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
+                className="px-3 py-2 border max-md:w-full w-[400px] rounded-lg"
+              />
+              {data?.data && <select
+                onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
+                className="px-3 py-2 border max-md:w-full w-[400px] rounded-lg "
+              >
+                <option value="">Select Subject</option>
+                {Array.from(
+                  new Map(
+                    (data?.data || []).map((item: any) => [item.subjectName.toLowerCase(), item])
+                  ).values()
+                ).map((item: any) => (
+                  <option key={item.id} value={item.subjectName}>
+                    {item.subjectName}
+                  </option>
+                ))}
+              </select>}
+
+            </div>
+
+            {/* <div className="flex flex-col w-full">
+              {!customInputIndices.includes(index) ? (
+                <div className="flex gap-2 items-center">
+                  <select
+                    value={entry.subjectName}
+                    onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
+                    className="px-3 py-2 border rounded-lg w-[300px]"
+                  >
+                    <option value="">Select Subject</option>
+                    {Array.from(
+                      new Map(
+                        (data?.data || []).map((item: any) => [item.subjectName.toLowerCase(), item])
+                      ).values()
+                    ).map((item: any) => (
+                      <option key={item.id} value={item.subjectName}>
+                        {item.subjectName}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setCustomInputIndices((prev) => [...prev, index])
+                    }
+                    className="text-blue-600 underline hover:text-blue-800 text-sm"
+                  >
+                    + Add New
+                  </button>
+                </div>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="Enter new subject"
+                  value={entry.subjectName}
+                  onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
+                  className="px-3 py-2 border rounded-lg w-[300px]"
+                />
+              )}
+            </div> */}
+
+            <select className=' my-1 max-md:w-full' value={entry.day} defaultValue={"1"} onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
               <option value="3">Wednesday</option>
-<option value="4">Thursday</option>
+              <option value="4">Thursday</option>
               <option value="5">Friday</option>
               <option value="6">Saturday</option>
             </select>
 
-            <DatePicker
-              selected={entry.startTime ? new Date(`1970-01-01T${convertTo24Hour(entry.startTime)}`) : null}
-              onChange={(date) => handleTimeChange(index, 'startTime', date)}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={15}
-              dateFormat="h:mm aa"
-              placeholderText="Start Time"
-              className="px-3 py-2 border max-md:w-full rounded-lg"
-            />
+            <div className=' w-full flex items-center justify-between '>
+              <DatePicker
+                selected={entry.startTime ? new Date(`1970-01-01T${convertTo24Hour(entry.startTime)}`) : null}
+                onChange={(date) => handleTimeChange(index, 'startTime', date)}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                dateFormat="h:mm aa"
+                placeholderText="Start Time"
+                className="px-3 py-2 border  w-full rounded-lg"
+              />
 
-            <DatePicker
-              selected={entry.endTime ? new Date(`1970-01-01T${convertTo24Hour(entry.endTime)}`) : null}
-              onChange={(date) => handleTimeChange(index, 'endTime', date)}
-              showTimeSelect
-              showTimeSelectOnly
-              timeIntervals={15}
-              dateFormat="h:mm aa"
-              placeholderText="End Time"
-              className="px-3 py-2 border max-md:w-full rounded-lg"
-            />
+              <DatePicker
+                selected={entry.endTime ? new Date(`1970-01-01T${convertTo24Hour(entry.endTime)}`) : null}
+                onChange={(date) => handleTimeChange(index, 'endTime', date)}
+                showTimeSelect
+                showTimeSelectOnly
+                timeIntervals={15}
+                dateFormat="h:mm aa"
+                placeholderText="End Time"
+                className="px-3 py-2 border max-md: w-full rounded-lg"
+              />
+            </div>
 
             {subjects.length > 1 && (
               <button
@@ -156,10 +220,9 @@ const TimeTablePage = () => {
         </button>
       </form>
 
-      <TimeTable  type="edit" />
+      <TimeTable type="edit" />
     </div>
   );
 };
 
 export default TimeTablePage;
- 
