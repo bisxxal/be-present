@@ -1,5 +1,5 @@
  
-import { Pencil, Trash, UserCheck } from 'lucide-react';
+import {  Trash, UserCheck } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
 

@@ -15,7 +15,7 @@ export async function addTimeTable(subjects: { subjectName: string; startTime: s
             subjectName: subject.subjectName.toLowerCase(),
             startTime: subject.startTime,
             endTime: subject.endTime,
-            dayOfWeek: Number(subject.day)  ,  
+            dayOfWeek: Number(subject.day)  , 
         }));
         
         const createdEntries = await prisma.timeTable.createMany({

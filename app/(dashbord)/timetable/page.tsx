@@ -93,7 +93,7 @@ const TimeTablePage = () => {
             key={index}
             className="flex lg:w-fit mx-auto max-md:flex-col max-md:gap-1 max-md:px-2 gap-4 items-center border border-gray-300/30 p-4 rounded-lg"
           >
-            <div className='w-full center gap-2'>
+            <div className=' w-[45%] max-md:w-full center gap-2'>
               <input
                 type="text"
                 placeholder="Enter new subject"
@@ -159,7 +159,8 @@ const TimeTablePage = () => {
               )}
             </div> */}
 
-            <select className=' my-1 max-md:w-full' value={entry.day} defaultValue={"1"} onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+            <select className=' my-1 max-md:w-full' value={entry.day} defaultValue="1" onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+              {/* <option value="">Day</option> */}
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
               <option value="3">Wednesday</option>
