@@ -110,7 +110,8 @@ export const countHowManyDays = (badgeNumber:number) => {
   const r = count - badgeNumber;
   return { count: r, badgeName: badgename }
 };
-export const weeklyDataFormatedata = (dateData) => {
+export const weeklyDataFormatedata = (dateData:{date:string , present:number,absent:number}[]) => {
+  
   const formatDate = (dateObj) => {
     const day = String(dateObj.getDate()).padStart(2, '0');
     const month = String(dateObj.getMonth() + 1).padStart(2, '0');
@@ -118,8 +119,8 @@ export const weeklyDataFormatedata = (dateData) => {
     return `${day}/${month}/${year}`;
   };
 
-  const today = new Date('2025-07-22'); // Use new Date() in real app
-  const dayOfWeek = today.getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+const today = new Date(); 
+  const dayOfWeek = today.getDay();
   const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
 
   const weeklyData = [];
@@ -131,11 +132,7 @@ export const weeklyDataFormatedata = (dateData) => {
     const formattedDate = formatDate(currentDate);
     const matched = dateData.find(entry => entry.date === formattedDate);
 
-    const attended = matched
-      ? matched.present > 0
-        ? true
-        : false
-      : 'pending';
+    const attended = matched ? matched.present > 0 ? true: false : 'pending';
 
     weeklyData.push({
       day: currentDate.toLocaleDateString('en-US', { weekday: 'short' }),
@@ -146,7 +143,6 @@ export const weeklyDataFormatedata = (dateData) => {
   return weeklyData;
 
 }
- 
 export function countMonthlyClasses(  classesPerWeek: number ): number {
   const year =  new Date().getFullYear();
   const  month = new Date().getMonth();  

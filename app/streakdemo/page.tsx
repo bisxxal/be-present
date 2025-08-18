@@ -9,7 +9,6 @@ const StreakInfoPage = () => {
   const [activeCard, setActiveCard] = useState(0);
   return (
     <div className="min-h-screen bg-[#0F0F1A] text-white overflow-hidden">
-      {/* Animated Background */}
         
       <div className="fixed inset-0 opacity-10">
         <div className="absolute top-20 left-20 w-72 h-72 bg-purple-500 rounded-full filter blur-3xl animate-pulse"></div>

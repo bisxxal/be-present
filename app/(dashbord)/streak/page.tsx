@@ -39,7 +39,6 @@ const ProgressTracker = () => {
     const circumference = 2 * Math.PI * radius;
     percentage = parseFloat(percentage);
     const strokeDashoffset = circumference * (1 - percentage / 100);
-
     return (
       <div className="relative" style={{ width: size, height: size }}>
         <svg
@@ -54,17 +53,15 @@ const ProgressTracker = () => {
             </linearGradient>
           </defs>
 
-          {/* Background Circle */}
           <circle
             cx={size / 2}
             cy={size / 2}
             r={radius}
             fill="transparent"
-            stroke="#374151" // gray-700
+            stroke="#374151" 
             strokeWidth={strokeWidth}
           />
 
-          {/* Progress Circle */}
           <circle
             cx={size / 2}
             cy={size / 2}
@@ -79,7 +76,7 @@ const ProgressTracker = () => {
           />
         </svg>
 
-        {/* Center Text */}
+ 
         <div className="absolute inset-0 flex items-center justify-center">
           <span className="text-2xl font-bold text-white">{(percentage)}%</span>
         </div>
@@ -102,7 +99,7 @@ const ProgressTracker = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#0F0F1A] text-white p-6">
+    <div className="min-h-screen bg-[#0F0F1A] text-white p-6 mb-10">
       {/* Animated Background */}
       <div className="fixed inset-0 opacity-5">
         <div className="absolute top-10 left-10 w-64 h-64 bg-blue-500 rounded-full filter blur-3xl animate-pulse"></div>
@@ -274,7 +271,6 @@ const ProgressTracker = () => {
               >
                 <div className={`w-24 h-24  rounded-full center mx-auto mb-3 flex items-center justify-center ${achievement.unlocked ? 'bg-yellow-500/80' : 'bg-gray-600'
                   }`}>
-                  {/* <Award className="w-6 h-6 text-white" /> */}
                   <Image loading='lazy' width={150} height={150} src={achievement.img} className=' drop-shadow-md drop-shadow-[#00000080] border-none outline-none w-full h-full ' alt="" />
                 </div>
                 <h3 className={`font-semibold mb-2 text-sm ${achievement.unlocked ? 'text-yellow-200' : 'text-gray-400'
@@ -295,7 +291,6 @@ const ProgressTracker = () => {
           </div>
         </div>
 
-      {/* <Link href={`/streakdemo`} className=' my-10   center hover:underline text-center'>What is Streak ?</Link> */}
       <Link href={`/streakdemo`} className="text-white mt-10 center w-fit mx-auto bg-orange-500/90 px-8 py-2 rounded-2xl font-bold max-md:text-base text-lg hover:bg-gray-100 hover:text-orange-500 transform hover:scale-105 transition-all duration-300 shadow-lg">
                 More about Streak ?
               </Link>

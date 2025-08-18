@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Calendar, X, CheckCircle, XCircle, User, Clock } from 'lucide-react';
+import { Calendar, X, CheckCircle, XCircle,  Clock } from 'lucide-react';
 import { createAttendanceRecords } from '@/action/attendance.action';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { useGetAttendance, useGetTimeTable } from '@/hooks/useGetAttendance';
@@ -296,11 +296,10 @@ const Attendance: React.FC = () => {
         </div>
 
         {isModalOpen && selectedDate && (
-          <div className="fixed inset-0 bg-[#ffffff11] backdrop-blur-[40px] flex flex-col items-center justify-center z-50 p-4">
-            <div className="bg-[#0f0f1a83] z-10  overflow-scroll max-md:h-fit h-full rounded-3xl p-6 w-[93%] max-md:w-[96%]">
+          <div className="fixed inset-0 bg-[#ffffff11] backdrop-blur-[40px] flex flex-col items-center justify-center z-50 p-4 max-md:p-2">
+            <div className="bg-[#0f0f1a83] z-10  overflow-scroll max-md:h-fit h-full rounded-3xl p-6  w-[93%] max-md:w-[96%]">
               <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl max-md:text-lg font-semibold flex items-center gap-2">
-                  <User className="w-5 h-5" />
                   Attendance for {months[selectedMonth]} {selectedDate}, {selectedYear}
                 </h3>
                 <button
@@ -310,7 +309,7 @@ const Attendance: React.FC = () => {
                 </button>
               </div>
 
-              <div className=" justify-evenly w-full flex flex-wrap gap-1">
+              <div className=" justify-   w-full flex flex-wrap gap-1 max-md:gap-x-2">
                 {(() => {
                   const dayOfWeek = new Date(selectedYear, selectedMonth, selectedDate).getDay();
                   const filteredSubjects = data?.data?.filter((item: any) =>

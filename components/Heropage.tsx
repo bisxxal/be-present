@@ -40,12 +40,16 @@ const HeroPage = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="border-b border-gray-800 max-md:px-3 px-6 py-4">
+      <nav className="border-b border-gray-800 max-md:px-3 px-6 py-4 navbaranimation">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 max-md:space-x-2">
-            <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
-            </div>
+            {/* <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+              <GraduationCap className="w-6 h-6 hover:rotate-[360] text-white" />
+            </div> */}
+            <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group">
+  <GraduationCap className="w-6 h-6 logoanimation text-white group-hover:animate-spinFast" />
+</div>
+
             <span className="text-2xl font-bold max-md:tex-lg text-white">Be Present</span>
           </div>
 
@@ -70,20 +74,20 @@ const HeroPage = () => {
       <section className="px-6 py-16">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              Smart <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Attendance</span>
-              <br />Management System
+            <h1 className="text-4xl md:text-7xl font-bold appeartext text-white mb-6 leading-tight">
+             <span className=' slogo'> Smart</span>  <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Attendance</span>
+              <br /> <span className=' slogo'>Management System </span> 
             </h1>
-            <p className="text-base text-gray-300 mb-8 max-w-3xl mx-auto">
+            <p className="text-base animate-fade-in text-gray-300 mb-8 max-w-3xl mx-auto">
               Revolutionize how you track, analyze, and manage attendance with our cutting-edge platform.
               Perfect for schools, colleges, and organizations.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6 mb-12">
-              <Link href={'/sign-in'} className="px-8 py-4 max-md:w-[90%] bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <Link href={'/sign-in'} className="boxanimation px-8 py-4 max-md:w-[90%] bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold text-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg">
                 Start Free Trial
               </Link>
-              <Link href={`/streakdemo`} className="px-8 py-4 max-md:w-[90%] center border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300 flex items-center">
+              <Link href={`/streakdemo`} className="boxanimation buttongred px-8 py-4 max-md:w-[90%] center border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300 flex items-center">
                 <Eye className="w-5 h-5 mr-2" />
                   View Streak
               </Link>
@@ -94,9 +98,9 @@ const HeroPage = () => {
       </section>
 
       <section className="bg-[#0d1117] -mt-[100px]   px-60 max-md:px-2  p-4 rounded-3xl text-white">
-        <h2 className="text-3xl text-center font-semibold mb-4">Maintain Streaks</h2>
-        <CalendarHeatmap
-          className="focus:outline-none"
+        <h2 className="text-3xl text-center font-semibold mb-4 slogo">Maintain Streaks</h2>
+        <div className='bg-[#0d1117] heroimgshadow'><CalendarHeatmap
+          className="focus:outline-none "
           endDate={'2025-12-12'}
           showWeekdayLabels={false}
           values={filteredData}
@@ -124,19 +128,20 @@ const HeroPage = () => {
           <div className="w-4 h-4 bg-[#39d353] rounded-sm" />
           <span className="text-gray-400">More</span>
         </div>
+        </div>
       </section>
 
       {/* Demo Section */}
       <section id="demo" className="px-6 py-16 bg-gradient-to-b from-transparent to-gray-900/20">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4">See It In Action</h2>
+            <h2 className="text-4xl font-bold text-white mb-4 slogo animate-fade-in">See It In Action</h2>
             <p className="text-xl max-md:text-base text-gray-300">Experience the power of our attendance tracking system</p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
             {/* Attendance Overview Pie Chart */}
-            <div className="bg-gradient-to-br from-slate-800/50 via-purple-900/20 to-pink-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-purple-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden ">
+            <div className="boxanimation bg-gradient-to-br from-slate-800/50 via-purple-900/20 to-pink-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-purple-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 relative overflow-hidden ">
               <h3 className="text-white center font-semibold text-xl mb-6 text-center  gap-2">Today's Attendance  <TrendingUp className="w-5 h-5 mr-2 text-purple-400" /></h3>
               <ResponsiveContainer width="100%" height={250}>
                 <PieChart>
@@ -169,7 +174,7 @@ const HeroPage = () => {
             </div>
 
             {/* Attendance Trend Area Chart */}
-            <div className=" group bg-gradient-to-br from-slate-800/50 via-blue-900/20 to-cyan-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-blue-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20 relative overflow-hidden">
+            <div className="boxanimation group bg-gradient-to-br from-slate-800/50 via-blue-900/20 to-cyan-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-blue-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/20 relative overflow-hidden">
               <h3 className="text-white font-semibold text-xl mb-6 center text-center  gap-2">Attendance Trends <BarChart3 className="w-5 h-5 mr-2 text-blue-400" /></h3>
               <ResponsiveContainer width="100%" height={350}>
                 <AreaChart data={demoTrendData}>
@@ -202,7 +207,7 @@ const HeroPage = () => {
             </div>
 
             {/* Interactive Timetable */}
-            <div className="group bg-gradient-to-br from-slate-800/50 via-emerald-900/20 to-green-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-emerald-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/20 relative overflow-hidden">
+            <div className="group boxanimation bg-gradient-to-br from-slate-800/50 via-emerald-900/20 to-green-900/20 backdrop-blur-xl rounded-3xl border border-slate-700/50 p-8 hover:border-emerald-500/50 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-emerald-500/20 relative overflow-hidden">
               <h3 className="text-white font-semibold text-xl mb-6 text-center center gap-2 ">Today's Schedule                   <Calendar className="w-5 h-5 mr-2 text-emerald-400" /></h3>
               <div className="space-y-4">
                 {demoTimeTable.map((item, index) => (
@@ -269,7 +274,7 @@ const HeroPage = () => {
       <section id="features" className="px-6 py-16">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-white mb-4">Powerful Features</h2>
+            <h2 className="text-4xl font-bold text-white mb-4 slogo">Powerful Features</h2>
             <p className="text-xl max-md:text-base text-gray-300">Everything you need to manage attendance effectively</p>
           </div>
 
@@ -290,7 +295,7 @@ const HeroPage = () => {
       {/* CTA Section */}
       <section className="px-6 py-16 bg-gradient-to-r from-purple-600/20 to-pink-600/20 border-y border-purple-500/30">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">Ready to Get Started?</h2>
+          <h2 className="text-4xl font-bold text-white mb-6 slogo">Ready to Get Started?</h2>
           <p className="text-xl  max-md:text-base text-gray-300 mb-8">
             Join thousands of institutions already using Be Present to streamline their attendance management.
           </p>
@@ -321,8 +326,29 @@ const HeroPage = () => {
 
       </section>
 
-      {/* Footer */}
-
+{/* <style jsx>{`
+        @keyframes fade-in {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slide-up {
+          from { opacity: 0; transform: translateY(40px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scale-up {
+          from { opacity: 0; transform: scale(0.9); }
+          to { opacity: 1; transform: scale(1); }
+        }
+        .animate-fade-in {
+          animation: fade-in 0.8s ease-out forwards;
+        }
+        .animate-slide-up {
+          animation: slide-up 0.8s ease-out forwards;
+        }
+        .animate-scale-up {
+          animation: scale-up 0.8s ease-out forwards;
+        }
+      `}</style> */}
     </div>
   );
 };

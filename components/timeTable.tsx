@@ -178,7 +178,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
                                         const bgColor = isCurrent
                                             ? ' '
                                             : isToday === dayIndex
-                                                ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/20'
+                                                ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/2 buttonbg !rounded-none'
                                                 : 'bg-gradient-to-br to-[#ffffff13] from-[#ffffff00]';
 
                                         return (

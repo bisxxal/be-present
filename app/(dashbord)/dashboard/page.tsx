@@ -42,7 +42,7 @@ const DashBoardMainaPage = () => {
         <div className="flex  max-md:gap-5 max-md:flex-col items-center justify-between">
           <div>
             <div className='text-3xl max-md:text-2xl mb-6 max-md:mt-8  font-bold'>Hii , 👋🏻
-              <span className=' bg-clip-text text-transparent bg-gradient-to-br from-pink-400 to-rose-500'> {session?.user?.name} !!</span>
+              <span className=' bg-clip-text text-transparent bg-gradient-to-br from-pink-400 to-rose-500 capitalize'> {session?.user?.name} !!</span>
               {new Date().getDay() === 0 && <p className=' bg-clip-text  text-transparent bg-gradient-to-br from-indigo-500 to-pink-500'>{new Date().getDay() === 0 ? 'Happy sunday 🎉' : ''}</p>}
             </div>
             <p className="text-gray-300 text-lg">You have <span className="text-purple-400 font-semibold"><span className=' text-xl'>{remainingday}</span> remaining classes</span> today.</p>
@@ -57,7 +57,7 @@ const DashBoardMainaPage = () => {
 
           { badge  ? <p className=' text-lg  flex items-center mt-2 font-semibold'> <span className=' text-4xl '>{badge}</span> days of streak </p> : <span>No streak yet</span> }
           </div>
-          {presentData &&  <div >
+          {presentData.length !== 0 &&  <div>
             <PieChart className='[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground' width={400} height={240}>
             <Pie data={presentData} dataKey="value"
               paddingAngle={3}

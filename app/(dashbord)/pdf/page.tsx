@@ -61,7 +61,7 @@ const PdfPage = () => {
             (entry) => entry.date === date && entry.subject === subject
         );
 
-        if (!record) return <span className=' text-xs'>NM</span>;
+        if (!record) return ; // NM hear
         return record.present ? <span>✅</span> : <span>❌</span>;
     }; 
     return (

@@ -60,9 +60,9 @@ const SignInPage = () => {
           </button>
 
           {/* Logo and Title */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 appeartext ">
             <div className="flex items-center justify-center mb-6">
-              <Link href={'/'} className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
+              <Link href={'/'} className=" w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
                 <GraduationCap className="w-8 h-8 text-white" />
               </Link>
             </div>
@@ -71,7 +71,7 @@ const SignInPage = () => {
           </div>
 
           {/* Sign In Card */}
-          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-8 shadow-2xl">
+          <div className="heroimgshadow bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 p-8 shadow-2xl">
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold text-white mb-2">Sign in with Google</h2>
               <p className="text-gray-400 text-sm">Access your dashboard securely</p>
@@ -127,7 +127,7 @@ const SignInPage = () => {
  
           </div>
 
-          <div className="mb-8">
+          <div className="mb-8 animate-scale-up">
             <div className="h-16 flex items-center justify-center">
               <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent transition-all duration-500">
                 {stats[currentStat]}
