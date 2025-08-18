@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis,   CartesianGrid, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis, CartesianGrid, Tooltip } from 'recharts';
 import { GraduationCap, Calendar, BarChart3, Eye, LogIn, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
@@ -9,7 +9,7 @@ import CalendarHeatmap from 'react-calendar-heatmap';
 import { Tooltip as ReactTooltip } from 'react-tooltip'
 import { formatDate } from '@/lib/util';
 import { FilteredDataProps } from '@/lib/constant';
-import { demoAttendanceData, demoTimeTable, demoTrendData, features, filteredData,   streakData } from '@/lib/dummy';
+import { demoAttendanceData, demoTimeTable, demoTrendData, features, filteredData, streakData } from '@/lib/dummy';
 import Image from 'next/image';
 
 const HeroPage = () => {
@@ -40,15 +40,15 @@ const HeroPage = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="border-b border-gray-800 max-md:px-3 px-6 py-4 navbaranimation">
+      <nav className="border-b border-gray-800 max-md:px-3 px-6 py-3 navbaranimation">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 max-md:space-x-2">
-            {/* <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 hover:rotate-[360] text-white" />
+            <div className="w-12 h-12 max-md:w-10 max-md:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+              <Image loading='lazy' width={150} height={150} src="/logo.png" className="w-14 h-14 max-md:w-12 max-md:h-12  drop-shadow-lg drop-shadow-[#0000006e] rotate-12 logoanimation" alt="Logo" />
+            </div>
+            {/* <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group">
+              <GraduationCap className="w-6 h-6 logoanimation text-white group-hover:animate-spinFast" />
             </div> */}
-            <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group">
-  <GraduationCap className="w-6 h-6 logoanimation text-white group-hover:animate-spinFast" />
-</div>
 
             <span className="text-2xl font-bold max-md:tex-lg text-white">Be Present</span>
           </div>
@@ -65,18 +65,19 @@ const HeroPage = () => {
               </Link>
             </div>
           </div>
- 
+
         </div>
- 
+
       </nav>
 
       {/* Hero Section */}
-      <section className="px-6 py-16">
+      <section className="px-6 py-16 overflow-hidden">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-7xl font-bold appeartext text-white mb-6 leading-tight">
-             <span className=' slogo'> Smart</span>  <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Attendance</span>
-              <br /> <span className=' slogo'>Management System </span> 
+              <span className=' slogo'> Smart</span>  <span className=" relative bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Attendance
+                <Image loading='lazy' width={250} height={250} src="/logo2.png" className="w-40 h-40 logoanimation drop-shadow-xl drop-shadow-[#d49e4858] absolute rotate-[16deg] -top-14 max-md:-top-20 max-md:-right-16 -right-20" alt="Logo" /></span>
+              <br /> <span className=' slogo'>Management System </span>
             </h1>
             <p className="text-base animate-fade-in text-gray-300 mb-8 max-w-3xl mx-auto">
               Revolutionize how you track, analyze, and manage attendance with our cutting-edge platform.
@@ -89,10 +90,10 @@ const HeroPage = () => {
               </Link>
               <Link href={`/streakdemo`} className="boxanimation buttongred px-8 py-4 max-md:w-[90%] center border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300 flex items-center">
                 <Eye className="w-5 h-5 mr-2" />
-                  View Streak
+                View Streak
               </Link>
             </div>
- 
+
           </div>
         </div>
       </section>
@@ -118,16 +119,16 @@ const HeroPage = () => {
           horizontal={true}
           gutterSize={2}
         />
-        <ReactTooltip id="heatmap-tooltip" />
-        <div className="flex items-center gap-2 mt-4 text-sm">
-          <span className="text-gray-400">Less</span>
-          <div className="w-4 h-4 bg-[#151B23] border border-gray-600 rounded-sm" />
-          <div className="w-4 h-4 bg-[#0e4429] rounded-sm" />
-          <div className="w-4 h-4 bg-[#006d32] rounded-sm" />
-          <div className="w-4 h-4 bg-[#26a641] rounded-sm" />
-          <div className="w-4 h-4 bg-[#39d353] rounded-sm" />
-          <span className="text-gray-400">More</span>
-        </div>
+          <ReactTooltip id="heatmap-tooltip" />
+          <div className="flex items-center gap-2 mt-4 text-sm">
+            <span className="text-gray-400">Less</span>
+            <div className="w-4 h-4 bg-[#151B23] border border-gray-600 rounded-sm" />
+            <div className="w-4 h-4 bg-[#0e4429] rounded-sm" />
+            <div className="w-4 h-4 bg-[#006d32] rounded-sm" />
+            <div className="w-4 h-4 bg-[#26a641] rounded-sm" />
+            <div className="w-4 h-4 bg-[#39d353] rounded-sm" />
+            <span className="text-gray-400">More</span>
+          </div>
         </div>
       </section>
 
@@ -217,8 +218,8 @@ const HeroPage = () => {
                       <div className="text-gray-400 text-sm">{item.time} • {item.room}</div>
                     </div>
                     <div className={`px-3 py-1 rounded-full text-xs font-medium ${item.status === 'present' ? 'bg-green-500 bg-opacity-20 text-green-200' :
-                        item.status === 'late' ? 'bg-yellow-500 bg-opacity-20 text-yellow-200' :
-                          'bg-blue-500 bg-opacity-20 text-blue-200'
+                      item.status === 'late' ? 'bg-yellow-500 bg-opacity-20 text-yellow-200' :
+                        'bg-blue-500 bg-opacity-20 text-blue-200'
                       }`}>
                       {item.status === 'present' ? 'Present' :
                         item.status === 'late' ? 'Late' : 'Upcoming'}
@@ -232,43 +233,43 @@ const HeroPage = () => {
       </section>
 
 
-        <div className="mb-20 center flex-col gap-3 max-md:px-6">
-                  <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent animate-fade-in">
-                    Unlock Amazing Badges
-                  </h2>
-                  <div className=" flex flex-wrap justify-center gap-5 ">
-                    {streakData.map((streak, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={` max-md:w-full bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-2xl p-6 max-md:p-0 border border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer animate-slide-up group`}
-                          style={{ animationDelay: `${index * 0.1}s` }}
-                        >
-                          <div className="flex items-center justify-between max-md:pr-3 gap-6 max-md:gap-1">
-                            <div className={`p-4 max-md:p-2 bg-gr adient-to-r ${streak.color} rounded-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
-                              <Image loading='lazy' width={150} height={150} src={streak.icon} className=' w-36 h-36  ' alt="" />
-                            </div>
-                            <div className=" max-md:flex-col">
-                              <div className="flex max-md:flex-col items-center gap-4 mb-2">
-                                <span className="text-2xl font-bold text-white">{streak.length}</span>
-                                <span className={`px-3 py-1 bg-gradient-to-r ${streak.color} text-white text-sm font-semibold rounded-full`}>
-                                  {streak.badge}
-                                </span>
-                              </div>
-                              <p className="text-gray-300 max-md:text-sm  text-lg">{streak.message}</p>
-                            </div>
-      
-                           
-                          </div>
-                        </div>
-                      );
-                    })}
+      <div className="mb-20 center flex-col gap-3 max-md:px-6">
+        <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent animate-fade-in">
+          Unlock Amazing Badges
+        </h2>
+        <div className=" flex flex-wrap justify-center gap-5 ">
+          {streakData.map((streak, index) => {
+            return (
+              <div
+                key={index}
+                className={` max-md:w-full bg-gradient-to-br from-gray-800/50 to-gray-900/50 backdrop-blur-lg rounded-2xl p-6 max-md:p-0 border border-gray-700/50 shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] cursor-pointer animate-slide-up group`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <div className="flex items-center justify-between max-md:pr-3 gap-6 max-md:gap-1">
+                  <div className={`p-4 max-md:p-2 bg-gr adient-to-r ${streak.color} rounded-2xl flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                    <Image loading='lazy' width={150} height={150} src={streak.icon} className=' w-36 h-36  ' alt="" />
+                  </div>
+                  <div className=" max-md:flex-col">
+                    <div className="flex max-md:flex-col items-center gap-4 mb-2">
+                      <span className="text-2xl font-bold text-white">{streak.length}</span>
+                      <span className={`px-3 py-1 bg-gradient-to-r ${streak.color} text-white text-sm font-semibold rounded-full`}>
+                        {streak.badge}
+                      </span>
+                    </div>
+                    <p className="text-gray-300 max-md:text-sm  text-lg">{streak.message}</p>
                   </div>
 
-                 <Link href={`/streakdemo`} className="text-white mt-10 bg-orange-500 px-8 py-4 rounded-2xl font-bold max-md:text-base text-lg hover:bg-gray-100 hover:text-orange-500 transform hover:scale-105 transition-all duration-300 shadow-lg">
-                Begin Your Streak Journey
-              </Link>
+
                 </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <Link href={`/streakdemo`} className="text-white mt-10 bg-orange-500 px-8 py-4 rounded-2xl font-bold max-md:text-base text-lg hover:bg-gray-100 hover:text-orange-500 transform hover:scale-105 transition-all duration-300 shadow-lg">
+          Begin Your Streak Journey
+        </Link>
+      </div>
 
       {/* Features Section */}
       <section id="features" className="px-6 py-16">
@@ -304,7 +305,7 @@ const HeroPage = () => {
               Start Your Free Trial
             </Link>
             <Link href={`/streakdemo`} className="px-8 py-4  max-md:w-[90%]  border-2 border-gray-600 text-white rounded-xl font-semibold text-lg hover:border-purple-500 hover:bg-purple-500 hover:bg-opacity-10 transition-all duration-300">
-             View Streak
+              View Streak
             </Link>
           </div>
         </div>
@@ -312,8 +313,9 @@ const HeroPage = () => {
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col md:flex-row items-center justify-between">
               <div className="flex items-center space-x-3 mb-4 md:mb-0">
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
-                  <GraduationCap className="w-5 h-5 text-white" />
+
+                <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
+                  <Image loading='lazy' width={150} height={150} src="/logo.png" className=" drop-shadow-lg drop-shadow-[#0000006e] w-12 h-12 max-md:w-10 max-md:h-10 shadow-xl rotate-12 logoanimation" alt="Logo" />
                 </div>
                 <span className="text-xl font-bold text-white">Be Present</span>
               </div>
@@ -323,32 +325,8 @@ const HeroPage = () => {
             </div>
           </div>
         </footer>
-
       </section>
 
-{/* <style jsx>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(20px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes slide-up {
-          from { opacity: 0; transform: translateY(40px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes scale-up {
-          from { opacity: 0; transform: scale(0.9); }
-          to { opacity: 1; transform: scale(1); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.8s ease-out forwards;
-        }
-        .animate-slide-up {
-          animation: slide-up 0.8s ease-out forwards;
-        }
-        .animate-scale-up {
-          animation: scale-up 0.8s ease-out forwards;
-        }
-      `}</style> */}
     </div>
   );
 };
