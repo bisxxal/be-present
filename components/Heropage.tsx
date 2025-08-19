@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area, XAxis, CartesianGrid, Tooltip } from 'recharts';
-import { GraduationCap, Calendar, BarChart3, Eye, LogIn, TrendingUp } from 'lucide-react';
+import { Calendar, BarChart3, Eye, LogIn, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';

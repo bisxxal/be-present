@@ -7,8 +7,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 const SignInPage = () => {
-  const [isLoading, setIsLoading] = useState(false);
-   
    const {data ,status} = useSession();
   
     const router = useRouter()
@@ -81,16 +79,10 @@ const SignInPage = () => {
             {/* Google Sign In Button */}
             <button
               onClick={()=>signIn('google')}
-              disabled={isLoading}
-              className={`w-full flex items-center justify-center px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg ${isLoading ? 'opacity-50 cursor-not-allowed' : ''
+              className={`w-full flex items-center justify-center px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg  
                 }`}
             >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="w-5 h-5 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin mr-3"></div>
-                  Connecting...
-                </div>
-              ) : (
+               (
                 <>
                   <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
                     <path
@@ -112,7 +104,7 @@ const SignInPage = () => {
                   </svg>
                   Continue with Google
                 </>
-              )}
+              )
             </button>
 
             {/* Security Note */}

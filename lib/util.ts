@@ -152,13 +152,12 @@ export function countMonthlyClasses(  classesPerWeek: number ): number {
     while (date.getMonth() === month) {
         const day = date.getDay();
         // Skip Sundays (0 = Sunday)
-        if (day !== 0) {
+        if (day !== 0 && day !== 6) { // Assuming classes are not held on weekends
             classDays++;
         }
         date.setDate(date.getDate() + 1);
     }
-
-    // Each week has 6 class days; so 15 classes per 6 days => 2.5 classes per day
+ 
     const classesPerDay = classesPerWeek / 6;
 
     const totalClasses = Math.floor(classDays * classesPerDay);

@@ -1,5 +1,5 @@
 'use client'
-import { countMonthlyClasses, getDayName, weeks } from '@/lib/util';
+import { countMonthlyClasses } from '@/lib/util';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 import Loading from './ui/loading';

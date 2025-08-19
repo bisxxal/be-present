@@ -2,7 +2,7 @@
 import { getAttendanceForHeatmap } from '@/action/attendance.action';
 import { FilteredDataProps } from '@/lib/constant';
 import { toastSuccess } from '@/lib/toast';
-import { GraduationCap, Loader } from 'lucide-react';
+import {  Loader } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
