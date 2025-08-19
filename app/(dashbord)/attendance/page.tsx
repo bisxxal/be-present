@@ -5,6 +5,7 @@ import { createAttendanceRecords } from '@/action/attendance.action';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { useGetAttendance, useGetTimeTable } from '@/hooks/useGetAttendance';
 import { months, years } from '@/lib/util';
+import Loading from '@/components/ui/loading';
 
 interface SubjectAttendance {
   [subjectName: string]: 'present' | 'absent' | null;
@@ -25,7 +26,7 @@ const Attendance: React.FC = () => {
   const endDate = new Date(selectedYear, selectedMonth + 1, 0);
 
   const { data } =  useGetTimeTable() 
-  const {data: data2 } =  useGetAttendance( startDate, endDate);
+  const {data: data2 , isLoading } =  useGetAttendance( startDate, endDate);
    
 
   // Get days in selected month
@@ -215,12 +216,16 @@ const Attendance: React.FC = () => {
               <h3 className="text-lg font-semibold max-md:text-center mb-2">Statistics</h3>
               <div className="flex gap-4 text-sm">
                 <div className="text-green-400 max-md:text-center">
-                  <CheckCircle className="w-4 h-4 inline mr-1" />
-                  Present: {stats.present}
+                { !isLoading ? <>
+                <CheckCircle className="w-4 h-4 inline mr-1" />
+                  Present: {stats.present}  </> : <Loading boxes={2} parent=' flex-row w-full ' child=' max-md:w-14 w-20 max-md:h-14 h-4 rounded-xl ' />
+                  }
                 </div>
                 <div className="text-red-400 max-md:text-center">
+                 {!isLoading && <>
                   <XCircle className="w-4 h-4 inline mr-1" />
                   Absent: {stats.absent}
+                  </>  }
                 </div>
 
               </div>
@@ -309,7 +314,7 @@ const Attendance: React.FC = () => {
                 </button>
               </div>
 
-              <div className=" justify-   w-full flex flex-wrap gap-1 max-md:gap-x-2">
+              <div className="  w-full flex flex-wrap gap-1 max-md:gap-x-2">
                 {(() => {
                   const dayOfWeek = new Date(selectedYear, selectedMonth, selectedDate).getDay();
                   const filteredSubjects = data?.data?.filter((item: any) =>
@@ -318,6 +323,11 @@ const Attendance: React.FC = () => {
                   if (!filteredSubjects || filteredSubjects.length === 0) {
                     return (
                       <div className="text-center w-full text-gray-600 p-6">No subjects scheduled for this day.</div>
+                    );
+                  }
+                  if (!isLoading) {
+                    return (
+                      <Loading boxes={4} parent=' flex flex-wrap flex-row gap-1 max-md:gap-x-2 ' child=' w-[230px] max-md:w-[160px] h-[150px] rounded-3xl ' />
                     );
                   }
                   return filteredSubjects.map((item: any, index: number) => {
@@ -337,8 +347,8 @@ const Attendance: React.FC = () => {
                       >
                         <div>
                           <h2 className="text-xl capitalize text-center max-md:text-lg my-1 font-semibold">{subjectName}</h2>
-                          <p className=' max-md:text-xs max-md:text-center'>Start Time: {item.startTime}</p>
-                          <p className=' max-md:text-xs max-md:text-center'>End Time: {item.endTime}</p>
+                          <p className=' max-md:text-xs max-md:text-center'>  {item.startTime} ~ {item.endTime}</p>
+                          {/* <p className=' max-md:text-xs max-md:text-center'>End Time: </p> */}
                         </div>
 
                         {status ? (

@@ -23,9 +23,8 @@ const TrackComponent = () => {
     <div className=' w-full min-h-screen overflow-hidden'>
       <DateButton startDate={startDate} endDate={endDate} />
       <div className=' w-[100%] mx-auto my-10 p-5   center flex-col gap-4  rounded-lg shadow-lg '>
-       {presentData[0]?.value !== 0 && !isLoading ? <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
+       {presentData && !isLoading ? <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
           <div className=' w-[50px] max-md:w-full '>
-            
               <PieChart className='border-none outline-none' width={370} height={400}>
                 <Pie data={presentData} dataKey="value"
                   paddingAngle={3}
@@ -55,7 +54,7 @@ const TrackComponent = () => {
               
           </div>
           <div className='flex flex-col text-lg font-medium justify-between'>
-            {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 && totalPersentages.map((item, index) => (
+            {presentData  && totalPersentages.map((item, index) => (
               <div key={index} className='flex gap-1 justify-between items-center'>
                 <span className='text-white capitalize'>{item.type}</span>:
                 <span className='text-white'>{item.percentage} %</span>

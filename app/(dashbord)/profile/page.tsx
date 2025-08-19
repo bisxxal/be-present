@@ -74,8 +74,8 @@ const ProfilePage = () => {
 
 
 
-      <Link href={`/`} className="p-3 bg-gradient-to-r mt-20 center w-fit mx-auto from-purple-500 to-pink-500 rounded-xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
-        <GraduationCap className="w-16 h-16 text-white" size={23} />
+      <Link href={`/`} className=" bg-gradient-to-r mt-20 center w-fit mx-auto from-purple-500 to-pink-500 rounded-xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
+         <Image loading='lazy' width={250} height={250} src="/logo.png" className="w-24 h-24 drop-shadow-xl drop-shadow-[#0000006e] rotate-[16deg]  " alt="Logo" />
       </Link>
 
 

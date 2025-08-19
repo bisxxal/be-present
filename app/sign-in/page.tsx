@@ -4,6 +4,7 @@ import { GraduationCap, ArrowLeft, Shield, Users, Zap, Eye, EyeOff } from 'lucid
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const SignInPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -63,7 +64,7 @@ const SignInPage = () => {
           <div className="text-center mb-8 appeartext ">
             <div className="flex items-center justify-center mb-6">
               <Link href={'/'} className=" w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform duration-300">
-                <GraduationCap className="w-8 h-8 text-white" />
+                <Image loading='lazy' width={250} height={250} src="/logo.png" className="w-16 h-16 logoanimation drop-shadow-xl drop-shadow-[#0000006e] rotate-[16deg]  " alt="Logo" />
               </Link>
             </div>
             <h1 className="text-3xl font-bold text-white mb-2">Welcome Back!</h1>

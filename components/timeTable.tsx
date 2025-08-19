@@ -124,7 +124,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
             )}
 
             <div className="w-full px-5 max-md:px-2 overflow-auto">
-                { isLoading ? <div className=" mx-auto text-sm text-white">
+                {isLoading ? <div className=" mx-auto text-sm text-white">
                     <div className=' flex !items-start  !justify-start w-full'>
                         <p className="border whitespace-nowrap min-w-[200px]  max-md:min-w-[105px] h-[40px] flex border-[#ffffff30] center bg-[#ffffff10]">Day / Time</p>
                         {Array.from({ length: 3 }).map((_, index) => (
@@ -147,66 +147,64 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
                     </div>
                 </div>
 
-               : <table className="table-auto border-collapse mx-auto text-sm text-white">
-                    <thead>
-                        <tr>
-                            <th className="border border-[#ffffff30] p-2 text-left bg-[#ffffff10]">Day / Time</th>
-                            {timeSlots.map((slot, idx) => (
-                                <th key={idx} className="border border-[#ffffff30] whitespace-nowrap p-2 bg-[#ffffff10]">
-                                    {slot}
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {weeks.map((day, dayIdx) => {
-                            const dayIndex = dayIdx + 1;
-                            return (
-                                <tr key={day}>
-                                    <td className="border border-[#ffffff30] p-2 font-semibold text-gray-300 bg-[#ffffff05]">
-                                        {day}
-                                    </td>
-                                    {timeSlots.map((slot, idx) => {
-                                        const [startTime, endTime] = slot.split(' - ');
-                                        const subject = data?.data?.find(
-                                            (item: any) =>
-                                                item.dayOfWeek === dayIndex &&
-                                                item.startTime === startTime &&
-                                                item.endTime === endTime
-                                        );
-                                        const isCurrent = currentClass?.id === subject?.id;
-                                        const bgColor = isCurrent
-                                            ? ' '
-                                            : isToday === dayIndex
-                                                ? 'bg-gradient-to-r from-purple-600/20 to-pink-600/2 buttonbg !rounded-none'
-                                                : 'bg-gradient-to-br to-[#ffffff13] from-[#ffffff00]';
+                    : <table className="table-auto border-collapse mx-auto text-sm text-white">
+                        <thead>
+                            <tr>
+                                <th className="border border-[#ffffff30] p-2 text-left bg-[#ffffff10]">Day / Time</th>
+                                {timeSlots.map((slot, idx) => (
+                                    <th key={idx} className="border border-[#ffffff30] whitespace-nowrap p-2 bg-[#ffffff10]">
+                                        {slot}
+                                    </th>
+                                ))}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {weeks.map((day, dayIdx) => {
+                                const dayIndex = dayIdx + 1;
+                                return (
+                                    <tr key={day}>
+                                        <td className="border border-[#ffffff30] p-2 font-semibold text-gray-300 bg-[#ffffff05]">
+                                            {day}
+                                        </td>
+                                        {timeSlots.map((slot, idx) => {
+                                            const [startTime, endTime] = slot.split(' - ');
+                                            const subject = data?.data?.find(
+                                                (item: any) =>
+                                                    item.dayOfWeek === dayIndex &&
+                                                    item.startTime === startTime &&
+                                                    item.endTime === endTime
+                                            );
+                                            const isCurrent = currentClass && currentClass?.id === subject?.id;
+                                            const bgColor = isCurrent
+                                                ? ' bg-gradient-to-r from-green-700 /70 to-green-600 /20  '
+                                                : isToday === dayIndex && subject ? ' bg-gradient-to-br to-rose-500/50  from-pink-600/80 border-red-500/40 !rounded-none' : 'bg-gradient-to-br to-[#ffffff13] from-[#ffffff00]';
 
-                                        return (
-                                            <td
-                                                key={idx}
-                                                className={`border border-[#ffffff30]  w-[200px] h-[100px] p-2 align-top ${bgColor} relative`}
-                                            >
-                                                {subject ? (
-                                                    <>
-                                                        {type === 'edit' && (
-                                                            <h2 onClick={() => setShow(subject.id)} className='absolute right-1 top-1 hover:bg-red-500/20 rounded-full p-1.5 text-red-500'>
-                                                                <Trash2 size={18} />
-                                                            </h2>
-                                                        )}
-                                                        <h2 className="capitalize text-center mt-7 font-semibold text-md">{subject.subjectName}</h2>
+                                            return (
+                                                <td
+                                                    key={idx}
+                                                    className={`border border-[#ffffff30]  w-[200px] h-[100px] p-2 align-top ${bgColor} relative cursor-default`}
+                                                >
+                                                    {subject ? (
+                                                        <>
+                                                            {type === 'edit' && (
+                                                                <h2 onClick={() => setShow(subject.id)} className='absolute right-1 top-1 hover:bg-red-500/20 rounded-full p-1.5 text-red-500'>
+                                                                    <Trash2 size={18} />
+                                                                </h2>
+                                                            )}
+                                                            <h2 className="capitalize text-center mt-7 font-semibold text-md">{subject.subjectName}</h2>
 
-                                                    </>
-                                                ) : (
-                                                    <p className="text-gray-400 text-center mt-7 italic text-sm">No Class</p>
-                                                )}
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>}
+                                                        </>
+                                                    ) : (
+                                                        <p className="text-gray-400  text-center mt-7 italic text-sm">No Class</p>
+                                                    )}
+                                                </td>
+                                            );
+                                        })}
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>}
             </div>
 
             {data?.data?.length === 0 && type === 'view' && (
