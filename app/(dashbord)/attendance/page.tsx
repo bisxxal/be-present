@@ -325,7 +325,7 @@ const Attendance: React.FC = () => {
                       <div className="text-center w-full text-gray-600 p-6">No subjects scheduled for this day.</div>
                     );
                   }
-                  if (!isLoading) {
+                  if (isLoading) {
                     return (
                       <Loading boxes={4} parent=' flex flex-wrap flex-row gap-1 max-md:gap-x-2 ' child=' w-[230px] max-md:w-[160px] h-[150px] rounded-3xl ' />
                     );

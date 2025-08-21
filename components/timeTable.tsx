@@ -3,7 +3,7 @@ import { countMonthlyClasses } from '@/lib/util';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react'
 import Loading from './ui/loading';
-import { Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { deleteAttendance } from '@/action/attendance.action';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { TimeTableProps } from '@/lib/constant';
@@ -187,9 +187,14 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
                                                     {subject ? (
                                                         <>
                                                             {type === 'edit' && (
-                                                                <h2 onClick={() => setShow(subject.id)} className='absolute right-1 top-1 hover:bg-red-500/20 rounded-full p-1.5 text-red-500'>
+                                                                <div className='flex backdrop-blur-xl gap-2 rounded-full bg-[#ffffff20] absolute right-1 top-1'>
+                                                                <Link href={`/edit/${subject.id}`} className=' hover:bg-green-500/20 rounded-full p-1.5 text-green-500 '>
+                                                                    <Pencil size={18} />
+                                                                </Link>
+                                                                <p onClick={() => setShow(subject.id)} className=' hover:bg-red-500/20 rounded-full p-1.5 text-red-500'>
                                                                     <Trash2 size={18} />
-                                                                </h2>
+                                                                </p>
+                                                                </div>
                                                             )}
                                                             <h2 className="capitalize text-center mt-7 font-semibold text-md">{subject.subjectName}</h2>
 

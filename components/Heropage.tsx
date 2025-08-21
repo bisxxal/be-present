@@ -21,7 +21,7 @@ const HeroPage = () => {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#0F0F1A' }}>
+    <div className="min-h-screen relative " style={{ backgroundColor: '#0F0F1A' }}>
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute inset-0">
           {[...Array(20)].map((_, i) => (
@@ -40,43 +40,36 @@ const HeroPage = () => {
       </div>
 
       {/* Navigation */}
-      <nav className="border-b border-gray-800 max-md:px-3 px-6 py-3 navbaranimation">
+      <nav className="border-b fixed top-0 h-[67px] backdrop-blur-xl z-[30] left-0 border-gray-800 w-full max-md:px-3 px-6 py-3 navbaranimation">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 max-md:space-x-2">
             <div className="w-12 h-12 max-md:w-10 max-md:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center">
               <Image loading='lazy' width={150} height={150} src="/logo.png" className="w-14 h-14 max-md:w-12 max-md:h-12  drop-shadow-lg drop-shadow-[#0000006e] rotate-12 logoanimation" alt="Logo" />
             </div>
-            {/* <div className="w-10 h-10 max-md:w-9 max-md:h-9 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group">
-              <GraduationCap className="w-6 h-6 logoanimation text-white group-hover:animate-spinFast" />
-            </div> */}
-
             <span className="text-2xl font-bold max-md:tex-lg text-white">Be Present</span>
-          </div>
-
-          {/* Desktop Navigation */}
+          </div> 
           <div className="flex  items-center space-x-8">
             <a href="#features" className="text-gray-300 hidden md:flex  hover:text-white transition-colors">Features</a>
             <a href="#demo" className="text-gray-300 hidden md:flex  hover:text-white transition-colors">Demo</a>
-
             <div className="flex items-center space-x-3">
-              <Link href={'/sign-in'} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
+              {status === 'unauthenticated' &&<Link href={'/sign-in'} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
                 <LogIn className="w-4 h-4 inline mr-2" />
                 Sign In
-              </Link>
+              </Link>}
             </div>
           </div>
-
         </div>
 
       </nav>
 
       {/* Hero Section */}
-      <section className="px-6 py-16 overflow-hidden">
+      <section className="px-6 py-16 mt-[67px] relative overflow-hidden">
+          <div className=' absolute w-[50vw] h-[115px] blur-[60px] -top-10 -right-20 goldengred'></div>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h1 className="text-4xl md:text-7xl font-bold appeartext text-white mb-6 leading-tight">
               <span className=' slogo'> Smart</span>  <span className=" relative bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">Attendance
-                <Image loading='lazy' width={250} height={250} src="/logo2.png" className="w-40 h-40 logoanimation drop-shadow-xl drop-shadow-[#d49e4858] absolute rotate-[16deg] -top-14 max-md:-top-20 max-md:-right-16 -right-20" alt="Logo" /></span>
+                <Image loading='lazy' width={250} height={250} src="/logo2.png" className="w-40 h-40 logoanimation drop-shadow-xl drop-shadow-[#00000083] absolute rotate-[16deg] -top-14 max-md:-top-20 max-md:-right-16 -right-20" alt="Logo" /></span>
               <br /> <span className=' slogo'>Management System </span>
             </h1>
             <p className="text-base animate-fade-in text-gray-300 mb-8 max-w-3xl mx-auto">
@@ -100,7 +93,8 @@ const HeroPage = () => {
 
       <section className="bg-[#0d1117] -mt-[100px]   px-60 max-md:px-2  p-4 rounded-3xl text-white">
         <h2 className="text-3xl text-center font-semibold mb-4 slogo">Maintain Streaks</h2>
-        <div className='bg-[#0d1117] heroimgshadow'><CalendarHeatmap
+        <div className='bg-[#0d1117] heroimgshadow'>
+          <CalendarHeatmap
           className="focus:outline-none "
           endDate={'2025-12-12'}
           showWeekdayLabels={false}
@@ -119,7 +113,7 @@ const HeroPage = () => {
           horizontal={true}
           gutterSize={2}
         />
-          <ReactTooltip id="heatmap-tooltip" />
+          <ReactTooltip id="heatmap-tooltip" className=' !backdrop-blur-xl ' />
           <div className="flex items-center gap-2 mt-4 text-sm">
             <span className="text-gray-400">Less</span>
             <div className="w-4 h-4 bg-[#151B23] border border-gray-600 rounded-sm" />

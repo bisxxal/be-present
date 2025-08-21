@@ -10,13 +10,7 @@ import TimeTable from '@/components/timeTable';
 import { Loader } from 'lucide-react';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { useGetTimeTable } from '@/hooks/useGetAttendance';
-
-type SubjectEntry = {
-  subjectName: string;
-  startTime: string;
-  endTime: string;
-  day: string
-};
+import { SubjectEntry } from '@/lib/constant';
 
 const TimeTablePage = () => {
   const client = useQueryClient()

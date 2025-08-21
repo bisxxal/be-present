@@ -74,7 +74,7 @@ const HeatMapCalender = () => {
                 horizontal={true}
                 gutterSize={2}
             />
-            <ReactTooltip id="heatmap-tooltip" />
+            <ReactTooltip id="heatmap-tooltip" className=' backdrop-blur-xl' />
             <div className="flex items-center gap-2 mt-4 text-sm">
                 <span className="text-gray-400">Less</span>
                 <div className="w-4 h-4 bg-[#151B23] border border-gray-600 rounded-sm" />

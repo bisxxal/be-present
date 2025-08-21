@@ -21,3 +21,10 @@ export interface FilteredDataProps {
   date: string;
   count: number;
 }
+export type SubjectEntry = {
+  id?: string;
+  subjectName: string;
+  startTime: string;
+  endTime: string;
+  day: string
+};
