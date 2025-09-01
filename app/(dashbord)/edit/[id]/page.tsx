@@ -102,10 +102,11 @@ const Edit = () => {
             <label htmlFor="">Starting time</label>
           <DatePicker
             selected={startTime}
+            // selected={ startTime ? new Date(`1970-01-01T${convertTo24Hour( String(startTime) )}`) : null}
             onChange={(date) => handleTimeChange('startTime', date)}
             showTimeSelect
             showTimeSelectOnly
-            timeIntervals={15}
+            timeIntervals={1}
             dateFormat="h:mm aa"
             placeholderText="Start Time"
             className="px-3 py-2 border w-full rounded-lg"
@@ -116,10 +117,12 @@ const Edit = () => {
           <label htmlFor="">Ending time</label>
           <DatePicker
             selected={endTime}
+            // selected={ endTime ? new Date(`1970-01-01T${convertTo24Hour( String(endTime) )}`) : null}
+
             onChange={(date) => handleTimeChange('endTime', date)}
             showTimeSelect
             showTimeSelectOnly
-            timeIntervals={15}
+            timeIntervals={1}
             dateFormat="h:mm aa"
             placeholderText="End Time"
             className="px-3 py-2 border max-md:w-full rounded-lg"

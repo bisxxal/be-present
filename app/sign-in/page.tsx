@@ -82,7 +82,7 @@ const SignInPage = () => {
               className={`w-full flex items-center justify-center px-6 py-4 bg-white hover:bg-gray-50 text-gray-900 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg  
                 }`}
             >
-               (
+               
                 <>
                   <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24">
                     <path
@@ -104,7 +104,7 @@ const SignInPage = () => {
                   </svg>
                   Continue with Google
                 </>
-              )
+              
             </button>
 
             {/* Security Note */}

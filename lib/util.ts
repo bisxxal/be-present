@@ -1,4 +1,4 @@
-export function convertTo24Hour(timeStr: string): string {
+export function convertTo24Hour(timeStr: string  ): string {
   const [time, modifier] = timeStr.split(' ');
   let [hours, minutes] = time.split(':');
 

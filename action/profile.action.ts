@@ -98,8 +98,8 @@ export const updateTimeTable = async (data: { id?: string; subjectName: string; 
       },
       data: {
         subjectName: subjectName.toLowerCase(),
-        startTime: convertTo24Hour(startTime),
-        endTime: convertTo24Hour(endTime),
+        startTime:  (startTime),
+        endTime:  (endTime),
         dayOfWeek: Number(day),
       },
     });

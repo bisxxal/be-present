@@ -163,24 +163,24 @@ const TimeTablePage = () => {
               <option value="6">Saturday</option>
             </select>
 
-            <div className=' w-full flex items-center justify-between '>
+            <div className=' w-full gap-3 flex items-center justify-between '>
               <DatePicker
                 selected={entry.startTime ? new Date(`1970-01-01T${convertTo24Hour(entry.startTime)}`) : null}
                 onChange={(date) => handleTimeChange(index, 'startTime', date)}
                 showTimeSelect
-                showTimeSelectOnly
-                timeIntervals={15}
+                showTimeSelectOnly 
+                timeIntervals={1}
                 dateFormat="h:mm aa"
                 placeholderText="Start Time"
                 className="px-3 py-2 border  w-full rounded-lg"
               />
-
+ 
               <DatePicker
                 selected={entry.endTime ? new Date(`1970-01-01T${convertTo24Hour(entry.endTime)}`) : null}
                 onChange={(date) => handleTimeChange(index, 'endTime', date)}
                 showTimeSelect
                 showTimeSelectOnly
-                timeIntervals={15}
+                timeIntervals={1}
                 dateFormat="h:mm aa"
                 placeholderText="End Time"
                 className="px-3 py-2 border max-md: w-full rounded-lg"
