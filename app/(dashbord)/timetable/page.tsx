@@ -169,7 +169,7 @@ const TimeTablePage = () => {
                 onChange={(date) => handleTimeChange(index, 'startTime', date)}
                 showTimeSelect
                 showTimeSelectOnly 
-                timeIntervals={1}
+                timeIntervals={5}
                 dateFormat="h:mm aa"
                 placeholderText="Start Time"
                 className="px-3 py-2 border  w-full rounded-lg"
@@ -180,7 +180,7 @@ const TimeTablePage = () => {
                 onChange={(date) => handleTimeChange(index, 'endTime', date)}
                 showTimeSelect
                 showTimeSelectOnly
-                timeIntervals={1}
+                timeIntervals={5}
                 dateFormat="h:mm aa"
                 placeholderText="End Time"
                 className="px-3 py-2 border max-md: w-full rounded-lg"

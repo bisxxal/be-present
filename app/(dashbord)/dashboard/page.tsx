@@ -57,7 +57,7 @@ const DashBoardMainaPage = () => {
 
           { badge  ? <p className=' text-lg  flex items-center mt-2 font-semibold'> <span className=' text-4xl '>{badge}</span> days of streak </p> : <span>No streak yet</span> }
           </div>
-          {presentData.length !== 0 &&  <div>
+          {presentData[0]?.value !== 0 && presentData[1]?.value !== 0&&  <div>
             <PieChart className='[&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground' width={400} height={240}>
             <Pie data={presentData} dataKey="value"
               paddingAngle={3}

@@ -78,7 +78,7 @@ const ProgressTracker = () => {
 
  
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">{(percentage)}%</span>
+          <span className="text-2xl font-bold text-white">{isNaN(Number(percentage)) ? '0' : percentage}%</span>
         </div>
       </div>
     );
@@ -112,7 +112,7 @@ const ProgressTracker = () => {
 
         <div className="text-center mb-12 max-md:mb-8">
           <div className="inline-flex   max-md:flex-col max-md:w-full  max-md:mb-0 items-center gap-3 mb-4">
-            <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl">
+            <div className="p-3 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl">
               <Activity className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
@@ -164,7 +164,7 @@ const ProgressTracker = () => {
                 key={period}
                 onClick={() => setSelectedPeriod(period)}
                 className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 capitalize ${selectedPeriod === period
-                  ? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg'
+                  ? 'bg-gradient-to-br from-blue-500 to-purple-500 text-white shadow-lg'
                   : 'text-gray-400 hover:text-white'
                   }`}
               >

@@ -107,7 +107,7 @@ export const updateTimeTable = async (data: { id?: string; subjectName: string; 
     return { status: 200, message: "Time table updated successfully", data: timeTable };
   }
   catch (error) {
-    console.log(error)
+
     return { status: 500, message: "Internal server error" };
   }
 }
