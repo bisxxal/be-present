@@ -27,19 +27,15 @@ const Attendance: React.FC = () => {
 
   const { data } =  useGetTimeTable() 
   const {data: data2 , isLoading } =  useGetAttendance( startDate, endDate);
-   
 
-  // Get days in selected month
   const getDaysInMonth = (month: number, year: number): number => {
     return new Date(year, month + 1, 0).getDate();
   };
 
-  // Get attendance key for current selection
   const getAttendanceKey = (): string => {
     return `${selectedYear}-${String(selectedMonth + 1).padStart(2, '0')}`;
   };
 
-  // Get attendance for a specific date
   const getAttendanceForDate = (date: number): 'present' | 'absent' | null => {
     const key = getAttendanceKey();
     const subjectAttendance = attendanceData[key]?.[date];
@@ -98,19 +94,14 @@ const Attendance: React.FC = () => {
 
   const handleFinalSubmit = async () => {
     const key = getAttendanceKey();
-
     const dateKey = Number(selectedDate); // ensure it's a number
-
     if (!dateKey || isNaN(dateKey)) {
       return toastError('Invalid or no date selected.');
     }
-
     const dailyAttendance = attendanceData[key]?.[dateKey];
-
     if (!dailyAttendance || Object.keys(dailyAttendance).length === 0) {
       return toastError('No attendance marked for this date.');
     }
-
     const records = Object.entries(dailyAttendance)
       .map(([subjectName, status]) => {
         const timetableEntry = data?.data?.find((item: any) => item.subjectName === subjectName);
@@ -178,7 +169,7 @@ const Attendance: React.FC = () => {
       <div className=" w-[80%] max-md:w-full mx-auto">
 
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2"><Calendar className="w-8 h-8 text-blue-400" />Attendance</h1>
+          <h1 className="text-3xl font-bold mb-2 flex items-center gap-2"> Attendance</h1>
         </div>
 
         {/* Controls */}

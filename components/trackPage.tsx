@@ -23,14 +23,13 @@ const TrackComponent = () => {
     <div className=' w-full min-h-screen overflow-hidden'>
       <DateButton startDate={startDate} endDate={endDate} />
       <div className=' w-[100%] mx-auto my-10 p-5   center flex-col gap-4  rounded-lg shadow-lg '>
-       {presentData[0]?.value !== 0 && presentData[1]?.value !== 0 && !isLoading ? <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
+       {presentData[0]?.value !== 0 || presentData[1]?.value !== 0 && !isLoading ? <div className='card w-full max-md:flex-col card flex justify-evenly px-10 max-md:px-2 h-[500px] border-2 border-[#ffffff21] rounded-3xl items-center'>
           <div className=' w-[50px] max-md:w-full '>
               <PieChart className='border-none outline-none' width={370} height={400}>
                 <Pie data={presentData} dataKey="value"
                   paddingAngle={3}
                   fill="red"
-
-                  cx="50%" cy="50%" nameKey='type' innerRadius={80} outerRadius={120}
+                  cx="50%" cy="50%" nameKey='type' innerRadius={70} outerRadius={120}
                   label={(entry) => `${entry.type}`}
                 >
                   {presentData.map((_, index) => (
