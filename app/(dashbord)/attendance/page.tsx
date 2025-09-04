@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Calendar, X, CheckCircle, XCircle,  Clock } from 'lucide-react';
+import {  X, CheckCircle, XCircle,  Clock, Loader } from 'lucide-react';
 import { createAttendanceRecords } from '@/action/attendance.action';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { useGetAttendance, useGetTimeTable } from '@/hooks/useGetAttendance';
@@ -24,6 +24,8 @@ const Attendance: React.FC = () => {
   const [selectedDate, setSelectedDate] = useState<number | null>(null);
   const startDate = new Date(selectedYear, selectedMonth, 1);
   const endDate = new Date(selectedYear, selectedMonth + 1, 0);
+
+  const [iscreateing, setIsCreating] = useState(false);
 
   const { data } =  useGetTimeTable() 
   const {data: data2 , isLoading } =  useGetAttendance( startDate, endDate);
@@ -121,6 +123,7 @@ const Attendance: React.FC = () => {
       records,
     };
 
+    setIsCreating(true);
     const res = await createAttendanceRecords(payload);
 
     if (res.status === 200) {
@@ -129,6 +132,7 @@ const Attendance: React.FC = () => {
     } else {
       toastError(res.message);
     }
+    setIsCreating(false);
   };
 
   useEffect(() => {
@@ -382,9 +386,9 @@ const Attendance: React.FC = () => {
               }
               hidden={!isToday}
                 onClick={() => handleFinalSubmit()}
-                className={`disabled:opacity-50 w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
+                className={`disabled:opacity-50 center w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
               >
-                Final Submit
+            { iscreateing ? <Loader className=' animate-spin ' /> :" Final Submit"}
               </button>
             </div>
           </div>
