@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { addTimeTable } from '@/action/profile.action';
 import { convertTo24Hour } from '@/lib/util';
@@ -11,11 +11,13 @@ import { Loader } from 'lucide-react';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { useGetTimeTable } from '@/hooks/useGetAttendance';
 import { SubjectEntry } from '@/lib/constant';
+import { useRouter } from 'next/navigation';
 
 const TimeTablePage = () => {
-  const client = useQueryClient()
+  const router = useRouter();
   const [subjects, setSubjects] = useState<SubjectEntry[]>([{ subjectName: '', startTime: '', endTime: '', day: '1' }]);
-  const { data, isLoading } = useGetTimeTable()
+  const { data } = useGetTimeTable()
+const { refetchTimeTable } = useGetTimeTable();
 
   const handleInputChange = (
     index: number,
@@ -53,14 +55,18 @@ const TimeTablePage = () => {
       return res;
     },
     onSuccess: (data) => {
+      localStorage.removeItem('subjectsData');
       if (data.status === 200) {
         toastSuccess(data.message);
         setSubjects([{ subjectName: '', startTime: '', endTime: '', day: '' }]); // Reset form
-        client.invalidateQueries({ queryKey: ['timetable'] });
+
+        refetchTimeTable();
+
       } else {
         toastError(data.message);
       }
     },
+
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -74,8 +80,6 @@ const TimeTablePage = () => {
     }
     createTimeTableMutation.mutate(subjects);
   };
-
-  // const [customInputIndices, setCustomInputIndices] = useState<number[]>([]);
 
   return (
     <div className="w-full pb-10 mx-auto overflow-hidden">
@@ -113,47 +117,7 @@ const TimeTablePage = () => {
 
             </div>
 
-            {/* <div className="flex flex-col w-full">
-              {!customInputIndices.includes(index) ? (
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={entry.subjectName}
-                    onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
-                    className="px-3 py-2 border rounded-lg w-[300px]"
-                  >
-                    <option value="">Select Subject</option>
-                    {Array.from(
-                      new Map(
-                        (data?.data || []).map((item: any) => [item.subjectName.toLowerCase(), item])
-                      ).values()
-                    ).map((item: any) => (
-                      <option key={item.id} value={item.subjectName}>
-                        {item.subjectName}
-                      </option>
-                    ))}
-                  </select>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setCustomInputIndices((prev) => [...prev, index])
-                    }
-                    className="text-blue-600 underline hover:text-blue-800 text-sm"
-                  >
-                    + Add New
-                  </button>
-                </div>
-              ) : (
-                <input
-                  type="text"
-                  placeholder="Enter new subject"
-                  value={entry.subjectName}
-                  onChange={(e) => handleInputChange(index, 'subjectName', e.target.value)}
-                  className="px-3 py-2 border rounded-lg w-[300px]"
-                />
-              )}
-            </div> */}
-
-            <select className=' my-1 max-md:w-full' value={entry.day} defaultValue="1" onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+            <select className=' my-1 max-md:w-full' value={entry.day} defaultValue="1" required onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
               {/* <option value="">Day</option> */}
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>

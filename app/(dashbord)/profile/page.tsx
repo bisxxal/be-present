@@ -49,6 +49,7 @@ const ProfilePage = () => {
     
     localStorage.removeItem('attendanceHeatmapData');
     localStorage.removeItem('classes')
+    localStorage.removeItem('subjectsData');
     localStorage.removeItem('nextauth.message');
     toastSuccess('Logged out successfully!');
     signOut();

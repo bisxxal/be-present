@@ -14,7 +14,7 @@ import { Area, AreaChart, CartesianGrid, Cell, Legend, Pie, PieChart, Responsive
 
 const DashBoardMainaPage = () => {
   const { data: session } = useSession();
-  const [remainingday, setRemaining] = useState(0)
+  const [remainingday, setRemaining] = useState([])
   const [currentClass, setCurrentClass] = useState<TimeTableProps>();
   const [show, setShow] = useState(false);
   const today = useMemo(() => new Date(), []);
@@ -45,7 +45,7 @@ const DashBoardMainaPage = () => {
               <span className=' bg-clip-text text-transparent bg-gradient-to-br from-pink-400 to-rose-500 capitalize'> {session?.user?.name} !!</span>
               {new Date().getDay() === 0 && <p className=' bg-clip-text  text-transparent bg-gradient-to-br from-indigo-500 to-pink-500'>{new Date().getDay() === 0 ? 'Happy sunday 🎉' : ''}</p>}
             </div>
-            <p className="text-gray-300 text-lg">You have <span className="text-purple-400 font-semibold"><span className=' text-xl'>{remainingday}</span> remaining classes</span> today.</p>
+            <p className="text-gray-300 text-lg">You have <span className="text-purple-400 font-semibold"><span className=' text-xl'>{remainingday.length}</span> remaining classes</span> today.</p>
            { totalPersentages[0]?.percentage && <p>Your current attendance rate is <span className={`text-xl font-medium  ${Number(totalPersentages[0]?.percentage) >= 75? ' text-green-400  ' : ' text-red-400  '} font-semibold `}>{ Number(totalPersentages[0]?.percentage) ? `${totalPersentages[0]?.percentage} %`: '0%'}</span></p>}
             {currentClass?.subjectName && (
               <p>Current Class :

@@ -15,6 +15,7 @@ interface TimeTablePropsExtended {
 }
 
 const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTablePropsExtended) => {
+
     const client = useQueryClient();
     const { data, isLoading } = useGetTimeTable();
     const [show, setShow] = useState('');
@@ -94,22 +95,6 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
 
     const weeks = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-    // Extract unique time slots
-    // const timeSlots = [...new Set(
-    //     data?.data?.map((item: any) => `${item.startTime} - ${item.endTime}`) || []
-    // )].sort((a, b) => {
-    //     const parse = (str: string) => {
-    //         const [time] = str.split(' - ');
-    //         const [t, mod] = time.split(' ');
-    //         let [h, m] = t.split(':').map(Number);
-    //         if (mod === 'PM' && h < 12) h += 12;
-    //         if (mod === 'AM' && h === 12) h = 0;
-    //         return h * 60 + m;
-    //     };
-    //     return parse(a) - parse(b);
-    // });
-
-
     const parseTime = (timeStr: string): number => {
         const [time, modifier] = timeStr.split(' ');
         let [hours, minutes] = time.split(':').map(Number);
@@ -153,6 +138,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
         });
 
         return slotArray;
+
     }, [data]);
 
 
@@ -208,55 +194,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {weeks.map((day, dayIdx) => {
-                                const dayIndex = dayIdx + 1;
-                                return (
-                                    <tr key={day}>
-                                        <td className="border border-[#ffffff30] p-2 font-semibold text-gray-300 bg-[#ffffff05]">
-                                            {day}
-                                        </td>
-                                        {timeSlots.map((slot, idx) => {
-                                            const [startTime, endTime] = slot.split(' - ');
-                                            const subject = data?.data?.find(
-                                                (item: any) =>
-                                                    item.dayOfWeek === dayIndex &&
-                                                    item.startTime === startTime &&
-                                                    item.endTime === endTime
-                                            );
-                                            const isCurrent = currentClass && currentClass?.id === subject?.id;
-                                            const bgColor = isCurrent
-                                                ? ' bg-gradient-to-r from-green-700 /70 to-green-600 /20  '
-                                                : isToday === dayIndex && subject ? ' bg-gradient-to-br to-rose-500/50  from-pink-600/80 border-red-500/40 !rounded-none' : 'bg-gradient-to-br to-[#ffffff13] from-[#ffffff00]';
 
-                                            return (
-                                                <td
-                                                    key={idx}
-                                                    className={`border border-[#ffffff30]  w-[200px] h-[100px] p-2 align-top ${bgColor} relative cursor-default`}
-                                                >
-                                                    {subject ? (
-                                                        <>
-                                                            {type === 'edit' && (
-                                                                <div className='flex backdrop-blur-xl gap-2 rounded-full bg-[#ffffff20] absolute right-1 top-1'>
-                                                                <Link href={`/edit/${subject.id}`} className=' hover:bg-green-500/20 rounded-full p-1.5 text-green-500 '>
-                                                                    <Pencil size={18} />
-                                                                </Link>
-                                                                <p onClick={() => setShow(subject.id)} className=' hover:bg-red-500/20 rounded-full p-1.5 text-red-500'>
-                                                                    <Trash2 size={18} />
-                                                                </p>
-                                                                </div>
-                                                            )}
-                                                            <h2 className="capitalize text-center mt-7 font-semibold text-md">{subject.subjectName}</h2>
-
-                                                        </>
-                                                    ) : (
-                                                        <p className="text-gray-400  text-center mt-7 italic text-sm">No Class</p>
-                                                    )}
-                                                </td>
-                                            );
-                                        })}
-                                    </tr>
-                                );
-                            })} */}
 
                             {weeks.map((day, dayIdx) => {
                                 const dayIndex = dayIdx + 1;

@@ -343,7 +343,6 @@ const Attendance: React.FC = () => {
                         <div>
                           <h2 className="text-xl capitalize text-center max-md:text-lg my-1 font-semibold">{subjectName}</h2>
                           <p className=' max-md:text-xs max-md:text-center'>  {item.startTime} ~ {item.endTime}</p>
-                          {/* <p className=' max-md:text-xs max-md:text-center'>End Time: </p> */}
                         </div>
 
                         {status ? (
@@ -381,10 +380,7 @@ const Attendance: React.FC = () => {
                 })()}
               </div>
               <button
-              disabled={Object.keys(attendanceData[getAttendanceKey()]?.[selectedDate] || {}).length === 0 
-              ||  !isToday
-              }
-              hidden={!isToday}
+              disabled={Object.keys(attendanceData[getAttendanceKey()]?.[selectedDate] || {}).length === 0 ||  !isToday}hidden={!isToday}
                 onClick={() => handleFinalSubmit()}
                 className={`disabled:opacity-50 center w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
               >

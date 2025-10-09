@@ -47,6 +47,7 @@ const Edit = () => {
       return await updateTimeTable(formData);
     },
     onSuccess: (data) => {
+      localStorage.removeItem('subjectsData');
       if (data.status === 200) {
         toastSuccess(data.message);
         client.invalidateQueries({ queryKey: ['timetable'] });

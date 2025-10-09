@@ -94,7 +94,7 @@ const PdfPage = () => {
                         </thead>
                         <tbody >
                             {dateRange.map((dateObj, index) => {
-                            const isSunday = dateObj.getDay() === 0;
+                            const isSunday = dateObj.getDay() === 0 || dateObj.getDay() === 6;
                             return (
                                 <tr key={index} className={isSunday ? 'bg-[#3400826a]' : ''}>
                                 <td className='border border-[#cecece] px-2 py-2 !w-10 text-center'>
