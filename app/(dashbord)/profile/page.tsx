@@ -59,7 +59,7 @@ const ProfilePage = () => {
     <div className='w-full p-20 max-md:p-2 '>
 
       <div className=' card w-[80%] max-md:w-[95%] mx-auto p-5 rounded-3xl shadow-lg text-white'>
-        <div className='text-3xl max-md:text-2xl text-center mb-6 font-bold'>Profile Information</div>
+        <div className='text-3xl max-md:text-2xl text-center mb-6 font-bold'>Profile</div>
         {status === 'loading' ? (
           <p></p>
         ) : (
@@ -75,7 +75,7 @@ const ProfilePage = () => {
 
 
 
-      <Link href={`/`} className=" bg-gradient-to-r mt-20 center w-fit mx-auto from-purple-500 to-pink-500 rounded-xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
+      <Link href={`/`} className=" bg-gradient-to-r mt-20 center w-fit mx-auto from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
          <Image loading='lazy' width={250} height={250} src="/logo.png" className="w-24 h-24 drop-shadow-xl drop-shadow-[#0000006e] rotate-[16deg]  " alt="Logo" />
       </Link>
 

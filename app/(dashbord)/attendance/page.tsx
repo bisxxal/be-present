@@ -27,7 +27,7 @@ const Attendance: React.FC = () => {
 
   const [iscreateing, setIsCreating] = useState(false);
 
-  const { data } =  useGetTimeTable() 
+  const { data , isLoading:isLoading2} =  useGetTimeTable() 
   const {data: data2 , isLoading } =  useGetAttendance( startDate, endDate);
 
   const getDaysInMonth = (month: number, year: number): number => {
@@ -172,7 +172,7 @@ const Attendance: React.FC = () => {
     <div className="min-h-screen   w-full text-white p-6 max-md:p-1">
       <div className=" w-[80%] max-md:w-full mx-auto">
 
-        <div className="mb-8">
+        <div className="mb-8 ml-2 mt-4">
           <h1 className="text-3xl font-bold mb-2 flex items-center gap-2"> Attendance</h1>
         </div>
 
@@ -213,7 +213,7 @@ const Attendance: React.FC = () => {
                 <div className="text-green-400 max-md:text-center">
                 { !isLoading ? <>
                 <CheckCircle className="w-4 h-4 inline mr-1" />
-                  Present: {stats.present}  </> : <Loading boxes={2} parent=' flex-row w-full ' child=' max-md:w-14 w-20 max-md:h-14 h-4 rounded-xl ' />
+                  Present: {stats.present}  </> : <Loading boxes={2} parent=' flex-row w-full ' child=' max-md:w-14 max-md:h-[60px] w-24 h-4 rounded-xl ' />
                   }
                 </div>
                 <div className="text-red-400 max-md:text-center">
@@ -230,7 +230,7 @@ const Attendance: React.FC = () => {
 
         {/* Calendar Grid */}
         <div className="card rounded-lg max-md:px-1 p-6">
-          <h2 className="text-xl font-semibold mb-4">
+          <h2 className="text-xl font-semibold mb-4 ml-5">
             {months[selectedMonth]} {selectedYear}
           </h2>
 
@@ -320,7 +320,7 @@ const Attendance: React.FC = () => {
                       <div className="text-center w-full text-gray-600 p-6">No subjects scheduled for this day.</div>
                     );
                   }
-                  if (isLoading) {
+                  if (isLoading2) {
                     return (
                       <Loading boxes={4} parent=' flex flex-wrap flex-row gap-1 max-md:gap-x-2 ' child=' w-[230px] max-md:w-[160px] h-[150px] rounded-3xl ' />
                     );
@@ -351,13 +351,13 @@ const Attendance: React.FC = () => {
                               ✅ {status.charAt(0).toUpperCase() + status.slice(1)}
                             </p>
                             <button onClick={handleClear}  
-                            disabled={!isToday} hidden={!isToday}
+                            // disabled={!isToday} hidden={!isToday}
                              className="text-sm px-3 py-2  border border-gray-400 w-full rounded-md ">Clear</button>
                           </div>
                         ) : (
                           <div className="space-y-2">
                             <button
-                             disabled={!isToday}
+                            //  disabled={!isToday}
                               onClick={() => handleClick('present')}
                               className="w-full flex disabled:opacity-50 items-center justify-center gap-2  buttongreen text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
@@ -365,7 +365,7 @@ const Attendance: React.FC = () => {
                                 Present
                             </button>
                             <button
-                             disabled={!isToday}
+                            //  disabled={!isToday}
                               onClick={() => handleClick('absent')}
                               className="w-full  disabled:opacity-50 flex items-center justify-center gap-2 buttonred  text-white max-md:py-1 max-md:px-0.5 py-2 px-4 rounded-lg"
                             >
@@ -380,7 +380,7 @@ const Attendance: React.FC = () => {
                 })()}
               </div>
               <button
-              disabled={Object.keys(attendanceData[getAttendanceKey()]?.[selectedDate] || {}).length === 0 ||  !isToday}hidden={!isToday}
+              // disabled={Object.keys(attendanceData[getAttendanceKey()]?.[selectedDate] || {}).length === 0 ||  !isToday}hidden={!isToday}
                 onClick={() => handleFinalSubmit()}
                 className={`disabled:opacity-50 center w-full mt-6 buttonbg text-white px-6 py-3 rounded-md`}
               >
