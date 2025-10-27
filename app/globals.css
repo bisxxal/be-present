@@ -314,3 +314,15 @@ button:hover , a:hover{
 background: radial-gradient(circle,#b88244e0 0%, #dccfb53b 100%);
 
 }
+
+.shine{
+  animation: shine 5s linear infinite;
+}
+@keyframes shine {
+  0% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: -100%;
+  }
+}

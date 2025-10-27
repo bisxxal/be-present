@@ -5,7 +5,7 @@ import { COLORS, COLORS2 } from '@/lib/util';
 import { endOfMonth, isValid, parseISO, startOfMonth } from 'date-fns';
 import { useSearchParams } from 'next/navigation';
 import { useMemo } from 'react';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { Area, AreaChart, Bar, BarChart, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 import Loading from './ui/loading';
 const TrackComponent = () => {
   const today = useMemo(() => new Date(), []);
@@ -120,7 +120,7 @@ const TrackComponent = () => {
             <h1 className=' text-lg text-center font-medium'>Subject vs Attendance</h1>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={subjCount}>
-                <CartesianGrid strokeDasharray="0 0" vertical={false} opacity={0.1} />
+                {/* <CartesianGrid strokeDasharray="0 0" vertical={false} opacity={0.1} /> */}
                 <XAxis dataKey="name" />
                 <Tooltip
                   contentStyle={{
@@ -148,7 +148,7 @@ const TrackComponent = () => {
             <h1 className=' text-lg text-center font-medium'>Date vs Attendance</h1>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart width={730} height={250} data={dateData}>
-                <CartesianGrid strokeDasharray="0.1 0" vertical={false} opacity={0.1} />
+                {/* <CartesianGrid strokeDasharray="0.1 0" vertical={false} opacity={0.1} /> */}
                 <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{ fontSize: '12px' }} dataKey="date" />
                 <Tooltip
                   contentStyle={{
@@ -192,7 +192,7 @@ const TrackComponent = () => {
               </defs>
               <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{ fontSize: '12px' }} dataKey="date" stroke="#ffffff28" />
               <Legend align="center" verticalAlign="top" wrapperStyle={{ paddingTop: "20px", paddingBottom: "40px" }} />
-              <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} />
+              {/* <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} /> */}
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#ffffff20',

@@ -33,7 +33,7 @@ const DashBoardMainaPage = () => {
   return (
     <div className=' w-full p-20 mb-20 max-md:p-2 overflow-hidden'>
 
-      <div className=" relative max-md:mt-10 bg-gradient-to-r from-purple-600/30 to-pink-600/30 rounded-2xl p-3 px-8 max-md:py-4  border border-purple-500/30 mb-8">
+      <div className=" relative max-md:mt-10 bg-gradient-to-bl from-purple-600/30 to-pink -600/30 rounded-2xl p-3 px-8 max-md:py-4  border border-purple-500/30 mb-8">
 
         <div className=' absolute -top-10 -right-10 max-md:-right-6 drop-shadow-2xl drop-shadow-[#00000070]'>
           {Number(badge) >= 3 && <Image width={150} height={150} src={badgeImages(badge).img} className=' w-36 h-36  ' alt="" />}
@@ -109,7 +109,7 @@ const DashBoardMainaPage = () => {
             </defs>
             <XAxis tickFormatter={(value) => value.slice(0, 5)} style={{ fontSize: '12px' }} dataKey="date" stroke="#ffffff28" />
             <Legend align="center" verticalAlign="top" wrapperStyle={{ paddingTop: "20px", paddingBottom: "40px" }} />
-            <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} />
+            {/* <CartesianGrid strokeDasharray="1 0" vertical={false} opacity={0.1} /> */}
             <Tooltip
               contentStyle={{
                 backgroundColor: '#ffffff20',

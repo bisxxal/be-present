@@ -167,7 +167,7 @@ const Attendance: React.FC = () => {
   }, [data, data2]);
 
   const today = useMemo(() => new Date(), []);
-  const isToday = selectedDate === today.getDate() && selectedMonth === today.getMonth() && selectedYear === today.getFullYear();
+  // const isToday = selectedDate === today.getDate() && selectedMonth === today.getMonth() && selectedYear === today.getFullYear();
   return (
     <div className="min-h-screen   w-full text-white p-6 max-md:p-1">
       <div className=" w-[80%] max-md:w-full mx-auto">

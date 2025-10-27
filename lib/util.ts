@@ -12,11 +12,11 @@ export function convertTo24Hour(timeStr: string  ): string {
 }
 export const COLORS = [
   '#A48FFF', // Bright Teal
-  '#64B5F5', // Aqua Green
+  '#E11D47', // Aqua Green
 ];
 export const COLORS2 = [
-  '#FF79C6', // Bright Orange
   '#845EC2', // Bold Violet
+  '#E11D47'
 ];
 
 export const getDayName = (dayIndex: number | null | undefined): string => {

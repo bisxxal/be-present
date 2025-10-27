@@ -58,15 +58,15 @@ const ProfilePage = () => {
   return (
     <div className='w-full p-20 max-md:p-2 '>
 
-      <div className=' card w-[80%] max-md:w-[95%] mx-auto p-5 rounded-3xl shadow-lg text-white'>
+      <div className='mt-14 card w-[80%] max-md:w-[95%] mx-auto p-5 rounded-3xl shadow-lg text-white'>
         <div className='text-3xl max-md:text-2xl text-center mb-6 font-bold'>Profile</div>
         {status === 'loading' ? (
           <p></p>
         ) : (
           <div className='text-lg text-center'>
             <Image src={data?.user?.image!} alt="User Avatar" height={100} width={100} className='rounded-full w-32 h-32 mx-auto' />
-            <p className='capitalize mt-5'><strong>Hiii , </strong> {data?.user?.name}</p>
-            <p><strong>Signed as :</strong> {data?.user?.email}</p>
+            <p className='capitalize mt-5'><strong>Hiii ,{data?.user?.name} </strong> </p>
+            <p className=' text-gray-400'><strong>Signed as :</strong> {data?.user?.email}</p>
             {<button onClick={() => handelLogOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
             {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{updated ? <Loader className=' animate-spin ' /> : 'Update Streak'}</button>}
           </div>
