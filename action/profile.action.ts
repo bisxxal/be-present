@@ -1,9 +1,7 @@
 'use server'
 
-import { authOptions } from "@/lib/auth"
-import { SubjectEntry } from "@/lib/constant";
-import prisma from "@/lib/prisma";
-import { convertTo24Hour } from "@/lib/util";
+import { authOptions } from "@/lib/auth" 
+import prisma from "@/lib/prisma"; 
 import { getServerSession } from "next-auth"
 
 export async function addTimeTable(subjects: { subjectName: string; startTime: string; endTime: string, day: string }[]) {

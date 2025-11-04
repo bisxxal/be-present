@@ -16,7 +16,7 @@ const DashBoardMainaPage = () => {
   const { data: session } = useSession();
   const [remainingday, setRemaining] = useState([])
   const [currentClass, setCurrentClass] = useState<TimeTableProps>();
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const today = useMemo(() => new Date(), []);
   const defaultStart = startOfMonth(today);
   const defaultEnd = endOfMonth(today);
@@ -33,7 +33,7 @@ const DashBoardMainaPage = () => {
   return (
     <div className=' w-full p-20 mb-20 max-md:p-2 overflow-hidden'>
 
-      <div className=" relative max-md:mt-10 bg-gradient-to-bl from-purple-600/30 to-pink -600/30 rounded-2xl p-3 px-8 max-md:py-4  border border-purple-500/30 mb-8">
+      <div className=" relative max-md:mt-10 bg-gradient-to-bl from-purple-600/30 to-pink -600/30 rounded-2xl p-3 px-8 max-md:py-4  border border-[#ffffff15] mb-8">
 
         <div className=' absolute -top-10 -right-10 max-md:-right-6 drop-shadow-2xl drop-shadow-[#00000070]'>
           {Number(badge) >= 3 && <Image width={150} height={150} src={badgeImages(badge).img} className=' w-36 h-36  ' alt="" />}
@@ -86,7 +86,7 @@ const DashBoardMainaPage = () => {
         </div>
       </div>
 
-      <div onClick={() => setShow(!show)} className="p-3 bg-gradient-to-r my-3 center w-fit mx-auto from-purple-500 to-pink-500 rounded-xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
+      <div onClick={() => setShow(!show)} className="p-3 bg-gradient-to-tr my-3 center w-fit mx-auto from-purple-600 to-pink-600 rounded-xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
         <Calendar className="w-7 h-7 text-white" size={23} />
       </div>
 
