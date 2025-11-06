@@ -10,11 +10,11 @@ import { Calendar } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
-import { Area, AreaChart, CartesianGrid, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
+import { Area, AreaChart, Cell, Legend, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis } from 'recharts';
 
 const DashBoardMainaPage = () => {
   const { data: session } = useSession();
-  const [remainingday, setRemaining] = useState([])
+  const [remainingday, setRemaining] = useState<number>()
   const [currentClass, setCurrentClass] = useState<TimeTableProps>();
   const [show, setShow] = useState(true);
   const today = useMemo(() => new Date(), []);
@@ -45,12 +45,12 @@ const DashBoardMainaPage = () => {
               <span className=' bg-clip-text text-transparent bg-gradient-to-br from-pink-400 to-rose-500 capitalize'> {session?.user?.name} !!</span>
               {new Date().getDay() === 0 && <p className=' bg-clip-text  text-transparent bg-gradient-to-br from-indigo-500 to-pink-500'>{new Date().getDay() === 0 ? 'Happy sunday 🎉' : ''}</p>}
             </div>
-            <p className="text-gray-300 text-lg">You have <span className="text-purple-400 font-semibold"><span className=' text-xl'>{remainingday.length}</span> remaining classes</span> today.</p>
+            <p className="text-gray-300 text-lg">You have <span className="text-purple-400 font-semibold"><span className=' text-xl'>{remainingday && remainingday  >0 ? remainingday : 'No'}</span> remaining classes</span> today.</p>
            { totalPersentages[0]?.percentage && <p>Your current attendance rate is <span className={`text-xl font-medium  ${Number(totalPersentages[0]?.percentage) >= 75? ' text-green-400  ' : ' text-red-400  '} font-semibold `}>{ Number(totalPersentages[0]?.percentage) ? `${totalPersentages[0]?.percentage} %`: '0%'}</span></p>}
             {currentClass?.subjectName && (
               <p>Current Class :
                 <span className='text-green-400 text-xl font-medium capitalize'>
-                  {currentClass.subjectName}
+                  {" "} {currentClass.subjectName}
                 </span>
               </p>
             )}
@@ -86,7 +86,7 @@ const DashBoardMainaPage = () => {
         </div>
       </div>
 
-      <div onClick={() => setShow(!show)} className="p-3 bg-gradient-to-tr my-3 center w-fit mx-auto from-purple-600 to-pink-600 rounded-xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
+      <div onClick={() => setShow(!show)} className="p-3 bg-gradient-to-tr my-3 center w-fit mx-auto from-fuchsia-600 to-rose-600 rounded-2xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
         <Calendar className="w-7 h-7 text-white" size={23} />
       </div>
 

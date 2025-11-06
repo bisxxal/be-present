@@ -22,8 +22,8 @@ const Navbar = () => {
                         <label className=' cursor-pointer ' htmlFor='is'>
                             <PanelRightOpen size={22} />
                         </label>
-                        <input type="checkbox" hidden id="is" />
-                        <div className='group-has-checked:flex hidden  appear absolute  py-3.5 w- z-30 flex-col gap-2  text-white p-2  rounded-3xl bg-[#18084f87] !backdrop-blur-[25px] -left-[40px] -top-[70px] '>
+                        {/* <input type="checkbox" hidden id="is" /> */}
+                        <div className='group-hover:flex  hidden  appear absolute  py-3.5 w- z-30 flex-col gap-2  text-white p-2  rounded-3xl bg-[#18084f87] !backdrop-blur-[25px] -left-[40px] -top-[70px] '>
                             <Link className='text-sm hover:bg-[#5d5fef] bg-[#7a94f4d1] py-2 rounded-xl hover:text-[#e6e2eb] text-[#ffffff] center  ' href={`/dashboard`}> Dashbord </Link>
                             <Link className='text-sm hover:bg-[#5d5fef] bg-[#7a94f4d1] py-2 rounded-xl hover:text-[#e6e2eb] text-[#ffffff] px-[40px] center' href={`/attendance`}> Attendance </Link>
                             <Link className='text-sm hover:bg-[#5d5fef] bg-[#7a94f4d1] py-2 rounded-xl hover:text-[#e6e2eb] text-[#ffffff] center  ' href={`/track`}> Track </Link>
