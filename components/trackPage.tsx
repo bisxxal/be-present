@@ -18,6 +18,9 @@ const TrackComponent = () => {
   const endDate = endParam && isValid(parseISO(endParam)) ? parseISO(endParam) : defaultEnd;
 
   const { presentData,totalPersentages,subjCount,dateData, isLoading,} = useFilteredDate(startDate, endDate)
+
+
+  console.log(subjCount);
  
   return (
     <div className=' w-full min-h-screen overflow-hidden'>
@@ -74,7 +77,7 @@ const TrackComponent = () => {
               className={` center flex-col max-md:w-full 
               ${Number(((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)) > 75 ? " card " : "bg-gradient-to-br to-rose-500/30  from-pink-600/80 border-red-500/40"} text-center relative border-2 border-[#ffffff4a] rounded-4xl `} >
                 <h1 className=' -mb-13 mt-5  text-lg text-center font-medium '>{subject?.name.toUpperCase()}</h1>
-                <PieChart width={300} height={300}>
+                 <PieChart width={300} height={300}>
                   <Pie
                     data={chartData}
                     dataKey="value"
@@ -105,6 +108,7 @@ const TrackComponent = () => {
                 </PieChart>
 
                 <div className=' -mt-10 mb-2  text-white'>
+                  <p>{(subject.present  ) } / { (subject.present + subject.absent)} </p>
                   <p>Present:   {((subject.present / (subject.present + subject.absent)) * 100).toFixed(1)}%</p>
                   <p>Absent:   {((subject.absent / (subject.present + subject.absent)) * 100).toFixed(1)}%</p>
                 </div>
