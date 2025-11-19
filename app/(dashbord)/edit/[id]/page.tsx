@@ -1,7 +1,7 @@
 'use client'
 import { convertTo24Hour } from '@/lib/util';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import DatePicker from 'react-datepicker';
 import { format } from 'date-fns';
@@ -15,6 +15,7 @@ const Edit = () => {
   const params = useParams<{ id: string }>();
   const id = params?.id || '';
 
+  const router = useRouter();
   const client = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ['edittimetable', id],
@@ -51,9 +52,11 @@ const Edit = () => {
       if (data.status === 200) {
         toastSuccess(data.message);
         client.invalidateQueries({ queryKey: ['timetable'] });
+        router.back();
       } else {
         toastError(data.message);
       }
+
     },
   });
 

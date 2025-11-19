@@ -52,6 +52,5 @@ export const useGetTimeTable = () => {
     data: localData,
     isLoading: isCheckingLocal || (localData === null && isLoading),
     refetchTimeTable: refetch, // Expose refetch
-
   };
 };
