@@ -11,10 +11,9 @@ import { Loader } from 'lucide-react';
 import { toastError, toastSuccess } from '@/lib/toast';
 import { useGetTimeTable } from '@/hooks/useGetAttendance';
 import { SubjectEntry } from '@/lib/constant';
-import { useRouter } from 'next/navigation';
+import Eos from '@/components/eos';
 
 const TimeTablePage = () => {
-  const router = useRouter();
   const [subjects, setSubjects] = useState<SubjectEntry[]>([{ subjectName: '', startTime: '', endTime: '', day: '1' }]);
   const { data } = useGetTimeTable()
 const { refetchTimeTable } = useGetTimeTable();
@@ -180,6 +179,8 @@ const { refetchTimeTable } = useGetTimeTable();
       </form>
 
       <TimeTable type="edit" />
+
+      <Eos />
     </div>
   );
 };

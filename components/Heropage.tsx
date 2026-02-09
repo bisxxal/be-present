@@ -52,7 +52,7 @@ const HeroPage = () => {
             <a href="#features" className="text-gray-300 hidden md:flex  hover:text-white transition-colors">Features</a>
             <a href="#demo" className="text-gray-300 hidden md:flex  hover:text-white transition-colors">Demo</a>
             <div className="flex items-center space-x-3">
-              {status === 'unauthenticated' &&<Link href={'/sign-in'} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
+              {status === 'unauthenticated' &&<Link href={'/sign-in'} className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:scale-105">
                 <LogIn className="w-4 h-4 inline mr-2" />
                 Sign In
               </Link>}
@@ -93,10 +93,11 @@ const HeroPage = () => {
 
       <section className="bg-[#0d1117] -mt-[100px]   px-60 max-md:px-2  p-4 rounded-3xl text-white">
         <h2 className="text-3xl text-center font-semibold mb-4 slogo">Maintain Streaks</h2>
-        <div className='bg-[#0d1117] heroimgshadow'>
+        <div className='bg-[#0d1117] heroimgshadow  max-md:p-0 max-md:px-3 p-20  mx-auto'>
           <CalendarHeatmap
           className="focus:outline-none "
-          endDate={'2025-12-12'}
+          startDate={'2026-1-1'}
+          endDate={'2026-10-12'}
           showWeekdayLabels={false}
           values={filteredData}
           classForValue={(value) => {

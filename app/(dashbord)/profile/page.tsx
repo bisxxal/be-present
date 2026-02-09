@@ -69,6 +69,7 @@ const ProfilePage = () => {
             <p className=' text-gray-400'><strong>Signed as :</strong> {data?.user?.email}</p>
             {<button onClick={() => handelLogOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
             {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{updated ? <Loader className=' animate-spin ' /> : 'Update Streak'}</button>}
+            <Link href={`/history`} className=" border rounded-full w-full mt-4 py-2   max-md:py-1.5 center">History</Link>
           </div>
         )}
       </div>

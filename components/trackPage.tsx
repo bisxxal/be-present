@@ -18,9 +18,6 @@ const TrackComponent = () => {
   const endDate = endParam && isValid(parseISO(endParam)) ? parseISO(endParam) : defaultEnd;
 
   const { presentData,totalPersentages,subjCount,dateData, isLoading,} = useFilteredDate(startDate, endDate)
-
-
-  console.log(subjCount);
  
   return (
     <div className=' w-full min-h-screen overflow-hidden'>

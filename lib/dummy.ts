@@ -27,10 +27,7 @@ export const demoTrendData = [
   { month: 'Nov', present: 70 },
   { month: 'Dec', present: 30 },
 ];
-
-
-
-
+ 
   export const demoTimeTable = [
     { time: '09:00 AM', subject: 'C++', room: 'Room 101', status: 'present' },
     { time: '10:30 AM', subject: 'Java', room: 'Lab A', status: 'present' },

@@ -3,11 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
   // directUrl = env("DIRECT_URL")
 }
-
 model User {
   id            String    @id @default(cuid())
   name          String?
@@ -19,7 +18,7 @@ model User {
 
   timeTables  TimeTable[]
   attendances Attendance[]
-
+  histories   History[]
   @@index([id])
 }
 
@@ -55,6 +54,26 @@ model Attendance {
   @@index([timeTableId, date])
   @@unique([userId, timeTableId, date], name: "userId_timeTableId_date")
 
+}
+model History{
+  id        String   @id @default(cuid())
+  semester  String?
+
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjects  HistorySubjects[]
+
+  @@index([userId])
+}
+
+model HistorySubjects{
+  id        String   @id @default(cuid())
+  subjectName String
+  totalClasses Int
+  presentClasses   Int
+  historyId    String
+  history      History     @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  @@index([historyId])
 }
 
 model Account {

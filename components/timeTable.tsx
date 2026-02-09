@@ -143,15 +143,15 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
     return (
         <div className="mt-7 overflow-auto w-full max-md:px-2">
 
-            <div className=' flex items-end justify-end '>
-            <button onClick={ ()=>refetchTimeTable()} className=' buttonbg p-2 round '><RefreshCw /></button>
-            </div>
+             {type === 'edit' && <div className=' flex items-end justify-center mb-5 '>
+            <button onClick={ ()=>refetchTimeTable()} className=' buttonbg p-2 px-5  '><RefreshCw /></button>
+            </div>}
             {show && (
                 <div className='center fixed top-0 right-0 p-2 w-full h-full bg-[#0000003f] backdrop-blur-2xl z-[40]'>
-                    <div className='flex flex-col gap-2 max-md:w-[90%] w-[500px] bg-[#ffffff46] p-4 rounded-xl shadow-lg'>
+                    <div className='flex flex-col gap-2 max-md:w-[90%] w-[500px] bg-[#b8b8b81f] border border-[#ffffff24] p-4 rounded-2xl shadow-lg'>
                         <p className=' text-center'>Are you sure you want to delete this subject?</p>
                         <div className='center gap-3'>
-                            <button onClick={() => setShow('')} className='!rounded-xl border center py-3 px-8'>Cancel</button>
+                            <button onClick={() => setShow('')} className='!rounded-xl border border-[#ffffff73] center py-3 px-8'>Cancel</button>
                             <button onClick={() => deleteTimeTableMutation.mutate(show)} className='!rounded-xl buttonred !py-3 !px-8'>Delete</button>
                         </div>
                     </div>
@@ -265,7 +265,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
                                                     ? ' bg-gradient-to-r from-green-700/70 to-green-600/20 '
                                                     : isToday === dayIndex
                                                         ? ' bg-gradient-to-br to-rose-500/50 from-pink-600/80 border-red-500/40 !rounded-none'
-                                                        : 'bg-gradient-to-br to-[#ffffff13] from-[#ffffff00]';
+                                                        : 'bg-gradient-to-br to-[#cccccc0a] from-[#ffffff00]';
 
                                                 cells.push(
                                                     <td
