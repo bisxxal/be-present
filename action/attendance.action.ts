@@ -65,8 +65,7 @@ export const getAttendance = async (startDate: Date, endDate: Date) => {
     if (!session) {
       return { status: 401, message: "Unauthorized" };
     }
-
-    console.log('calling getAttendance')
+    // console.log('calling getAttendance')
     const attendance = await prisma.attendance.findMany({
       where: {
         userId: session.user.id,

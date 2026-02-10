@@ -2,33 +2,25 @@
 import { createhistorySubject, getFirstDate } from '@/action/profile.action'
 import { useFilteredDate } from '@/hooks/useFilteredData'
 import { QueryClient, useMutation, useQuery } from '@tanstack/react-query'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
 const Eos = () => {
+    const client = new QueryClient();
   const [show, setShow] = useState(false);
+   
   const { data: firstData } = useQuery({
     queryKey: ['fstdate'],
     queryFn: getFirstDate,
-  })
+  });
 
-  const [subjCount, setSubjCount] = useState([]);
-
-  const client = new QueryClient()
-  const startDate = firstData?.data?.date?.toISOString();
+  const startDate = firstData?.data?.date ? new Date(firstData.data.date): null;
 
   const endDate = useMemo(() => new Date(), []);
-
-  // firstData &&
-  useEffect(()=>{
-    if(!startDate) return;
-    const { subjCount:sub } = useFilteredDate(startDate, endDate);
-
-    setSubjCount(sub);
-
-  },[ startDate])
-
+ 
+  const { subjCount } = useFilteredDate(startDate, endDate);
+ 
   const historyMutation = useMutation({
-    mutationFn: () => createhistorySubject(subjCount, '1st Semester'),
+    mutationFn: (sem:string) => createhistorySubject(subjCount, sem),
     onSuccess: () => {
       setShow(false)
       localStorage.removeItem('subjectsData');
@@ -36,8 +28,9 @@ const Eos = () => {
     },
   })
 
-  const SumbitFormData = () => {
-    historyMutation.mutate();
+  const SumbitFormData = (formData:FormData) => {
+    const sem = formData.get('sem') as string;
+    historyMutation.mutate(sem);
   }
   return (
     <div>
@@ -57,7 +50,7 @@ const Eos = () => {
               Are you sure you want to delete this semester?
             </p>
 
-            <form action={SumbitFormData} className="center w-full gap-3 w-full ">
+            <form action={SumbitFormData} className="center gap-3 w-full ">
               <select required name="sem">
                 <option value="">Select semester</option>
                 <option value="1st Semester">1st Semester</option>
@@ -73,10 +66,10 @@ const Eos = () => {
                 Make History
               </button>
             </form>
-             <button
-                onClick={() => setShow(false)} className="rounded-xl border  border-[#ff0000f0] bg-red-500/20 py-3 px-8">
-                Cancel
-              </button>
+            <button
+              onClick={() => setShow(false)} className="rounded-xl border  border-[#ff0000f0] bg-red-500/20 py-3 px-8">
+              Cancel
+            </button>
           </div>
         </div>
       )}

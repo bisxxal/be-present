@@ -14,9 +14,10 @@ import { SubjectEntry } from '@/lib/constant';
 import Eos from '@/components/eos';
 
 const TimeTablePage = () => {
+  
   const [subjects, setSubjects] = useState<SubjectEntry[]>([{ subjectName: '', startTime: '', endTime: '', day: '1' }]);
   const { data } = useGetTimeTable()
-const { refetchTimeTable } = useGetTimeTable();
+  const { refetchTimeTable } = useGetTimeTable();
 
   const handleInputChange = (
     index: number,
@@ -116,8 +117,8 @@ const { refetchTimeTable } = useGetTimeTable();
 
             </div>
 
-            <select className=' my-1 max-md:w-full' value={entry.day} defaultValue="1" required onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
-              {/* <option value="">Day</option> */}
+            <select className=' my-1 max-md:w-full' value={entry?.day} required onChange={(e) => handleInputChange(index, 'day', e.target.value)}>
+              <option value="">Select Day</option>
               <option value="1">Monday</option>
               <option value="2">Tuesday</option>
               <option value="3">Wednesday</option>
@@ -131,13 +132,13 @@ const { refetchTimeTable } = useGetTimeTable();
                 selected={entry.startTime ? new Date(`1970-01-01T${convertTo24Hour(entry.startTime)}`) : null}
                 onChange={(date) => handleTimeChange(index, 'startTime', date)}
                 showTimeSelect
-                showTimeSelectOnly 
+                showTimeSelectOnly
                 timeIntervals={5}
                 dateFormat="h:mm aa"
                 placeholderText="Start Time"
                 className="px-3 py-2 border  w-full rounded-lg"
               />
- 
+
               <DatePicker
                 selected={entry.endTime ? new Date(`1970-01-01T${convertTo24Hour(entry.endTime)}`) : null}
                 onChange={(date) => handleTimeChange(index, 'endTime', date)}

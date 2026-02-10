@@ -142,8 +142,7 @@ export const createhistorySubject = async (
     });
 
     if(history){
-      // await deleteAllTimeTable()
-      console.log('deleting timeTable');
+      await deleteAllTimeTable()
     }
 
     return {
@@ -152,7 +151,6 @@ export const createhistorySubject = async (
       data: history,
     };
   } catch (error) {
-    console.log("History Error:", error);
     return { status: 500, message: "Internal server error" };
   }
 };
