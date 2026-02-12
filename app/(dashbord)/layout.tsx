@@ -1,4 +1,5 @@
 import Navbar from "@/components/navbar";
+import BottomBar from "@/components/ui/buttombar";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
       <div className=" mt-[65px]">
       {children}
       </div>
+       <BottomBar />
     </main>
 
   );

@@ -326,3 +326,7 @@ background: radial-gradient(circle,#b88244e0 0%, #dccfb53b 100%);
     background-position: -100%;
   }
 }
+.buttombar{
+  background: #57c786;
+background: linear-gradient(180deg, #57c78500 0%, #0b0b12 100%);
+}
