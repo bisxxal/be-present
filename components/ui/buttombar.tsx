@@ -1,5 +1,5 @@
 'use client'
-import { ArrowLeftRight, Calendar, ChartLine, Hand, TableProperties, User, Wallet } from 'lucide-react'
+import { ChartLine, Hand, LayoutGrid, TableProperties, User } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useRef, useState } from 'react'
@@ -10,13 +10,13 @@ const BottomBar = () => {
     const itemRefs = useRef<(HTMLAnchorElement | null)[]>([])
 
     const navItems = [
-        { href: '/dashboard', icon: ArrowLeftRight },
+        { href: '/dashboard', icon: LayoutGrid  },
         { href: '/attendance', icon: Hand },
         { href: '/track', icon: ChartLine },
         { href: '/timetable', icon: TableProperties },
         { href: '/profile', icon: User },
     ]
- 
+
     useEffect(() => {
         const activeIndex = navItems.findIndex((item) => item.href === path)
         const currentElement = itemRefs.current[activeIndex]

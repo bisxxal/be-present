@@ -12,7 +12,7 @@ const HistoryPage = () => {
     })
 
   return (
-    <div className=' w-full px-20 max-md:px-4 max-md:py-2 py-10 '>
+    <div className=' w-full px-20 max-md:px-4 max-md:py-2 py-10 pb-20'>
         {
             isLoading ? (
                 <Loading boxes={12} child=' h-[130px] max-md:w-full w-[400px] rounded-2xl' parent=' pt-16 pb-4   mt-10 grid border border-[#ffffff2e]  grid-cols-2 md:grid-cols-3 gap-4 max-md:gap-2 rounded-3xl px-5' />

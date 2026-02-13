@@ -46,11 +46,11 @@ const ProfilePage = () => {
   };
 
   const handelLogOut = () => {
-    
     localStorage.removeItem('attendanceHeatmapData');
     localStorage.removeItem('classes')
     localStorage.removeItem('subjectsData');
     localStorage.removeItem('nextauth.message');
+    localStorage.clear();
     toastSuccess('Logged out successfully!');
     signOut();
   };
@@ -59,11 +59,10 @@ const ProfilePage = () => {
     <div className='w-full p-20 max-md:p-2 '>
 
       <div className='mt-14 card w-[80%] max-md:w-[95%] mx-auto p-5 rounded-3xl shadow-lg text-white'>
-        <div className='text-3xl max-md:text-2xl text-center mb-6 font-bold'>Profile</div>
         {status === 'loading' ? (
           <p></p>
         ) : (
-          <div className='text-lg text-center'>
+          <div className='text-lg text-center mt-3'>
             <Image src={data?.user?.image!} alt="User Avatar" height={100} width={100} className='rounded-full w-32 h-32 mx-auto' />
             <p className='capitalize mt-5'><strong>Hiii ,{data?.user?.name} </strong> </p>
             <p className=' text-gray-400'><strong>Signed as :</strong> {data?.user?.email}</p>
