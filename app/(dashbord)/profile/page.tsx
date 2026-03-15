@@ -63,18 +63,17 @@ const ProfilePage = () => {
           <p></p>
         ) : (
           <div className='text-lg text-center mt-3'>
-            <Image src={data?.user?.image!} alt="User Avatar" height={100} width={100} className='rounded-full w-32 h-32 mx-auto' />
+            <Image src={data?.user?.image!} alt="User Avatar" height={400} width={400} className='rounded-full w-32 h-32 mx-auto' />
             <p className='capitalize mt-5'><strong>Hiii ,{data?.user?.name} </strong> </p>
-            <p className=' text-gray-400'><strong>Signed as :</strong> {data?.user?.email}</p>
+            <p className='text-sm text-gray-400'><strong>Signed as :</strong> {data?.user?.email}</p>
             {<button onClick={() => handelLogOut()} className=" buttonred rounded-full w-full mt-4 py-2   max-md:py-1.5">Logout</button>}
             {<button onClick={() => fetchAndCacheData()} className=" buttonbg rounded-full w-full mt-4 py-2 center  max-md:py-1.5">{updated ? <Loader className=' animate-spin ' /> : 'Update Streak'}</button>}
-            <Link href={`/history`} className=" border rounded-full w-full mt-4 py-2   max-md:py-1.5 center">History</Link>
+            <Link href={`/history`} className=" border border-[#ffffff4f]  rounded-full w-full mt-4 py-2   max-md:py-1.5 center">History</Link>
           </div>
         )}
       </div>
 
-
-
+ 
       <Link href={`/`} className=" bg-gradient-to-r mt-20 center w-fit mx-auto from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center transform rotate-3 hover:rotate-12 transition-transform duration-300">
          <Image loading='lazy' width={250} height={250} src="/logo.png" className="w-24 h-24 drop-shadow-xl drop-shadow-[#0000006e] rotate-[16deg]  " alt="Logo" />
       </Link>

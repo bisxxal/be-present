@@ -169,7 +169,7 @@ const Attendance: React.FC = () => {
   const today = useMemo(() => new Date(), []);
   // const isToday = selectedDate === today.getDate() && selectedMonth === today.getMonth() && selectedYear === today.getFullYear();
   return (
-    <div className="min-h-screen   w-full text-white p-6 max-md:p-1">
+    <div className="min-h-screen   w-full text-white p-6 max-md:p-2.5 ">
       <div className=" w-[80%] max-md:w-full mx-auto">
 
         <div className="mb-8 ml-2 mt-4">
@@ -260,16 +260,14 @@ const Attendance: React.FC = () => {
                     openModal(date);
                   }}
                   className={`
-                    relative p-4 rounded-lg max-md:rounded cursor-pointer transition-all duration-200 hover:scale-105 border
+                    relative p-4 h-20 center rounded-lg max-md:rounded cursor-pointer transition-all duration-200 hover:scale-105 border
                     ${isToday ? 'border-[#ffffff74] buttonbg !rounded-lg ' : 'border-[#ffffff17]'}
                     ${attendance === 'present' ? 'bg-green-900 border-green-500' :
-                      attendance === 'absent' ? 'bg-red-900 border-red-500' :
-                        'bg-[#2d2b55] hover:bg-[#1a1a2e]'}
-                  `}
-                >
-                  <div className="text-center">
-                    <div className="text-lg font-semibold mb-2">{date} { }</div>
-                    <div className="space-y-1">
+                      attendance === 'absent' ? 'bg-red-900 border-red-500' : 'bg-[#2d2b55] hover:bg-[#1a1a2e]'}
+                  `} >
+                  <div className="text-center ">
+                    <div className="text-3xl  2xl font-bold  ">{date}  </div>
+                    {/* <div className="space-y-1">
                       {attendance === 'present' && (
                         <div className="flex items-center justify-center text-green-400 text-sm">
                           <CheckCircle className="w-4 h-4 mr-1" />
@@ -287,7 +285,7 @@ const Attendance: React.FC = () => {
                           <Clock className="w-4 h-4 mx-auto" />
                         </div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               );

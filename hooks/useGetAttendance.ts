@@ -30,7 +30,7 @@ export const useGetTimeTable = () => {
     setIsCheckingLocal(false);
   }, []);
 
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch , isRefetching } = useQuery({
     queryKey: ['timetable'],
     queryFn: async () => {
       const fetched = await getTimeTable();
@@ -52,5 +52,6 @@ export const useGetTimeTable = () => {
     data: localData,
     isLoading: isCheckingLocal || (localData === null && isLoading),
     refetchTimeTable: refetch, // Expose refetch
+    isRefetching
   };
 };

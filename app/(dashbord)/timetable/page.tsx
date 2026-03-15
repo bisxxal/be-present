@@ -85,7 +85,7 @@ const TimeTablePage = () => {
     <div className="w-full pb-10 mx-auto overflow-hidden">
       <h1 className="text-2xl text-center my-4 font-bold">Add Your Timetable</h1>
 
-      <form onSubmit={handleSubmit} className=" max-md:w-[98%] w-[70%] mx-auto space-y-4">
+      <form onSubmit={handleSubmit} className="px-3 max-md:w-[98%] w-[70%] mx-auto space-y-4">
         {subjects.map((entry, index) => (
           <div
             key={index}

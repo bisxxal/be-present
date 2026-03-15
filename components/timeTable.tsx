@@ -16,7 +16,7 @@ interface TimeTablePropsExtended {
 
 const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTablePropsExtended) => {
     const client = useQueryClient();
-    const { data, isLoading ,refetchTimeTable} = useGetTimeTable();
+    const { data, isLoading ,refetchTimeTable , isRefetching} = useGetTimeTable();
     const [show, setShow] = useState('');
     const isToday = new Date().getDay();
 
@@ -144,7 +144,7 @@ const TimeTable = ({ type, setCurrentClass, setRemaining, currentClass }: TimeTa
         <div className="mt-7 overflow-auto w-full max-md:px-2">
 
              {type === 'edit' && <div className=' flex items-end justify-center mb-5 '>
-            <button onClick={ ()=>refetchTimeTable()} className=' buttonbg p-2 px-5  '><RefreshCw /></button>
+            <button onClick={ ()=>refetchTimeTable()} className=' buttonbg p-2 px-5  '><RefreshCw className={` ${isRefetching && 'animate-spin'} `} /></button>
             </div>}
             {show && (
                 <div className='center fixed top-0 right-0 p-2 w-full h-full bg-[#0000003f] backdrop-blur-2xl z-[40]'>
